@@ -15,13 +15,12 @@ jobs:
       - name: Checkout GitHub Action Repo
         uses: actions/checkout@v2
         with:
-          repository: vality/action-jdk-build
-          ref: v1.0.18
-          token: '${{ secrets.ACTIONS_FETCH_TOKEN }}'
+          repository: valitydev/action-jdk-build
+          ref: v1.0.17
           path: .github/actions/action-jdk-build
 
       - name: Run Build Java
         uses: ./.github/actions/action-jdk-build
         with:
           github-pat: '${{ secrets.GH_PACKAGES_RO_PAT }}'
-          github-user: 'vulnbe'
+          github-user: 'strug'
