@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.handler.wallet;
 
-import com.rbkmoney.fistful.account.Account;
+import dev.vality.fistful.account.Account;
 import com.rbkmoney.fistful.magista.dao.IdentityDao;
 import com.rbkmoney.fistful.magista.dao.WalletDao;
 import com.rbkmoney.fistful.magista.domain.enums.WalletEventType;
@@ -9,7 +9,7 @@ import com.rbkmoney.fistful.magista.domain.tables.pojos.WalletData;
 import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.fistful.magista.exception.NotFoundException;
 import com.rbkmoney.fistful.magista.exception.StorageException;
-import com.rbkmoney.fistful.wallet.TimestampedChange;
+import dev.vality.fistful.wallet.TimestampedChange;
 import com.rbkmoney.geck.common.util.TypeUtil;
 import com.rbkmoney.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;

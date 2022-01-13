@@ -1,9 +1,9 @@
 package com.rbkmoney.fistful.magista.dao.impl;
 
-import com.rbkmoney.fistful.fistful_stat.RevertStatus;
-import com.rbkmoney.fistful.fistful_stat.StatDeposit;
-import com.rbkmoney.fistful.fistful_stat.StatWallet;
-import com.rbkmoney.fistful.fistful_stat.StatWithdrawal;
+import dev.vality.fistful.fistful_stat.RevertStatus;
+import dev.vality.fistful.fistful_stat.StatDeposit;
+import dev.vality.fistful.fistful_stat.StatWallet;
+import dev.vality.fistful.fistful_stat.StatWithdrawal;
 import com.rbkmoney.fistful.magista.AbstractIntegrationTest;
 import com.rbkmoney.fistful.magista.dao.*;
 import com.rbkmoney.fistful.magista.domain.enums.DepositRevertDataStatus;

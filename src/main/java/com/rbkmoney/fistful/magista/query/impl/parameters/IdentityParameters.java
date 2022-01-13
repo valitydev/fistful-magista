@@ -2,8 +2,8 @@ package com.rbkmoney.fistful.magista.query.impl.parameters;
 
 import com.rbkmoney.fistful.magista.domain.enums.ChallengeResolution;
 import com.rbkmoney.fistful.magista.domain.enums.ChallengeStatus;
-import com.rbkmoney.magista.dsl.PagedBaseFunction;
-import com.rbkmoney.magista.dsl.QueryParameters;
+import dev.vality.magista.dsl.PagedBaseFunction;
+import dev.vality.magista.dsl.QueryParameters;
 
 import java.time.temporal.TemporalAccessor;
 import java.util.Map;

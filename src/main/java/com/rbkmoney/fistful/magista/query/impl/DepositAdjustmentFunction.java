@@ -1,10 +1,10 @@
 package com.rbkmoney.fistful.magista.query.impl;
 
-import com.rbkmoney.fistful.fistful_stat.StatDepositAdjustment;
-import com.rbkmoney.fistful.fistful_stat.StatResponse;
-import com.rbkmoney.fistful.fistful_stat.StatResponseData;
+import dev.vality.fistful.fistful_stat.StatDepositAdjustment;
+import dev.vality.fistful.fistful_stat.StatResponse;
+import dev.vality.fistful.fistful_stat.StatResponseData;
 import com.rbkmoney.fistful.magista.query.impl.parameters.DepositAdjustmentParameters;
-import com.rbkmoney.magista.dsl.*;
+import dev.vality.magista.dsl.*;
 
 import java.util.List;
 import java.util.Map;

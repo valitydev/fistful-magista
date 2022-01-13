@@ -1,9 +1,9 @@
 package com.rbkmoney.fistful.magista.handler.deposit.adjustment;
 
-import com.rbkmoney.fistful.deposit.TimestampedChange;
-import com.rbkmoney.fistful.deposit.adjustment.Adjustment;
-import com.rbkmoney.fistful.deposit.adjustment.CashFlowChangePlan;
-import com.rbkmoney.fistful.deposit.status.Status;
+import dev.vality.fistful.deposit.TimestampedChange;
+import dev.vality.fistful.deposit.adjustment.Adjustment;
+import dev.vality.fistful.deposit.adjustment.CashFlowChangePlan;
+import dev.vality.fistful.deposit.status.Status;
 import com.rbkmoney.fistful.magista.dao.DepositAdjustmentDao;
 import com.rbkmoney.fistful.magista.dao.DepositDao;
 import com.rbkmoney.fistful.magista.domain.enums.DepositAdjustmentDataEventType;

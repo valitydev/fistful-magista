@@ -3,10 +3,10 @@ package com.rbkmoney.fistful.magista.query.impl.parser;
 import com.rbkmoney.fistful.magista.query.impl.IdentityFunction;
 import com.rbkmoney.fistful.magista.query.impl.parameters.IdentityParameters;
 import com.rbkmoney.fistful.magista.query.impl.validator.IdentityValidator;
-import com.rbkmoney.magista.dsl.RootQuery;
-import com.rbkmoney.magista.dsl.parser.AbstractQueryParser;
-import com.rbkmoney.magista.dsl.parser.QueryParserException;
-import com.rbkmoney.magista.dsl.parser.QueryPart;
+import dev.vality.magista.dsl.RootQuery;
+import dev.vality.magista.dsl.parser.AbstractQueryParser;
+import dev.vality.magista.dsl.parser.QueryParserException;
+import dev.vality.magista.dsl.parser.QueryPart;
 
 import java.util.List;
 import java.util.Map;

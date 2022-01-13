@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.rbkmoney</groupId>
+        <groupId>dev.vality</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>2.0.11</version>
+        <version>1.0.1</version>
     </parent>
 
     <artifactId>fistful-magista</artifactId>
@@ -23,11 +23,11 @@
         <management.port>8023</management.port>
         <exposed.ports>${server.port} ${management.port}</exposed.ports>
         <dockerfile.registry>${env.REGISTRY}</dockerfile.registry>
-        <fistful-proto.version>1.123-519551d</fistful-proto.version>
-        <eventstock.version>1.2.6</eventstock.version>
-        <machinegun-proto.version>1.12-ebae56f</machinegun-proto.version>
-        <sink-common-lib.version>0.0.4</sink-common-lib.version>
-        <testcontainers.version>1.15.3</testcontainers.version>
+        <fistful-proto.version>1.129-8c9aa31</fistful-proto.version>
+        <eventstock.version>1.2.12</eventstock.version>
+        <machinegun-proto.version>1.19-f77367a</machinegun-proto.version>
+        <sink-common-lib.version>0.0.8</sink-common-lib.version>
+        <testcontainers.version>1.16.2</testcontainers.version>
         <!---->
         <db.name>fistfulmst</db.name>
         <db.port>5432</db.port>
@@ -49,14 +49,14 @@
             <artifactId>shared-resources</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.rbkmoney</groupId>
+            <groupId>dev.vality</groupId>
             <artifactId>fistful-proto</artifactId>
             <version>${fistful-proto.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.rbkmoney</groupId>
+            <groupId>dev.vality</groupId>
             <artifactId>magista-dsl</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.rbkmoney</groupId>
@@ -285,7 +285,7 @@
             <plugin>
                 <groupId>com.rbkmoney.maven.plugins</groupId>
                 <artifactId>pg-embedded-plugin</artifactId>
-                <version>1.6</version>
+                <version>1.8</version>
                 <configuration>
                     <port>${db.port}</port>
                     <dbName>${db.name}</dbName>

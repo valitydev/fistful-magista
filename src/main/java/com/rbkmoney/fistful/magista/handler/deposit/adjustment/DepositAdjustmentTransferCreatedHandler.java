@@ -1,7 +1,7 @@
 package com.rbkmoney.fistful.magista.handler.deposit.adjustment;
 
-import com.rbkmoney.fistful.cashflow.FinalCashFlowPosting;
-import com.rbkmoney.fistful.deposit.TimestampedChange;
+import dev.vality.fistful.cashflow.FinalCashFlowPosting;
+import dev.vality.fistful.deposit.TimestampedChange;
 import com.rbkmoney.fistful.magista.dao.DepositAdjustmentDao;
 import com.rbkmoney.fistful.magista.domain.enums.DepositAdjustmentDataEventType;
 import com.rbkmoney.fistful.magista.domain.enums.DepositTransferStatus;
@@ -10,7 +10,7 @@ import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.fistful.magista.exception.StorageException;
 import com.rbkmoney.fistful.magista.handler.deposit.DepositEventHandler;
 import com.rbkmoney.fistful.magista.util.CashFlowUtil;
-import com.rbkmoney.fistful.transfer.Transfer;
+import dev.vality.fistful.transfer.Transfer;
 import com.rbkmoney.geck.common.util.TypeUtil;
 import com.rbkmoney.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;

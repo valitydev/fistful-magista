@@ -2,8 +2,8 @@ package com.rbkmoney.fistful.magista.query.impl;
 
 
 import com.rbkmoney.fistful.magista.dao.SearchDao;
-import com.rbkmoney.magista.dsl.QueryContext;
-import com.rbkmoney.magista.dsl.QueryContextFactory;
+import dev.vality.magista.dsl.QueryContext;
+import dev.vality.magista.dsl.QueryContextFactory;
 
 public class QueryContextFactoryImpl implements QueryContextFactory {
 

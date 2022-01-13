@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.kafka.serde;
 
-import com.rbkmoney.fistful.withdrawal.TimestampedChange;
+import dev.vality.fistful.withdrawal.TimestampedChange;
 import com.rbkmoney.sink.common.parser.impl.MachineEventParser;
 import com.rbkmoney.sink.common.serialization.BinaryDeserializer;
 import org.springframework.stereotype.Service;

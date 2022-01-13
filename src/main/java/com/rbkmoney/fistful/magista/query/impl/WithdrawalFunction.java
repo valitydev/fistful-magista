@@ -1,18 +1,18 @@
 package com.rbkmoney.fistful.magista.query.impl;
 
-import com.rbkmoney.fistful.fistful_stat.StatResponse;
-import com.rbkmoney.fistful.fistful_stat.StatResponseData;
-import com.rbkmoney.fistful.fistful_stat.StatWithdrawal;
+import dev.vality.fistful.fistful_stat.StatResponse;
+import dev.vality.fistful.fistful_stat.StatResponseData;
+import dev.vality.fistful.fistful_stat.StatWithdrawal;
 import com.rbkmoney.fistful.magista.domain.enums.WithdrawalStatus;
 import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.geck.common.util.TypeUtil;
-import com.rbkmoney.magista.dsl.*;
-import com.rbkmoney.magista.dsl.builder.AbstractQueryBuilder;
-import com.rbkmoney.magista.dsl.builder.QueryBuilder;
-import com.rbkmoney.magista.dsl.builder.QueryBuilderException;
-import com.rbkmoney.magista.dsl.parser.AbstractQueryParser;
-import com.rbkmoney.magista.dsl.parser.QueryParserException;
-import com.rbkmoney.magista.dsl.parser.QueryPart;
+import dev.vality.magista.dsl.*;
+import dev.vality.magista.dsl.builder.AbstractQueryBuilder;
+import dev.vality.magista.dsl.builder.QueryBuilder;
+import dev.vality.magista.dsl.builder.QueryBuilderException;
+import dev.vality.magista.dsl.parser.AbstractQueryParser;
+import dev.vality.magista.dsl.parser.QueryParserException;
+import dev.vality.magista.dsl.parser.QueryPart;
 
 import java.time.temporal.TemporalAccessor;
 import java.util.*;

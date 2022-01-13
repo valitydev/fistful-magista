@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.service;
 
-import com.rbkmoney.fistful.deposit.TimestampedChange;
+import dev.vality.fistful.deposit.TimestampedChange;
 import com.rbkmoney.fistful.magista.handler.deposit.DepositEventHandler;
 import com.rbkmoney.machinegun.eventsink.MachineEvent;
 import com.rbkmoney.sink.common.parser.impl.MachineEventParser;

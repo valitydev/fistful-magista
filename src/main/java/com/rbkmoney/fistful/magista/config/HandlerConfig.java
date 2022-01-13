@@ -2,14 +2,14 @@ package com.rbkmoney.fistful.magista.config;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rbkmoney.fistful.fistful_stat.FistfulStatisticsSrv;
+import dev.vality.fistful.fistful_stat.FistfulStatisticsSrv;
 import com.rbkmoney.fistful.magista.dao.SearchDao;
 import com.rbkmoney.fistful.magista.query.impl.QueryContextFactoryImpl;
 import com.rbkmoney.fistful.magista.query.impl.QueryProcessorImpl;
 import com.rbkmoney.fistful.magista.query.impl.builder.QueryBuilderImpl;
 import com.rbkmoney.fistful.magista.query.impl.parser.QueryParserImpl;
 import com.rbkmoney.fistful.magista.service.FistfulStatisticsHandler;
-import com.rbkmoney.magista.dsl.parser.JsonQueryParser;
+import dev.vality.magista.dsl.parser.JsonQueryParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

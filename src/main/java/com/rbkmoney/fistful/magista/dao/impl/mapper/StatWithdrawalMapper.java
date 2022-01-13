@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.dao.impl.mapper;
 
-import com.rbkmoney.fistful.fistful_stat.*;
+import dev.vality.fistful.fistful_stat.*;
 import com.rbkmoney.fistful.magista.domain.enums.WithdrawalStatus;
 import com.rbkmoney.fistful.magista.exception.NotFoundException;
 import com.rbkmoney.geck.common.util.TypeUtil;
@@ -34,15 +34,15 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
         switch (withdrawalStatus) {
             case pending:
                 statWithdrawal
-                        .setStatus(com.rbkmoney.fistful.fistful_stat.WithdrawalStatus.pending(new WithdrawalPending()));
+                        .setStatus(dev.vality.fistful.fistful_stat.WithdrawalStatus.pending(new WithdrawalPending()));
                 break;
             case succeeded:
                 statWithdrawal.setStatus(
-                        com.rbkmoney.fistful.fistful_stat.WithdrawalStatus.succeeded(new WithdrawalSucceeded()));
+                        dev.vality.fistful.fistful_stat.WithdrawalStatus.succeeded(new WithdrawalSucceeded()));
                 break;
             case failed:
                 statWithdrawal.setStatus(
-                        com.rbkmoney.fistful.fistful_stat.WithdrawalStatus.failed(new WithdrawalFailed(new Failure())));
+                        dev.vality.fistful.fistful_stat.WithdrawalStatus.failed(new WithdrawalFailed(new Failure())));
                 break;
             default:
                 throw new NotFoundException(

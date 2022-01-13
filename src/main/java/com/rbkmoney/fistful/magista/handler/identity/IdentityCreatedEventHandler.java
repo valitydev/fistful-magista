@@ -1,11 +1,11 @@
 package com.rbkmoney.fistful.magista.handler.identity;
 
-import com.rbkmoney.fistful.Blocking;
-import com.rbkmoney.fistful.base.EventRange;
-import com.rbkmoney.fistful.identity.Identity;
-import com.rbkmoney.fistful.identity.IdentityState;
-import com.rbkmoney.fistful.identity.ManagementSrv;
-import com.rbkmoney.fistful.identity.TimestampedChange;
+import dev.vality.fistful.Blocking;
+import dev.vality.fistful.base.EventRange;
+import dev.vality.fistful.identity.Identity;
+import dev.vality.fistful.identity.IdentityState;
+import dev.vality.fistful.identity.ManagementSrv;
+import dev.vality.fistful.identity.TimestampedChange;
 import com.rbkmoney.fistful.magista.dao.IdentityDao;
 import com.rbkmoney.fistful.magista.domain.enums.BlockingType;
 import com.rbkmoney.fistful.magista.domain.enums.IdentityEventType;

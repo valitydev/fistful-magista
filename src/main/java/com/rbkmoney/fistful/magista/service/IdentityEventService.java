@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.service;
 
-import com.rbkmoney.fistful.identity.TimestampedChange;
+import dev.vality.fistful.identity.TimestampedChange;
 import com.rbkmoney.fistful.magista.handler.identity.IdentityEventHandler;
 import com.rbkmoney.machinegun.eventsink.MachineEvent;
 import com.rbkmoney.sink.common.parser.impl.MachineEventParser;

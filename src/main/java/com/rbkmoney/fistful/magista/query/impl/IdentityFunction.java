@@ -1,10 +1,10 @@
 package com.rbkmoney.fistful.magista.query.impl;
 
-import com.rbkmoney.fistful.fistful_stat.StatIdentity;
-import com.rbkmoney.fistful.fistful_stat.StatResponse;
-import com.rbkmoney.fistful.fistful_stat.StatResponseData;
+import dev.vality.fistful.fistful_stat.StatIdentity;
+import dev.vality.fistful.fistful_stat.StatResponse;
+import dev.vality.fistful.fistful_stat.StatResponseData;
 import com.rbkmoney.fistful.magista.query.impl.parameters.IdentityParameters;
-import com.rbkmoney.magista.dsl.*;
+import dev.vality.magista.dsl.*;
 
 import java.util.List;
 import java.util.Map;

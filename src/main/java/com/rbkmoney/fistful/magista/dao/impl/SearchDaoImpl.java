@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.dao.impl;
 
-import com.rbkmoney.fistful.fistful_stat.*;
+import dev.vality.fistful.fistful_stat.*;
 import com.rbkmoney.fistful.magista.dao.SearchDao;
 import com.rbkmoney.fistful.magista.dao.impl.field.ConditionParameterSource;
 import com.rbkmoney.fistful.magista.dao.impl.mapper.*;

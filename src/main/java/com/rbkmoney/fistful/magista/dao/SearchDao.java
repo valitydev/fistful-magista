@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.dao;
 
-import com.rbkmoney.fistful.fistful_stat.*;
+import dev.vality.fistful.fistful_stat.*;
 import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.fistful.magista.query.impl.WalletFunction;
 import com.rbkmoney.fistful.magista.query.impl.WithdrawalFunction;

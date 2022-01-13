@@ -1,11 +1,11 @@
 package com.rbkmoney.fistful.magista.query.impl;
 
-import com.rbkmoney.fistful.fistful_stat.StatRequest;
-import com.rbkmoney.fistful.fistful_stat.StatResponse;
-import com.rbkmoney.magista.dsl.*;
-import com.rbkmoney.magista.dsl.builder.QueryBuilder;
-import com.rbkmoney.magista.dsl.parser.QueryParser;
-import com.rbkmoney.magista.dsl.parser.QueryPart;
+import dev.vality.fistful.fistful_stat.StatRequest;
+import dev.vality.fistful.fistful_stat.StatResponse;
+import dev.vality.magista.dsl.*;
+import dev.vality.magista.dsl.builder.QueryBuilder;
+import dev.vality.magista.dsl.parser.QueryParser;
+import dev.vality.magista.dsl.parser.QueryPart;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

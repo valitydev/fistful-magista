@@ -1,8 +1,8 @@
 package com.rbkmoney.fistful.magista.query.impl.validator;
 
 import com.rbkmoney.fistful.magista.query.impl.parameters.DepositAdjustmentParameters;
-import com.rbkmoney.magista.dsl.PagedBaseFunction;
-import com.rbkmoney.magista.dsl.QueryParameters;
+import dev.vality.magista.dsl.PagedBaseFunction;
+import dev.vality.magista.dsl.QueryParameters;
 
 import static com.rbkmoney.fistful.magista.query.impl.Parameters.STATUS_PARAM;
 
