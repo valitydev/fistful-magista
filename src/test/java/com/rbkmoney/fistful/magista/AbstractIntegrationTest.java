@@ -46,7 +46,7 @@ public abstract class AbstractIntegrationTest {
     protected int port;
 
     @ClassRule
-    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:9.6")
+    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:10")
             .withStartupTimeout(Duration.ofMinutes(5));
 
     @Before

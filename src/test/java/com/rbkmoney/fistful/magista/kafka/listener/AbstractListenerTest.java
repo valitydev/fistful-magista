@@ -49,7 +49,7 @@ public abstract class AbstractListenerTest {
 
     @ClassRule
     @SuppressWarnings("rawtypes")
-    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:9.6")
+    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:10")
             .withStartupTimeout(Duration.ofMinutes(5));
 
     @MockBean
