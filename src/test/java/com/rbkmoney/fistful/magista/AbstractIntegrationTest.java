@@ -8,7 +8,7 @@ import com.rbkmoney.fistful.magista.query.impl.QueryContextFactoryImpl;
 import com.rbkmoney.fistful.magista.query.impl.QueryProcessorImpl;
 import com.rbkmoney.fistful.magista.query.impl.builder.QueryBuilderImpl;
 import com.rbkmoney.fistful.magista.query.impl.parser.QueryParserImpl;
-import com.rbkmoney.magista.dsl.parser.JsonQueryParser;
+import dev.vality.magista.dsl.parser.JsonQueryParser;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -46,7 +46,7 @@ public abstract class AbstractIntegrationTest {
     protected int port;
 
     @ClassRule
-    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:9.6")
+    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:10")
             .withStartupTimeout(Duration.ofMinutes(5));
 
     @Before

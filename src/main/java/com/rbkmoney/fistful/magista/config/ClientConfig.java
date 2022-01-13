@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.config;
 
-import com.rbkmoney.fistful.identity.ManagementSrv;
+import dev.vality.fistful.identity.ManagementSrv;
 import com.rbkmoney.fistful.magista.config.properties.IdentityManagementProperties;
 import com.rbkmoney.woody.thrift.impl.http.THSpawnClientBuilder;
 import org.springframework.context.annotation.Bean;

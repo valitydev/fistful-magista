@@ -1,7 +1,7 @@
 package com.rbkmoney.fistful.magista.handler.deposit.revert;
 
-import com.rbkmoney.fistful.base.Cash;
-import com.rbkmoney.fistful.deposit.TimestampedChange;
+import dev.vality.fistful.base.Cash;
+import dev.vality.fistful.deposit.TimestampedChange;
 import com.rbkmoney.fistful.magista.dao.DepositDao;
 import com.rbkmoney.fistful.magista.dao.DepositRevertDao;
 import com.rbkmoney.fistful.magista.domain.enums.DepositRevertDataEventType;

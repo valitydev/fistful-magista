@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.kafka.listener;
 
-import com.rbkmoney.fistful.identity.*;
+import dev.vality.fistful.identity.*;
 import com.rbkmoney.fistful.magista.FistfulMagistaApplication;
 import com.rbkmoney.fistful.magista.dao.IdentityDao;
 import com.rbkmoney.fistful.magista.domain.tables.pojos.ChallengeData;

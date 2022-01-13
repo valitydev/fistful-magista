@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.endpoint;
 
-import com.rbkmoney.fistful.fistful_stat.FistfulStatisticsSrv;
+import dev.vality.fistful.fistful_stat.FistfulStatisticsSrv;
 import com.rbkmoney.woody.thrift.impl.http.THServiceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 

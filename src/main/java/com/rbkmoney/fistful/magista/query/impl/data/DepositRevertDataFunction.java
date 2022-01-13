@@ -1,12 +1,12 @@
 package com.rbkmoney.fistful.magista.query.impl.data;
 
-import com.rbkmoney.fistful.fistful_stat.StatDepositRevert;
+import dev.vality.fistful.fistful_stat.StatDepositRevert;
 import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.fistful.magista.query.impl.DepositRevertFunction;
 import com.rbkmoney.fistful.magista.query.impl.FunctionQueryContext;
 import com.rbkmoney.fistful.magista.query.impl.parameters.DepositRevertParameters;
 import com.rbkmoney.geck.common.util.TypeUtil;
-import com.rbkmoney.magista.dsl.*;
+import dev.vality.magista.dsl.*;
 
 import java.util.Collection;
 import java.util.Map;

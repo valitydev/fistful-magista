@@ -1,8 +1,8 @@
 package com.rbkmoney.fistful.magista.service;
 
-import com.rbkmoney.fistful.fistful_stat.*;
-import com.rbkmoney.magista.dsl.BadTokenException;
-import com.rbkmoney.magista.dsl.QueryProcessor;
+import dev.vality.fistful.fistful_stat.*;
+import dev.vality.magista.dsl.BadTokenException;
+import dev.vality.magista.dsl.QueryProcessor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.NotImplementedException;

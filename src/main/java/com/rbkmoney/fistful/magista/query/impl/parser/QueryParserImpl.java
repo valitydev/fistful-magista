@@ -2,10 +2,10 @@ package com.rbkmoney.fistful.magista.query.impl.parser;
 
 import com.rbkmoney.fistful.magista.query.impl.WalletFunction;
 import com.rbkmoney.fistful.magista.query.impl.WithdrawalFunction;
-import com.rbkmoney.magista.dsl.RootQuery;
-import com.rbkmoney.magista.dsl.parser.BaseQueryParser;
-import com.rbkmoney.magista.dsl.parser.QueryParser;
-import com.rbkmoney.magista.dsl.parser.QueryPart;
+import dev.vality.magista.dsl.RootQuery;
+import dev.vality.magista.dsl.parser.BaseQueryParser;
+import dev.vality.magista.dsl.parser.QueryParser;
+import dev.vality.magista.dsl.parser.QueryPart;
 
 import java.util.Arrays;
 import java.util.List;

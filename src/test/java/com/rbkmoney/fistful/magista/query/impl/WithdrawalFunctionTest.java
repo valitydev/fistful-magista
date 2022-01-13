@@ -1,16 +1,16 @@
 package com.rbkmoney.fistful.magista.query.impl;
 
-import com.rbkmoney.fistful.fistful_stat.StatRequest;
-import com.rbkmoney.fistful.fistful_stat.StatResponse;
-import com.rbkmoney.fistful.fistful_stat.StatWithdrawal;
+import dev.vality.fistful.fistful_stat.StatRequest;
+import dev.vality.fistful.fistful_stat.StatResponse;
+import dev.vality.fistful.fistful_stat.StatWithdrawal;
 import com.rbkmoney.fistful.magista.AbstractIntegrationTest;
 import com.rbkmoney.fistful.magista.dao.WithdrawalDao;
 import com.rbkmoney.fistful.magista.domain.tables.pojos.WithdrawalData;
 import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.geck.common.util.TypeUtil;
-import com.rbkmoney.magista.dsl.BadTokenException;
-import com.rbkmoney.magista.dsl.TokenUtil;
-import com.rbkmoney.magista.dsl.parser.QueryParserException;
+import dev.vality.magista.dsl.BadTokenException;
+import dev.vality.magista.dsl.TokenUtil;
+import dev.vality.magista.dsl.parser.QueryParserException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

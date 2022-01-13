@@ -1,9 +1,9 @@
 package com.rbkmoney.fistful.magista.kafka.listener;
 
-import com.rbkmoney.fistful.Blocking;
-import com.rbkmoney.fistful.base.EventRange;
-import com.rbkmoney.fistful.identity.IdentityState;
-import com.rbkmoney.fistful.identity.ManagementSrv;
+import dev.vality.fistful.Blocking;
+import dev.vality.fistful.base.EventRange;
+import dev.vality.fistful.identity.IdentityState;
+import dev.vality.fistful.identity.ManagementSrv;
 import com.rbkmoney.fistful.magista.kafka.serde.SinkEventDeserializer;
 import com.rbkmoney.kafka.common.serialization.ThriftSerializer;
 import com.rbkmoney.machinegun.eventsink.MachineEvent;
@@ -49,7 +49,7 @@ public abstract class AbstractListenerTest {
 
     @ClassRule
     @SuppressWarnings("rawtypes")
-    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:9.6")
+    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:10")
             .withStartupTimeout(Duration.ofMinutes(5));
 
     @MockBean

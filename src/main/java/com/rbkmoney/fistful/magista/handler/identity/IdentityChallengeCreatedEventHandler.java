@@ -1,8 +1,8 @@
 package com.rbkmoney.fistful.magista.handler.identity;
 
-import com.rbkmoney.fistful.identity.Challenge;
-import com.rbkmoney.fistful.identity.ChallengeChange;
-import com.rbkmoney.fistful.identity.TimestampedChange;
+import dev.vality.fistful.identity.Challenge;
+import dev.vality.fistful.identity.ChallengeChange;
+import dev.vality.fistful.identity.TimestampedChange;
 import com.rbkmoney.fistful.magista.dao.IdentityDao;
 import com.rbkmoney.fistful.magista.domain.enums.ChallengeEventType;
 import com.rbkmoney.fistful.magista.domain.enums.ChallengeStatus;

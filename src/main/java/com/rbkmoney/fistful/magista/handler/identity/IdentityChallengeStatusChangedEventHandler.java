@@ -1,7 +1,7 @@
 package com.rbkmoney.fistful.magista.handler.identity;
 
-import com.rbkmoney.fistful.identity.ChallengeCompleted;
-import com.rbkmoney.fistful.identity.TimestampedChange;
+import dev.vality.fistful.identity.ChallengeCompleted;
+import dev.vality.fistful.identity.TimestampedChange;
 import com.rbkmoney.fistful.magista.dao.IdentityDao;
 import com.rbkmoney.fistful.magista.domain.enums.ChallengeEventType;
 import com.rbkmoney.fistful.magista.domain.enums.ChallengeResolution;

@@ -1,13 +1,13 @@
 package com.rbkmoney.fistful.magista.handler.withdrawal;
 
-import com.rbkmoney.fistful.cashflow.FinalCashFlowPosting;
+import dev.vality.fistful.cashflow.FinalCashFlowPosting;
 import com.rbkmoney.fistful.magista.dao.WithdrawalDao;
 import com.rbkmoney.fistful.magista.domain.tables.pojos.WithdrawalData;
 import com.rbkmoney.fistful.magista.exception.DaoException;
 import com.rbkmoney.fistful.magista.exception.NotFoundException;
 import com.rbkmoney.fistful.magista.exception.StorageException;
 import com.rbkmoney.fistful.magista.util.CashFlowUtil;
-import com.rbkmoney.fistful.withdrawal.TimestampedChange;
+import dev.vality.fistful.withdrawal.TimestampedChange;
 import com.rbkmoney.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package com.rbkmoney.fistful.magista.dao.impl.mapper;
 
-import com.rbkmoney.fistful.fistful_stat.StatIdentity;
+import dev.vality.fistful.fistful_stat.StatIdentity;
 import com.rbkmoney.geck.common.util.TypeUtil;
 import org.springframework.jdbc.core.RowMapper;
 

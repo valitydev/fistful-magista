@@ -1,8 +1,8 @@
 package com.rbkmoney.fistful.magista.handler.deposit;
 
-import com.rbkmoney.fistful.base.Cash;
-import com.rbkmoney.fistful.deposit.Deposit;
-import com.rbkmoney.fistful.deposit.TimestampedChange;
+import dev.vality.fistful.base.Cash;
+import dev.vality.fistful.deposit.Deposit;
+import dev.vality.fistful.deposit.TimestampedChange;
 import com.rbkmoney.fistful.magista.dao.DepositDao;
 import com.rbkmoney.fistful.magista.dao.WalletDao;
 import com.rbkmoney.fistful.magista.domain.enums.DepositEventType;

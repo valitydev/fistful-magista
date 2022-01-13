@@ -1,15 +1,15 @@
 package com.rbkmoney.fistful.magista.kafka.listener;
 
-import com.rbkmoney.fistful.base.Cash;
-import com.rbkmoney.fistful.base.CurrencyRef;
-import com.rbkmoney.fistful.deposit.*;
-import com.rbkmoney.fistful.deposit.adjustment.Adjustment;
-import com.rbkmoney.fistful.deposit.adjustment.ChangesPlan;
-import com.rbkmoney.fistful.deposit.revert.CreatedChange;
-import com.rbkmoney.fistful.deposit.revert.Revert;
-import com.rbkmoney.fistful.deposit.revert.status.Pending;
-import com.rbkmoney.fistful.deposit.status.Status;
-import com.rbkmoney.fistful.deposit.status.Succeeded;
+import dev.vality.fistful.base.Cash;
+import dev.vality.fistful.base.CurrencyRef;
+import dev.vality.fistful.deposit.*;
+import dev.vality.fistful.deposit.adjustment.Adjustment;
+import dev.vality.fistful.deposit.adjustment.ChangesPlan;
+import dev.vality.fistful.deposit.revert.CreatedChange;
+import dev.vality.fistful.deposit.revert.Revert;
+import dev.vality.fistful.deposit.revert.status.Pending;
+import dev.vality.fistful.deposit.status.Status;
+import dev.vality.fistful.deposit.status.Succeeded;
 import com.rbkmoney.fistful.magista.FistfulMagistaApplication;
 import com.rbkmoney.fistful.magista.dao.DepositAdjustmentDao;
 import com.rbkmoney.fistful.magista.dao.DepositDao;
@@ -98,7 +98,7 @@ public class DepositEventListenerTest extends AbstractListenerTest {
         TimestampedChange change = new TimestampedChange()
                 .setOccuredAt("2016-03-22T06:12:27Z")
                 .setChange(Change.revert(
-                        new RevertChange("revert_id", com.rbkmoney.fistful.deposit.revert.Change.created(
+                        new RevertChange("revert_id", dev.vality.fistful.deposit.revert.Change.created(
                                 new CreatedChange(
                                         new Revert("revert_id", "wallet_id", "source_id",
                                                 getRevertPending(),
@@ -130,8 +130,8 @@ public class DepositEventListenerTest extends AbstractListenerTest {
         TimestampedChange change = new TimestampedChange()
                 .setOccuredAt("2016-03-22T06:12:27Z")
                 .setChange(Change.revert(
-                        new RevertChange("revert_id", com.rbkmoney.fistful.deposit.revert.Change.status_changed(
-                                new com.rbkmoney.fistful.deposit.revert.StatusChange(getRevertSucceeded())))));
+                        new RevertChange("revert_id", dev.vality.fistful.deposit.revert.Change.status_changed(
+                                new dev.vality.fistful.deposit.revert.StatusChange(getRevertSucceeded())))));
 
         SinkEvent sinkEvent = sinkEvent(
                 machineEvent(
@@ -158,10 +158,10 @@ public class DepositEventListenerTest extends AbstractListenerTest {
         TimestampedChange change = new TimestampedChange()
                 .setOccuredAt("2016-03-22T06:12:27Z")
                 .setChange(Change.adjustment(
-                        new AdjustmentChange("adjustment_id", com.rbkmoney.fistful.deposit.adjustment.Change.created(
-                                new com.rbkmoney.fistful.deposit.adjustment.CreatedChange(
-                                        new Adjustment("adjustment_id", com.rbkmoney.fistful.deposit.adjustment.Status
-                                                .pending(new com.rbkmoney.fistful.deposit.adjustment.Pending()),
+                        new AdjustmentChange("adjustment_id", dev.vality.fistful.deposit.adjustment.Change.created(
+                                new dev.vality.fistful.deposit.adjustment.CreatedChange(
+                                        new Adjustment("adjustment_id", dev.vality.fistful.deposit.adjustment.Status
+                                                .pending(new dev.vality.fistful.deposit.adjustment.Pending()),
                                                 new ChangesPlan(), "2016-03-22T06:12:27Z", 1L, 1L,
                                                 "2016-03-22T06:12:27Z"))))));
 
@@ -214,21 +214,21 @@ public class DepositEventListenerTest extends AbstractListenerTest {
         return Change.adjustment(
                 new AdjustmentChange(
                         "adjustment_id",
-                        com.rbkmoney.fistful.deposit.adjustment.Change.status_changed(
-                                new com.rbkmoney.fistful.deposit.adjustment.StatusChange(getAdjustmentSucceeded()))));
+                        dev.vality.fistful.deposit.adjustment.Change.status_changed(
+                                new dev.vality.fistful.deposit.adjustment.StatusChange(getAdjustmentSucceeded()))));
     }
 
-    private com.rbkmoney.fistful.deposit.adjustment.Status getAdjustmentSucceeded() {
-        return com.rbkmoney.fistful.deposit.adjustment.Status
-                .succeeded(new com.rbkmoney.fistful.deposit.adjustment.Succeeded());
+    private dev.vality.fistful.deposit.adjustment.Status getAdjustmentSucceeded() {
+        return dev.vality.fistful.deposit.adjustment.Status
+                .succeeded(new dev.vality.fistful.deposit.adjustment.Succeeded());
     }
 
-    private com.rbkmoney.fistful.deposit.revert.status.Status getRevertPending() {
-        return com.rbkmoney.fistful.deposit.revert.status.Status.pending(new Pending());
+    private dev.vality.fistful.deposit.revert.status.Status getRevertPending() {
+        return dev.vality.fistful.deposit.revert.status.Status.pending(new Pending());
     }
 
-    private com.rbkmoney.fistful.deposit.revert.status.Status getRevertSucceeded() {
-        return com.rbkmoney.fistful.deposit.revert.status.Status.succeeded(
-                new com.rbkmoney.fistful.deposit.revert.status.Succeeded());
+    private dev.vality.fistful.deposit.revert.status.Status getRevertSucceeded() {
+        return dev.vality.fistful.deposit.revert.status.Status.succeeded(
+                new dev.vality.fistful.deposit.revert.status.Succeeded());
     }
 }

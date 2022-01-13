@@ -1,8 +1,8 @@
 package com.rbkmoney.fistful.magista.dao.impl.mapper;
 
-import com.rbkmoney.fistful.base.Cash;
-import com.rbkmoney.fistful.base.CurrencyRef;
-import com.rbkmoney.fistful.fistful_stat.*;
+import dev.vality.fistful.base.Cash;
+import dev.vality.fistful.base.CurrencyRef;
+import dev.vality.fistful.fistful_stat.*;
 import com.rbkmoney.fistful.magista.domain.enums.DepositAdjustmentDataStatus;
 import com.rbkmoney.fistful.magista.domain.enums.DepositStatus;
 import com.rbkmoney.fistful.magista.exception.NotFoundException;
