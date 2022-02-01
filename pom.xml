@@ -282,9 +282,9 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>com.rbkmoney.maven.plugins</groupId>
+                <groupId>dev.vality.maven.plugins</groupId>
                 <artifactId>pg-embedded-plugin</artifactId>
-                <version>1.8</version>
+                <version>1.0.0</version>
                 <configuration>
                     <port>${db.port}</port>
                     <dbName>${db.name}</dbName>
