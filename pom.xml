@@ -284,7 +284,7 @@
             <plugin>
                 <groupId>dev.vality.maven.plugins</groupId>
                 <artifactId>pg-embedded-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
                 <configuration>
                     <port>${db.port}</port>
                     <dbName>${db.name}</dbName>
