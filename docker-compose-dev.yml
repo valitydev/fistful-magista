@@ -13,7 +13,7 @@ services:
   #      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/fistfulmst
 
   postgresql:
-    image: postgres:10
+    image: postgres:14
     #    networks:
     #      - fistfulmstnet
     #    volumes:
