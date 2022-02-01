@@ -7,7 +7,7 @@
     <parent>
         <groupId>dev.vality</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.7</version>
     </parent>
 
     <artifactId>fistful-magista</artifactId>
@@ -24,9 +24,9 @@
         <exposed.ports>${server.port} ${management.port}</exposed.ports>
         <dockerfile.registry>${env.REGISTRY}</dockerfile.registry>
         <fistful-proto.version>1.133-c484877</fistful-proto.version>
-        <eventstock.version>1.2.12</eventstock.version>
-        <machinegun-proto.version>1.19-f77367a</machinegun-proto.version>
-        <sink-common-lib.version>0.0.8</sink-common-lib.version>
+        <machinegun-proto.version>1.21-e4784ab</machinegun-proto.version>
+        <sink-common-lib.version>0.0.1</sink-common-lib.version>
+        <shared-resources.version>0.3.8</shared-resources.version>
         <testcontainers.version>1.16.2</testcontainers.version>
         <!---->
         <db.name>fistfulmst</db.name>
@@ -38,15 +38,11 @@
     </properties>
 
     <dependencies>
-        <!--RBK libs-->
-        <dependency>
-            <groupId>com.rbkmoney</groupId>
-            <artifactId>eventstock-client-fistful</artifactId>
-            <version>${eventstock.version}</version>
-        </dependency>
+        <!--vality libs-->
         <dependency>
             <groupId>com.rbkmoney</groupId>
             <artifactId>shared-resources</artifactId>
+            <version>${shared-resources.version}</version>
         </dependency>
         <dependency>
             <groupId>dev.vality</groupId>
@@ -59,24 +55,21 @@
             <version>1.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.rbkmoney</groupId>
-            <artifactId>custom-metrics-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.rbkmoney</groupId>
+            <groupId>dev.vality</groupId>
             <artifactId>kafka-common-lib</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.rbkmoney</groupId>
-            <artifactId>custom-actuator-endpoints</artifactId>
+            <groupId>dev.vality.geck</groupId>
+            <artifactId>common</artifactId>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.rbkmoney</groupId>
+            <groupId>dev.vality</groupId>
             <artifactId>machinegun-proto</artifactId>
             <version>${machinegun-proto.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.rbkmoney</groupId>
+            <groupId>dev.vality</groupId>
             <artifactId>sink-common-lib</artifactId>
             <version>${sink-common-lib.version}</version>
         </dependency>
@@ -110,6 +103,14 @@
         </dependency>
 
         <!--third party-->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -267,7 +268,7 @@
                             <inputSchema>${db.schema}</inputSchema>
                         </database>
                         <target>
-                            <packageName>com.rbkmoney.fistful.magista.domain</packageName>
+                            <packageName>dev.vality.fistful.magista.domain</packageName>
                             <directory>target/generated-sources/jooq</directory>
                         </target>
                     </generator>
