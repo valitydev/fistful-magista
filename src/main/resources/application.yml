@@ -46,7 +46,7 @@ spring:
       enabled: always
 
 kafka:
-  bootstrap-servers: dev-kafka-mirror.bst1.rbkmoney.net:9092
+  bootstrap-servers: localhost:9092
   consumer:
     group-id: aromanov-fistful-magista-3
     concurrency: 7
