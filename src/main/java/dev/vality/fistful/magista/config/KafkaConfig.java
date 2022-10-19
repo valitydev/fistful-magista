@@ -25,9 +25,6 @@ import static org.apache.kafka.clients.consumer.OffsetResetStrategy.EARLIEST;
 @RequiredArgsConstructor
 public class KafkaConfig {
 
-    @Value("${kafka.consumer.concurrency}")
-    private int consumerConcurrency;
-
     private final KafkaProperties kafkaProperties;
 
     @Bean
@@ -58,7 +55,7 @@ public class KafkaConfig {
                 new DefaultKafkaConsumerFactory<>(consumerConfig());
 
         factory.setConsumerFactory(consumerFactory);
-        factory.setConcurrency(consumerConcurrency);
+        factory.setConcurrency(kafkaProperties.getListener().getConcurrency());
         factory.setCommonErrorHandler(kafkaErrorHandler());
         factory.setBatchListener(true);
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
