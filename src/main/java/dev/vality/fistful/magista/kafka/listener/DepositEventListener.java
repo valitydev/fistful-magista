@@ -20,8 +20,6 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class DepositEventListener {
 
-    @Value("${kafka.retry-delay-ms}")
-    private int retryDelayMs;
 
     private final DepositEventService depositEventService;
 
