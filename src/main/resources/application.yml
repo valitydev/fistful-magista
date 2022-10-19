@@ -44,25 +44,19 @@ spring:
   output:
     ansi:
       enabled: always
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: aromanov-fistful-magista-3
+      enable-auto-commit: false
+      max-poll-records: 100
+      properties:
+        max.poll.interval.ms: 60000
+        session.timeout.ms: 60000
 
 kafka:
-  bootstrap-servers: localhost:9092
   consumer:
-    group-id: aromanov-fistful-magista-3
     concurrency: 7
-  max-poll-records: 100
-  max-poll-interval-ms: 60000
-  max-session-timeout-ms: 60000
-  retry-delay-ms: 1000
-  ssl:
-    enabled: false
-    key-store-type: changeit
-    key-store-location: changeit
-    key-store-password: changeit
-    key-password: changeit
-    trust-store-type: changeit
-    trust-store-location: changeit
-    trust-store-password: changeit
   topic:
     deposit:
       name: mg-events-ff-deposit
