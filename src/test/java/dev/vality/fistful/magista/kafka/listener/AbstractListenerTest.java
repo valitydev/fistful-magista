@@ -68,7 +68,7 @@ public abstract class AbstractListenerTest {
         @Override
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
             TestPropertyValues.of(
-                    "kafka.bootstrap-servers=" + kafka.getBootstrapServers())
+                    "spring.kafka.bootstrap-servers=" + kafka.getBootstrapServers())
                     .applyTo(configurableApplicationContext.getEnvironment());
             initTopic("mg-events-ff-deposit");
             initTopic("mg-events-ff-wallet");
