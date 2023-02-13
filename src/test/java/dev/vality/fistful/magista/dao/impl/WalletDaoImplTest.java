@@ -45,6 +45,7 @@ public class WalletDaoImplTest extends AbstractIntegrationTest {
         WalletData walletDataGet = walletDao.get(this.walletData.getWalletId());
         String modifiedWalletName = "kektus";
         walletDataGet.setWalletName(modifiedWalletName);
+        walletDataGet.setEventId(walletDataGet.getEventId() + 1);
         walletDao.save(walletDataGet);
         assertEquals(walletDao.get(this.walletData.getWalletId()).getWalletName(), modifiedWalletName);
     }
