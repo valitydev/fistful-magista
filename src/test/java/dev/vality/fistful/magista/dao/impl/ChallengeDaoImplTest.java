@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ChallengeDaoImplTest extends AbstractIntegrationTest {
 
@@ -31,6 +31,15 @@ public class ChallengeDaoImplTest extends AbstractIntegrationTest {
                 this.challengeData.getIdentityId(),
                 this.challengeData.getChallengeId());
         assertEquals(challengeData.getChallengeClassId(), challengeDataGet.getChallengeClassId());
+    }
+
+    @Test
+    public void testDuplication() throws DaoException {
+        Long eventId = challengeData.getEventId();
+        challengeData.setEventId(eventId - 1);
+        assertNull(identityDao.save(challengeData));
+        challengeData.setEventId(eventId + 1);
+        assertNotNull(identityDao.save(challengeData));
     }
 
 }

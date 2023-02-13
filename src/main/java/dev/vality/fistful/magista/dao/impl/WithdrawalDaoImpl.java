@@ -36,7 +36,7 @@ public class WithdrawalDaoImpl extends AbstractGenericDao implements WithdrawalD
     }
 
     @Override
-    public long save(WithdrawalData withdrawal) throws DaoException {
+    public Long save(WithdrawalData withdrawal) throws DaoException {
         WithdrawalDataRecord withdrawalRecord = getDslContext().newRecord(WITHDRAWAL_DATA, withdrawal);
 
         Query query = getDslContext().insertInto(WITHDRAWAL_DATA)
@@ -44,11 +44,12 @@ public class WithdrawalDaoImpl extends AbstractGenericDao implements WithdrawalD
                 .onConflict(WITHDRAWAL_DATA.WITHDRAWAL_ID)
                 .doUpdate()
                 .set(withdrawalRecord)
+                .where(WITHDRAWAL_DATA.EVENT_ID.lessThan(withdrawal.getEventId()))
                 .returning(WITHDRAWAL_DATA.ID);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        executeOne(query, keyHolder);
-        return keyHolder.getKey().longValue();
+        execute(query, keyHolder);
+        return keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
     }
 
     @Override

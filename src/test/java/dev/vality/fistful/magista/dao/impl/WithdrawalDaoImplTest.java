@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class WithdrawalDaoImplTest extends AbstractIntegrationTest {
 
@@ -38,6 +38,16 @@ public class WithdrawalDaoImplTest extends AbstractIntegrationTest {
     public void testGetWithdrawalData() throws DaoException {
         WithdrawalData withdrawalDataGet = withdrawalDao.get(this.withdrawalData.getWithdrawalId());
         assertEquals(withdrawalData.getCurrencyCode(), withdrawalDataGet.getCurrencyCode());
+    }
+
+
+    @Test
+    public void testDuplication() throws DaoException {
+        Long eventId = withdrawalData.getEventId();
+        withdrawalData.setEventId(eventId - 1);
+        assertNull(withdrawalDao.save(withdrawalData));
+        withdrawalData.setEventId(eventId + 1);
+        assertNotNull(withdrawalDao.save(withdrawalData));
     }
 
 }

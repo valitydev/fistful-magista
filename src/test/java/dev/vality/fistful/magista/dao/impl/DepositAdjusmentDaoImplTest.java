@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
 
@@ -44,6 +44,20 @@ public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
         deposit.setId(id);
 
         assertEquals(deposit, depositAdjustmentDao.get(deposit.getDepositId(), deposit.getAdjustmentId()));
+    }
+
+
+    @Test
+    public void testDuplication() throws DaoException {
+        DepositAdjustmentData deposit = random(DepositAdjustmentData.class);
+        deposit.setId(null);
+        depositAdjustmentDao.save(deposit);
+
+        Long eventId = deposit.getEventId();
+        deposit.setEventId(eventId - 1);
+        assertTrue(depositAdjustmentDao.save(deposit).isEmpty());
+        deposit.setEventId(eventId + 1);
+        assertTrue(depositAdjustmentDao.save(deposit).isPresent());
     }
 
     @After

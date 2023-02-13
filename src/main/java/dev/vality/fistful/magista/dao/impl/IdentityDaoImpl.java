@@ -54,7 +54,7 @@ public class IdentityDaoImpl extends AbstractGenericDao implements IdentityDao {
     }
 
     @Override
-    public long save(IdentityData identity) throws DaoException {
+    public Long save(IdentityData identity) throws DaoException {
         IdentityDataRecord identityRecord = getDslContext().newRecord(IDENTITY_DATA, identity);
 
         Query query = getDslContext().insertInto(IDENTITY_DATA)
@@ -62,15 +62,16 @@ public class IdentityDaoImpl extends AbstractGenericDao implements IdentityDao {
                 .onConflict(IDENTITY_DATA.IDENTITY_ID)
                 .doUpdate()
                 .set(identityRecord)
+                .where(IDENTITY_DATA.EVENT_ID.lessThan(identity.getEventId()))
                 .returning(IDENTITY_DATA.ID);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        executeOne(query, keyHolder);
-        return keyHolder.getKey().longValue();
+        execute(query, keyHolder);
+        return keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
     }
 
     @Override
-    public long save(ChallengeData challenge) throws DaoException {
+    public Long save(ChallengeData challenge) throws DaoException {
         ChallengeDataRecord challengeRecord = getDslContext().newRecord(CHALLENGE_DATA, challenge);
 
         Query query = getDslContext().insertInto(CHALLENGE_DATA)
@@ -78,11 +79,12 @@ public class IdentityDaoImpl extends AbstractGenericDao implements IdentityDao {
                 .onConflict(CHALLENGE_DATA.IDENTITY_ID, CHALLENGE_DATA.CHALLENGE_ID)
                 .doUpdate()
                 .set(challengeRecord)
+                .where(CHALLENGE_DATA.EVENT_ID.lessThan(challenge.getEventId()))
                 .returning(CHALLENGE_DATA.ID);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        executeOne(query, keyHolder);
-        return keyHolder.getKey().longValue();
+        execute(query, keyHolder);
+        return keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
     }
 
     @Override

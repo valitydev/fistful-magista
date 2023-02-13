@@ -4,6 +4,7 @@ import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.DepositRevertDao;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataEventType;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
+import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.exception.DaoException;
 import org.junit.After;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
 
@@ -44,6 +45,18 @@ public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
         deposit.setId(id);
 
         assertEquals(deposit, depositRevertDao.get(deposit.getDepositId(), deposit.getRevertId()));
+    }
+
+    @Test
+    public void testDuplication() throws DaoException {
+        DepositRevertData deposit = random(DepositRevertData.class);
+        deposit.setId(null);
+        depositRevertDao.save(deposit);
+        Long eventId = deposit.getEventId();
+        deposit.setEventId(eventId - 1);
+        assertTrue(depositRevertDao.save(deposit).isEmpty());
+        deposit.setEventId(eventId + 1);
+        assertTrue(depositRevertDao.save(deposit).isPresent());
     }
 
     @After

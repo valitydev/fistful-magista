@@ -37,7 +37,7 @@ public class WalletDaoImpl extends AbstractGenericDao implements WalletDao {
     }
 
     @Override
-    public long save(WalletData wallet) throws DaoException {
+    public Long save(WalletData wallet) throws DaoException {
         WalletDataRecord walletRecord = getDslContext().newRecord(WALLET_DATA, wallet);
 
         Query query = getDslContext().insertInto(WALLET_DATA)
@@ -45,11 +45,12 @@ public class WalletDaoImpl extends AbstractGenericDao implements WalletDao {
                 .onConflict(WALLET_DATA.WALLET_ID)
                 .doUpdate()
                 .set(walletRecord)
+                .where(WALLET_DATA.EVENT_ID.lessThan(wallet.getEventId()))
                 .returning(WALLET_DATA.ID);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        executeOne(query, keyHolder);
-        return keyHolder.getKey().longValue();
+        execute(query, keyHolder);
+        return keyHolder.getKey() != null ? keyHolder.getKey().longValue() : null;
     }
 
     @Override
