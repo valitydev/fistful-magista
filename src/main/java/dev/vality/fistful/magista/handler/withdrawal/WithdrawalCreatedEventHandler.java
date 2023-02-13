@@ -59,9 +59,9 @@ public class WithdrawalCreatedEventHandler implements WithdrawalEventHandler {
             withdrawalData.setEventType(WithdrawalEventType.WITHDRAWAL_CREATED);
             withdrawalData.setWithdrawalStatus(WithdrawalStatus.pending);
 
-            withdrawalDao.save(withdrawalData);
-            log.info("WithdrawalCreated has been saved: eventId={}, withdrawalId={}", event.getEventId(),
-                    event.getSourceId());
+            Long id = withdrawalDao.save(withdrawalData);
+            log.info("WithdrawalCreated has {} been saved: eventId={}, withdrawalId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

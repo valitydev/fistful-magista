@@ -44,11 +44,11 @@ public class WalletCreatedEventHandler implements WalletEventHandler {
         walletData.setWalletId(event.getSourceId());
 
         try {
-            walletDao.save(walletData);
+            Long id = walletDao.save(walletData);
+            log.info("WalletCreated has {} been saved: eventId={}, walletId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }
-
-        log.info("WalletCreated has been saved: eventId={}, walletId={}", event.getEventId(), event.getSourceId());
     }
 }

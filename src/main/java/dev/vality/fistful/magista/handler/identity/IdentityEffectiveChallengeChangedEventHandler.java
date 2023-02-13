@@ -38,9 +38,11 @@ public class IdentityEffectiveChallengeChangedEventHandler implements IdentityEv
             identityData.setEventType(IdentityEventType.IDENTITY_EFFECTIVE_CHALLENGE_CHANGED);
             identityData.setIdentityEffectiveChallengeId(change.getChange().getEffectiveChallengeChanged());
 
-            identityDao.save(identityData);
+            Long id = identityDao.save(identityData);
 
-            log.info("IdentityEffectiveChallengeChanged has been saved: eventId={}, identityId={}", event.getEventId(),
+            log.info("IdentityEffectiveChallengeChanged has {} been saved: eventId={}, identityId={}",
+                    id == null ? "NOT" : "",
+                    event.getEventId(),
                     event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);

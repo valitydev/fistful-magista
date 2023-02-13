@@ -60,9 +60,10 @@ public class DepositCreatedHandler implements DepositEventHandler {
             depositData.setPartyId(walletData.getPartyId());
             depositData.setCreatedAt(eventOccuredAt);
 
-            depositDao.save(depositData);
+            Long id = depositDao.save(depositData);
 
-            log.info("Deposit has been saved: eventId={}, depositId={}", eventId, depositId);
+            log.info("Deposit has {} been saved: eventId={}, depositId={}",
+                    id == null ? "NOT" : "", eventId, depositId);
         } catch (DaoException e) {
             throw new StorageException(e);
         }
