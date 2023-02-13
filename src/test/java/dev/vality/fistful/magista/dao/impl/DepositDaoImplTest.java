@@ -25,6 +25,7 @@ public class DepositDaoImplTest extends AbstractIntegrationTest {
         DepositData deposit = random(DepositData.class);
         deposit.setId(null);
         depositDao.save(deposit);
+        deposit.setEventId(deposit.getEventId() + 1);
         Long id = depositDao.save(deposit);
         deposit.setId(id);
         assertEquals(deposit, depositDao.get(deposit.getDepositId()));
