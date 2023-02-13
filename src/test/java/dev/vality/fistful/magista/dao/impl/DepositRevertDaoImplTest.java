@@ -31,6 +31,7 @@ public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
         deposit.setEventType(DepositRevertDataEventType.DEPOSIT_REVERT_CREATED);
 
         depositRevertDao.save(deposit);
+        deposit.setEventId(deposit.getEventId() + 1);
 
         Long id = depositRevertDao.save(deposit).get();
         deposit.setId(id);
@@ -41,6 +42,7 @@ public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
         deposit.setEventType(DepositRevertDataEventType.DEPOSIT_REVERT_STATUS_CHANGED);
         deposit.setStatus(DepositRevertDataStatus.succeeded);
 
+        deposit.setEventId(deposit.getEventId() + 1);
         id = depositRevertDao.save(deposit).get();
         deposit.setId(id);
 

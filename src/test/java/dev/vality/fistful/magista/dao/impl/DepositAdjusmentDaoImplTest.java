@@ -30,6 +30,7 @@ public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
         deposit.setEventType(DepositAdjustmentDataEventType.DEPOSIT_ADJUSTMENT_CREATED);
 
         depositAdjustmentDao.save(deposit);
+        deposit.setEventId(deposit.getEventId() + 1);
 
         Long id = depositAdjustmentDao.save(deposit).get();
         deposit.setId(id);
@@ -39,6 +40,7 @@ public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
         deposit.setId(null);
         deposit.setEventType(DepositAdjustmentDataEventType.DEPOSIT_ADJUSTMENT_STATUS_CHANGED);
         deposit.setStatus(DepositAdjustmentDataStatus.succeeded);
+        deposit.setEventId(deposit.getEventId() + 1);
 
         id = depositAdjustmentDao.save(deposit).get();
         deposit.setId(id);
