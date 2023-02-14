@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class WalletDaoImplTest extends AbstractIntegrationTest {
 
@@ -45,7 +45,17 @@ public class WalletDaoImplTest extends AbstractIntegrationTest {
         WalletData walletDataGet = walletDao.get(this.walletData.getWalletId());
         String modifiedWalletName = "kektus";
         walletDataGet.setWalletName(modifiedWalletName);
+        walletDataGet.setEventId(walletDataGet.getEventId() + 1);
         walletDao.save(walletDataGet);
         assertEquals(walletDao.get(this.walletData.getWalletId()).getWalletName(), modifiedWalletName);
+    }
+
+    @Test
+    public void testDuplication() throws DaoException {
+        Long eventId = walletData.getEventId();
+        walletData.setEventId(eventId - 1);
+        assertNull(walletDao.save(walletData));
+        walletData.setEventId(eventId + 1);
+        assertNotNull(walletDao.save(walletData));
     }
 }

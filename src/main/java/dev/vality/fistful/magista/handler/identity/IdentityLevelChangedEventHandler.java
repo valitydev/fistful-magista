@@ -38,10 +38,10 @@ public class IdentityLevelChangedEventHandler implements IdentityEventHandler {
             identityData.setEventType(IdentityEventType.IDENTITY_LEVEL_CHANGED);
             identityData.setIdentityLevelId(change.getChange().getLevelChanged());
 
-            identityDao.save(identityData);
+            Long id = identityDao.save(identityData);
 
-            log.info("IdentityLevelChanged has been saved, eventId={}, identityId={}", event.getEventId(),
-                    event.getSourceId());
+            log.info("IdentityLevelChanged has {} been saved, eventId={}, identityId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

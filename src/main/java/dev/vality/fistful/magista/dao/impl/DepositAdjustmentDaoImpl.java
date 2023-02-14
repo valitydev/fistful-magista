@@ -36,6 +36,7 @@ public class DepositAdjustmentDaoImpl extends AbstractGenericDao implements Depo
                 .onConflict(DEPOSIT_ADJUSTMENT_DATA.DEPOSIT_ID, DEPOSIT_ADJUSTMENT_DATA.ADJUSTMENT_ID)
                 .doUpdate()
                 .set(record)
+                .where(DEPOSIT_ADJUSTMENT_DATA.EVENT_ID.lessThan(depositAdjustmentData.getEventId()))
                 .returning(DEPOSIT_ADJUSTMENT_DATA.ID);
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();

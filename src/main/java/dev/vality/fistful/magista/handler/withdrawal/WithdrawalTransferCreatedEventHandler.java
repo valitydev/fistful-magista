@@ -48,10 +48,10 @@ public class WithdrawalTransferCreatedEventHandler implements WithdrawalEventHan
             WithdrawalData withdrawalData = getWithdrawalData(event);
             withdrawalData.setFee(CashFlowUtil.getFistfulFee(postings));
 
-            withdrawalDao.save(withdrawalData);
+            Long id = withdrawalDao.save(withdrawalData);
 
-            log.info("WithdrawalTransferCreated has been saved: eventId={}, withdrawalId={}", event.getEventId(),
-                    event.getSourceId());
+            log.info("WithdrawalTransferCreated has {} been saved: eventId={}, withdrawalId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

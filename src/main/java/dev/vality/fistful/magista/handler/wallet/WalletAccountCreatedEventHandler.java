@@ -59,9 +59,9 @@ public class WalletAccountCreatedEventHandler implements WalletEventHandler {
             walletData.setPartyId(identityData.getPartyId());
             walletData.setIdentityId(identityData.getIdentityId());
 
-            walletDao.save(walletData);
-            log.info("WalletAccountCreated has been saved: eventId={}, walletId={}", event.getEventId(),
-                    event.getSourceId());
+            Long id = walletDao.save(walletData);
+            log.info("WalletAccountCreated has {} been saved: eventId={}, walletId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

@@ -64,10 +64,10 @@ public class IdentityCreatedEventHandler implements IdentityEventHandler {
             identityData.setBlocking(TypeUtil.toEnumField(blocking.name(), BlockingType.class));
             identityData.setExternalId(externalId);
 
-            identityDao.save(identityData);
+            Long id = identityDao.save(identityData);
 
-            log.info("IdentityCreated has been saved: eventId={}, identityId={}", event.getEventId(),
-                    event.getSourceId());
+            log.info("IdentityCreated has {} been saved: eventId={}, identityId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

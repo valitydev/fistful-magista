@@ -59,10 +59,10 @@ public class DepositTransferCreatedHandler implements DepositEventHandler {
             depositData.setFee(CashFlowUtil.getFistfulFee(postings));
             depositData.setProviderFee(CashFlowUtil.getFistfulProviderFee(postings));
 
-            depositDao.save(depositData);
+            Long id = depositDao.save(depositData);
 
-            log.info("Deposit transfer created has been saved: eventId={}, depositId={}, transferChange={}",
-                    eventId, depositId, change.getChange().getTransfer());
+            log.info("Deposit transfer created has {} been saved: eventId={}, depositId={}, transferChange={}",
+                    id == null ? "NOT" : "", eventId, depositId, change.getChange().getTransfer());
         } catch (DaoException e) {
             throw new StorageException(e);
         }

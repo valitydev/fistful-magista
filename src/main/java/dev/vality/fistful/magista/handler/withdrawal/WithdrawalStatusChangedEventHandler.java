@@ -43,10 +43,10 @@ public class WithdrawalStatusChangedEventHandler implements WithdrawalEventHandl
             Status status = change.getChange().getStatusChanged().getStatus();
             withdrawalData.setWithdrawalStatus(TBaseUtil.unionFieldToEnum(status, WithdrawalStatus.class));
 
-            withdrawalDao.save(withdrawalData);
+            Long id = withdrawalDao.save(withdrawalData);
 
-            log.info("WithdrawalStatusChanged has been saved: eventId={}, withdrawalId={}", event.getEventId(),
-                    event.getSourceId());
+            log.info("WithdrawalStatusChanged has {} been saved: eventId={}, withdrawalId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

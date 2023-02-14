@@ -55,10 +55,10 @@ public class IdentityChallengeStatusChangedEventHandler implements IdentityEvent
                 }
             }
 
-            identityDao.save(challengeData);
+            Long id = identityDao.save(challengeData);
 
-            log.info("IdentityChallengeStatusChanged has been saved, eventId={}, identityId={}", event.getEventId(),
-                    event.getSourceId());
+            log.info("IdentityChallengeStatusChanged has {} been saved, eventId={}, identityId={}",
+                    id == null ? "NOT" : "", event.getEventId(), event.getSourceId());
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }

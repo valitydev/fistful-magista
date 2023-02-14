@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class IdentityDaoImplTest extends AbstractIntegrationTest {
 
@@ -38,6 +38,15 @@ public class IdentityDaoImplTest extends AbstractIntegrationTest {
     public void testGetIdentityData() throws DaoException {
         IdentityData challengeDataGet = identityDao.get(this.identityData.getIdentityId());
         assertEquals(identityData.getIdentityProviderId(), challengeDataGet.getIdentityProviderId());
+    }
+
+    @Test
+    public void testDuplication() throws DaoException {
+        Long eventId = identityData.getEventId();
+        identityData.setEventId(eventId - 1);
+        assertNull(identityDao.save(identityData));
+        identityData.setEventId(eventId + 1);
+        assertNotNull(identityDao.save(identityData));
     }
 
 }

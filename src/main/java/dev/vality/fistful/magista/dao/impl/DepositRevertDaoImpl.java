@@ -35,6 +35,7 @@ public class DepositRevertDaoImpl extends AbstractGenericDao implements DepositR
                 .onConflict(DEPOSIT_REVERT_DATA.DEPOSIT_ID, DEPOSIT_REVERT_DATA.REVERT_ID)
                 .doUpdate()
                 .set(record)
+                .where(DEPOSIT_REVERT_DATA.EVENT_ID.lessThan(depositRevertData.getEventId()))
                 .returning(DEPOSIT_REVERT_DATA.ID);
 
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
