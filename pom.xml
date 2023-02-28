@@ -30,7 +30,7 @@
         <shared-resources.version>1.0.1</shared-resources.version>
         <!---->
         <db.name>fistfulmst</db.name>
-        <db.port>5433</db.port>
+        <db.port>5432</db.port>
         <db.url>jdbc:postgresql://localhost:${db.port}/${db.name}</db.url>
         <db.user>postgres</db.user>
         <db.password>postgres</db.password>
