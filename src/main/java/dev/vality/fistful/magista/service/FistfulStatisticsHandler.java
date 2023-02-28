@@ -32,6 +32,11 @@ public class FistfulStatisticsHandler implements FistfulStatisticsSrv.Iface {
     }
 
     @Override
+    public StatResponse getSources(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
+        return getStatResponse(statRequest);
+    }
+
+    @Override
     public StatResponse getDestinations(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
         throw new NotImplementedException("Method 'getDestinations' is not supposed to be called for this handler!");
     }
