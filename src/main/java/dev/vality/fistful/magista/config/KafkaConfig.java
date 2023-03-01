@@ -47,6 +47,11 @@ public class KafkaConfig {
         return listenerContainerFactory();
     }
 
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, MachineEvent> sourceEventListenerContainerFactory() {
+        return listenerContainerFactory();
+    }
+
     private ConcurrentKafkaListenerContainerFactory<String, MachineEvent> listenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, MachineEvent> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();

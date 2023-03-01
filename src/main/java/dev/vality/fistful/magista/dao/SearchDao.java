@@ -2,6 +2,7 @@ package dev.vality.fistful.magista.dao;
 
 import dev.vality.fistful.fistful_stat.*;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.query.impl.SourceFunction;
 import dev.vality.fistful.magista.query.impl.WalletFunction;
 import dev.vality.fistful.magista.query.impl.WithdrawalFunction;
 import dev.vality.fistful.magista.query.impl.parameters.DepositAdjustmentParameters;
@@ -56,6 +57,14 @@ public interface SearchDao {
 
     Collection<Map.Entry<Long, StatDepositAdjustment>> getDepositAdjustments(
             DepositAdjustmentParameters parameters,
+            LocalDateTime fromTime,
+            LocalDateTime toTime,
+            Long fromId,
+            int limit
+    ) throws DaoException;
+
+    Collection<Map.Entry<Long, StatSource>> getSources(
+            SourceFunction.SourceParameters parameters,
             LocalDateTime fromTime,
             LocalDateTime toTime,
             Long fromId,

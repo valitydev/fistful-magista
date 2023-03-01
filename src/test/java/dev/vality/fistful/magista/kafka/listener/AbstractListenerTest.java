@@ -74,6 +74,7 @@ public abstract class AbstractListenerTest {
             initTopic("mg-events-ff-wallet");
             initTopic("mg-events-ff-withdrawal");
             initTopic("mg-events-ff-identity");
+            initTopic("mg-events-ff-source");
             kafka.start();
         }
 
@@ -103,6 +104,7 @@ public abstract class AbstractListenerTest {
                     "kafka.topic.deposit.listener.enabled=true",
                     "kafka.topic.withdrawal.listener.enabled=true",
                     "kafka.topic.wallet.listener.enabled=true",
+                    "kafka.topic.source.listener.enabled=true",
                     "kafka.topic.identity.listener.enabled=true")
                     .and(configurableApplicationContext.getEnvironment().getActiveProfiles())
                     .applyTo(configurableApplicationContext);
