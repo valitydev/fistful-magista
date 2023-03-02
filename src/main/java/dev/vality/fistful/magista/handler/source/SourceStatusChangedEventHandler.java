@@ -32,7 +32,6 @@ public class SourceStatusChangedEventHandler implements SourceEventHandler {
     @Override
     public void handle(TimestampedChange change, MachineEvent event) {
         try {
-            Status status = change.getChange().getStatus().getStatus();
             log.info("Trying to handle SourceStatusChanged: eventId={}, sourceId={}", event.getEventId(),
                     event.getSourceId());
 
@@ -40,6 +39,7 @@ public class SourceStatusChangedEventHandler implements SourceEventHandler {
             sourceData.setEventId(event.getEventId());
             sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
             sourceData.setEventOccuredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
+            Status status = change.getChange().getStatus().getStatus();
             sourceData.setStatus(TBaseUtil.unionFieldToEnum(status, SourceStatus.class));
             Long id = sourceDao.save(sourceData);
 
