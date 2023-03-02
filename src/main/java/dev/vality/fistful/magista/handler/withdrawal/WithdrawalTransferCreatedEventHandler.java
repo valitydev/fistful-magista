@@ -8,6 +8,7 @@ import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.fistful.magista.exception.StorageException;
 import dev.vality.fistful.magista.util.CashFlowUtil;
 import dev.vality.fistful.withdrawal.TimestampedChange;
+import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,9 @@ public class WithdrawalTransferCreatedEventHandler implements WithdrawalEventHan
 
             WithdrawalData withdrawalData = getWithdrawalData(event);
             withdrawalData.setFee(CashFlowUtil.getFistfulFee(postings));
+            withdrawalData.setEventId(event.getEventId());
+            withdrawalData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
+            withdrawalData.setEventOccurredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
 
             Long id = withdrawalDao.save(withdrawalData);
 

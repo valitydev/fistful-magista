@@ -9,10 +9,13 @@ import dev.vality.fistful.magista.exception.StorageException;
 import dev.vality.fistful.source.Status;
 import dev.vality.fistful.source.TimestampedChange;
 import dev.vality.geck.common.util.TBaseUtil;
+import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -34,6 +37,9 @@ public class SourceStatusChangedEventHandler implements SourceEventHandler {
                     event.getSourceId());
 
             SourceData sourceData = getSourceData(event);
+            sourceData.setEventId(event.getEventId());
+            sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
+            sourceData.setEventOccuredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
             sourceData.setStatus(TBaseUtil.unionFieldToEnum(status, SourceStatus.class));
             Long id = sourceDao.save(sourceData);
 
