@@ -29,7 +29,6 @@ public class SourceAccountCreatedEventHandler implements SourceEventHandler {
     @Override
     public void handle(TimestampedChange change, MachineEvent event) {
         try {
-            Account account = change.getChange().getAccount().getCreated();
             log.info("Trying to handle SourceAccountCreated: eventId={}, sourceId={}", event.getEventId(),
                     event.getSourceId());
 
@@ -37,6 +36,7 @@ public class SourceAccountCreatedEventHandler implements SourceEventHandler {
             sourceData.setEventId(event.getEventId());
             sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
             sourceData.setEventOccuredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
+            Account account = change.getChange().getAccount().getCreated();
             sourceData.setAccountId(account.getId());
             sourceData.setAccountAccounterId(account.getAccounterAccountId());
             sourceData.setAccountCurrency(account.getCurrency().getSymbolicCode());
