@@ -7,6 +7,7 @@ import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.fistful.magista.exception.StorageException;
 import dev.vality.fistful.source.TimestampedChange;
+import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +29,14 @@ public class SourceAccountCreatedEventHandler implements SourceEventHandler {
     @Override
     public void handle(TimestampedChange change, MachineEvent event) {
         try {
-            Account account = change.getChange().getAccount().getCreated();
             log.info("Trying to handle SourceAccountCreated: eventId={}, sourceId={}", event.getEventId(),
                     event.getSourceId());
 
             SourceData sourceData = getSourceData(event);
+            sourceData.setEventId(event.getEventId());
+            sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
+            sourceData.setEventOccuredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
+            Account account = change.getChange().getAccount().getCreated();
             sourceData.setAccountId(account.getId());
             sourceData.setAccountAccounterId(account.getAccounterAccountId());
             sourceData.setAccountCurrency(account.getCurrency().getSymbolicCode());
