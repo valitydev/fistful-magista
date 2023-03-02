@@ -46,6 +46,7 @@ public class SourceCreatedEventHandler implements SourceEventHandler {
             sourceData.setEventOccuredAt(occuredAt);
             sourceData.setEventType(SourceEventType.SOURCE_CREATED);
             Source source = change.getChange().getCreated();
+            sourceData.setName(source.getName());
             sourceData.setResourceInternalDetails(source.getResource().getInternal().getDetails());
             sourceData.setExternalId(source.getExternalId());
             if (source.getStatus() != null) {
