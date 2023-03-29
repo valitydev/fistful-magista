@@ -70,6 +70,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                 .from(WALLET_DATA)
                 .where(
                         appendConditions(DSL.trueCondition(), Operator.AND, new ConditionParameterSource()
+                                .addInConditionValue(WALLET_DATA.WALLET_ID, parameters.getWalletIds())
                                 .addValue(WALLET_DATA.PARTY_ID, Optional.ofNullable(parameters.getPartyId())
                                         .map(UUID::fromString)
                                         .orElse(null), EQUALS)
