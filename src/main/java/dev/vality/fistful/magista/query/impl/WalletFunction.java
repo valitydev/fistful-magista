@@ -114,6 +114,10 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
         public String getCurrencyCode() {
             return getStringParameter(Parameters.CURRENCY_CODE_PARAM, false);
         }
+
+        public List<String> getWalletIds() {
+            return getArrayParameter(Parameters.WALLET_ID_PARAM, false);
+        }
     }
 
     public static class WalletValidator extends PagedBaseValidator {

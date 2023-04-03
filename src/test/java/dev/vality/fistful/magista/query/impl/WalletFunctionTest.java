@@ -72,6 +72,21 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void testOneWalletWithWalletId() throws DaoException {
+        String json = String.format("{'query': {'wallets': {'wallet_id': ['%s'], 'party_id': '%s'," +
+                        "'identity_id': '%s', 'currency_code':'%s', 'from_time': '%s','to_time': '%s'}}}",
+                walletData.getWalletId(),
+                walletData.getPartyId(),
+                walletData.getIdentityId(),
+                walletData.getCurrencyCode(),
+                TypeUtil.temporalToString(walletData.getCreatedAt().minusMinutes(1)),
+                TypeUtil.temporalToString(walletData.getCreatedAt().plusMinutes(1)));
+        StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
+        List<StatWallet> wallets = statResponse.getData().getWallets();
+        assertEquals(1, wallets.size());
+    }
+
+    @Test
     public void testAllWallets() throws DaoException {
         String json = String.format("{'query': {'wallets': {'party_id': '%s','identity_id': '%s'}}}",
                 walletData.getPartyId(),
