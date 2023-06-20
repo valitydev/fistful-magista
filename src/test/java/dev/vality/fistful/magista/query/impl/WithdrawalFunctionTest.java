@@ -90,6 +90,18 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void testWithdrawalList() throws DaoException {
+        String json = String.format("{'query': {'withdrawals': {" +
+                        "'withdrawal_ids':['%s', '%s']" +
+                        "}}}",
+                withdrawalData.getWithdrawalId(), secondWithdrawalData.getWithdrawalId()
+        );
+        StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
+        List<StatWithdrawal> withdrawals = statResponse.getData().getWithdrawals();
+        assertEquals(2, withdrawals.size());
+    }
+
+    @Test
     public void testAllWallets() throws DaoException {
         String json = String.format("{'query': {'withdrawals': {'party_id': '%s','identity_id': '%s'}}}",
                 withdrawalData.getPartyId(),

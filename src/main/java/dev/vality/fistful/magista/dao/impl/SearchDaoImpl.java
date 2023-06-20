@@ -15,7 +15,6 @@ import dev.vality.fistful.magista.query.impl.parameters.DepositRevertParameters;
 import dev.vality.fistful.magista.query.impl.parameters.IdentityParameters;
 import dev.vality.geck.common.util.TypeUtil;
 import com.zaxxer.hikari.HikariDataSource;
-import dev.vality.fistful.magista.dao.impl.mapper.*;
 import org.jooq.Operator;
 import org.jooq.Query;
 import org.jooq.impl.DSL;
@@ -106,8 +105,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                                 .map(UUID::fromString)
                                                                 .orElse(null), EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.WALLET_ID, parameters.getWalletId(), EQUALS)
-                                                .addValue(WITHDRAWAL_DATA.WITHDRAWAL_ID, parameters.getWithdrawalId(),
-                                                        EQUALS)
+                                                .addInConditionValue(WITHDRAWAL_DATA.WITHDRAWAL_ID, parameters.getWithdrawalIds())
                                                 .addValue(WITHDRAWAL_DATA.IDENTITY_ID, parameters.getIdentityId(),
                                                         EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.DESTINATION_ID, parameters.getDestinationId(),
