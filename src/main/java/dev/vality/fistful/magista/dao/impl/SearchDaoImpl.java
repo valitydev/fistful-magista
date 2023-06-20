@@ -105,7 +105,8 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                                 .map(UUID::fromString)
                                                                 .orElse(null), EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.WALLET_ID, parameters.getWalletId(), EQUALS)
-                                                .addInConditionValue(WITHDRAWAL_DATA.WITHDRAWAL_ID, parameters.getWithdrawalIds())
+                                                .addInConditionValue(
+                                                        WITHDRAWAL_DATA.WITHDRAWAL_ID, parameters.getWithdrawalIds())
                                                 .addValue(WITHDRAWAL_DATA.IDENTITY_ID, parameters.getIdentityId(),
                                                         EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.DESTINATION_ID, parameters.getDestinationId(),
