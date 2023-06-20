@@ -62,7 +62,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
         String json = String.format("{'query': {'withdrawals': {" +
                         "'party_id': '%s', " +
                         "'wallet_id':'%s', " +
-                        "'withdrawal_id':'%s', " +
+                        "'withdrawal_id':['%s'], " +
                         "'identity_id': '%s', " +
                         "'destination_id':'%s', " +
                         "'status':'%s', " +
