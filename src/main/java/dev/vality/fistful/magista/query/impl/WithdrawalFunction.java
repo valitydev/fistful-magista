@@ -120,6 +120,10 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
             return getStringParameter(Parameters.WALLET_ID_PARAM, false);
         }
 
+        public List<String> getWithdrawalIds() {
+            return getArrayParameter(Parameters.WITHDRAWAL_IDS_PARAM, false);
+        }
+
         public String getWithdrawalId() {
             return getStringParameter(Parameters.WITHDRAWAL_ID_PARAM, false);
         }
