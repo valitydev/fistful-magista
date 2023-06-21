@@ -1,5 +1,6 @@
 package dev.vality.fistful.magista.dao.impl;
 
+import com.zaxxer.hikari.HikariDataSource;
 import dev.vality.fistful.fistful_stat.*;
 import dev.vality.fistful.magista.dao.SearchDao;
 import dev.vality.fistful.magista.dao.impl.field.ConditionParameterSource;
@@ -14,7 +15,6 @@ import dev.vality.fistful.magista.query.impl.parameters.DepositParameters;
 import dev.vality.fistful.magista.query.impl.parameters.DepositRevertParameters;
 import dev.vality.fistful.magista.query.impl.parameters.IdentityParameters;
 import dev.vality.geck.common.util.TypeUtil;
-import com.zaxxer.hikari.HikariDataSource;
 import org.jooq.Operator;
 import org.jooq.Query;
 import org.jooq.impl.DSL;
@@ -105,6 +105,8 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                                 .map(UUID::fromString)
                                                                 .orElse(null), EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.WALLET_ID, parameters.getWalletId(), EQUALS)
+                                                .addValue(WITHDRAWAL_DATA.WITHDRAWAL_ID, parameters.getWithdrawalId(),
+                                                        EQUALS)
                                                 .addInConditionValue(
                                                         WITHDRAWAL_DATA.WITHDRAWAL_ID, parameters.getWithdrawalIds())
                                                 .addValue(WITHDRAWAL_DATA.IDENTITY_ID, parameters.getIdentityId(),
@@ -150,8 +152,8 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                 .from(DEPOSIT_DATA.leftJoin(DEPOSIT_REVERT_DATA)
                         .on(DEPOSIT_DATA.PARTY_ID.eq(DEPOSIT_REVERT_DATA.PARTY_ID)
                                 .and(DEPOSIT_DATA.WALLET_ID.eq(DEPOSIT_REVERT_DATA.WALLET_ID)
-                                .and(DEPOSIT_DATA.DEPOSIT_ID.eq(DEPOSIT_REVERT_DATA.DEPOSIT_ID))
-                                .and(DEPOSIT_REVERT_DATA.STATUS.eq(DepositRevertDataStatus.succeeded)))))
+                                        .and(DEPOSIT_DATA.DEPOSIT_ID.eq(DEPOSIT_REVERT_DATA.DEPOSIT_ID))
+                                        .and(DEPOSIT_REVERT_DATA.STATUS.eq(DepositRevertDataStatus.succeeded)))))
                 .where(
                         appendDateTimeRangeConditions(
                                 appendConditions(DSL.trueCondition(), Operator.AND,
