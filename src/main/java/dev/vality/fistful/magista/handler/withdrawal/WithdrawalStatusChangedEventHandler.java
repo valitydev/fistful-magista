@@ -1,5 +1,7 @@
 package dev.vality.fistful.magista.handler.withdrawal;
 
+import dev.vality.fistful.base.Failure;
+import dev.vality.fistful.base.SubFailure;
 import dev.vality.fistful.magista.dao.WithdrawalDao;
 import dev.vality.fistful.magista.domain.enums.WithdrawalEventType;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
@@ -42,6 +44,15 @@ public class WithdrawalStatusChangedEventHandler implements WithdrawalEventHandl
             withdrawalData.setEventType(WithdrawalEventType.WITHDRAWAL_STATUS_CHANGED);
             Status status = change.getChange().getStatusChanged().getStatus();
             withdrawalData.setWithdrawalStatus(TBaseUtil.unionFieldToEnum(status, WithdrawalStatus.class));
+            if (status.isSetFailed() && status.getFailed().isSetFailure()) {
+                Failure failure = status.getFailed().getFailure();
+                withdrawalData.setErrorCode(failure.getCode());
+                withdrawalData.setErrorReason(failure.getReason());
+                SubFailure subFailure = failure.getSub();
+                if (subFailure != null && subFailure.isSetCode()) {
+                    withdrawalData.setErrorSubFailure(subFailure.getCode());
+                }
+            }
 
             Long id = withdrawalDao.save(withdrawalData);
 

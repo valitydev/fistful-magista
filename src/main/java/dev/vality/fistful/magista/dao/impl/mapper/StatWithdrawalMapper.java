@@ -1,9 +1,11 @@
 package dev.vality.fistful.magista.dao.impl.mapper;
 
+import dev.vality.fistful.base.SubFailure;
 import dev.vality.fistful.fistful_stat.*;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
 import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.geck.common.util.TypeUtil;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -41,8 +43,17 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
                         dev.vality.fistful.fistful_stat.WithdrawalStatus.succeeded(new WithdrawalSucceeded()));
                 break;
             case failed:
-                statWithdrawal.setStatus(
-                        dev.vality.fistful.fistful_stat.WithdrawalStatus.failed(new WithdrawalFailed(new Failure())));
+                var baseFailure = new dev.vality.fistful.base.Failure();
+                baseFailure.setCode(rs.getString(WITHDRAWAL_DATA.ERROR_CODE.getName()));
+                baseFailure.setReason(rs.getString(WITHDRAWAL_DATA.ERROR_REASON.getName()));
+                String errorSubFailure = rs.getString(WITHDRAWAL_DATA.ERROR_SUB_FAILURE.getName());
+                if (Strings.isNotEmpty(errorSubFailure)) {
+                    baseFailure.setSub(new SubFailure(errorSubFailure));
+                }
+                WithdrawalFailed withdrawalFailed = new WithdrawalFailed();
+                withdrawalFailed.setFailure(new Failure());
+                withdrawalFailed.setBaseFailure(baseFailure);
+                statWithdrawal.setStatus(dev.vality.fistful.fistful_stat.WithdrawalStatus.failed(withdrawalFailed));
                 break;
             default:
                 throw new NotFoundException(
