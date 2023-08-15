@@ -43,16 +43,21 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
                         dev.vality.fistful.fistful_stat.WithdrawalStatus.succeeded(new WithdrawalSucceeded()));
                 break;
             case failed:
-                var baseFailure = new dev.vality.fistful.base.Failure();
-                baseFailure.setCode(rs.getString(WITHDRAWAL_DATA.ERROR_CODE.getName()));
-                baseFailure.setReason(rs.getString(WITHDRAWAL_DATA.ERROR_REASON.getName()));
-                String errorSubFailure = rs.getString(WITHDRAWAL_DATA.ERROR_SUB_FAILURE.getName());
-                if (Strings.isNotEmpty(errorSubFailure)) {
-                    baseFailure.setSub(new SubFailure(errorSubFailure));
-                }
                 WithdrawalFailed withdrawalFailed = new WithdrawalFailed();
                 withdrawalFailed.setFailure(new Failure());
-                withdrawalFailed.setBaseFailure(baseFailure);
+                String errorCode = rs.getString(WITHDRAWAL_DATA.ERROR_CODE.getName());
+
+                if (Strings.isNotEmpty(errorCode)) {
+                    var baseFailure = new dev.vality.fistful.base.Failure();
+                    baseFailure.setCode(errorCode);
+                    baseFailure.setReason(rs.getString(WITHDRAWAL_DATA.ERROR_REASON.getName()));
+                    String errorSubFailure = rs.getString(WITHDRAWAL_DATA.ERROR_SUB_FAILURE.getName());
+                    if (Strings.isNotEmpty(errorSubFailure)) {
+                        baseFailure.setSub(new SubFailure(errorSubFailure));
+                    }
+                    withdrawalFailed.setBaseFailure(baseFailure);
+                }
+
                 statWithdrawal.setStatus(dev.vality.fistful.fistful_stat.WithdrawalStatus.failed(withdrawalFailed));
                 break;
             default:
