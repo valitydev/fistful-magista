@@ -1,12 +1,11 @@
 package dev.vality.fistful.magista.dao.impl;
 
-import dev.vality.fistful.fistful_stat.RevertStatus;
-import dev.vality.fistful.fistful_stat.StatDeposit;
-import dev.vality.fistful.fistful_stat.StatWallet;
-import dev.vality.fistful.fistful_stat.StatWithdrawal;
+import dev.vality.fistful.base.Failure;
+import dev.vality.fistful.fistful_stat.*;
 import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.*;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
+import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
@@ -24,6 +23,7 @@ import java.util.*;
 import static dev.vality.fistful.magista.query.impl.Parameters.*;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SearchDaoImplTest extends AbstractIntegrationTest {
 
@@ -68,7 +68,12 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
     @Test
     public void testGetWithdrawals() throws DaoException {
         WithdrawalData withdrawalData = random(WithdrawalData.class);
+        withdrawalData.setWithdrawalStatus(WithdrawalStatus.failed);
+        withdrawalData.setErrorCode("authorization_failed");
+        withdrawalData.setErrorReason(null);
+        withdrawalData.setErrorSubFailure("unknown");
         withdrawalDao.save(withdrawalData);
+
         HashMap<String, Object> map = new HashMap<>();
         map.put(PARTY_ID_PARAM, withdrawalData.getPartyId());
         map.put(WALLET_ID_PARAM, withdrawalData.getWalletId());
@@ -89,7 +94,14 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
                 100
         );
         assertEquals(withdrawals.size(), 1);
-        assertEquals(withdrawals.iterator().next().getValue().getFee(), withdrawalData.getFee().longValue());
+        StatWithdrawal statWithdrawal = withdrawals.iterator().next().getValue();
+        assertEquals(statWithdrawal.getFee(), withdrawalData.getFee().longValue());
+
+        assertTrue(statWithdrawal.getStatus().isSetFailed());
+        Failure baseFailure = statWithdrawal.getStatus().getFailed().getBaseFailure();
+        assertEquals(withdrawalData.getErrorCode(), baseFailure.getCode());
+        assertEquals(withdrawalData.getErrorReason(), baseFailure.getReason());
+        assertEquals(withdrawalData.getErrorSubFailure(), baseFailure.getSub().getCode());
 
         map.clear();
         map.put(IDENTITY_ID_PARAM, "wrong_identity_id");
