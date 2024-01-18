@@ -97,9 +97,9 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
     }
 
     private static final Map<String, WithdrawalStatus> statusesMap = Collections.unmodifiableMap(Stream.of(
-            new AbstractMap.SimpleEntry<>("Pending", WithdrawalStatus.pending),
-            new AbstractMap.SimpleEntry<>("Succeeded", WithdrawalStatus.succeeded),
-            new AbstractMap.SimpleEntry<>("Failed", WithdrawalStatus.failed))
+                    new AbstractMap.SimpleEntry<>("Pending", WithdrawalStatus.pending),
+                    new AbstractMap.SimpleEntry<>("Succeeded", WithdrawalStatus.succeeded),
+                    new AbstractMap.SimpleEntry<>("Failed", WithdrawalStatus.failed))
             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue)));
 
     public static class WithdrawalParameters extends PagedBaseParameters {
@@ -164,6 +164,10 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
         public TemporalAccessor getToTime() {
             return getTimeParameter(Parameters.TO_TIME_PARAM, false);
         }
+
+        public String getErrorMessage() {
+            return getStringParameter(Parameters.ERROR_MESSAGE, false);
+        }
     }
 
     public static class WithdrawalValidator extends PagedBaseValidator {
@@ -192,7 +196,7 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
                     WithdrawalParameters::new, validator);
 
             return Stream.of(
-                    new QueryPart(FUNC_NAME, parameters, parent))
+                            new QueryPart(FUNC_NAME, parameters, parent))
                     .collect(Collectors.toList());
         }
 

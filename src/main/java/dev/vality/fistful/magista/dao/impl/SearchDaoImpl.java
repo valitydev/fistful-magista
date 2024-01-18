@@ -121,6 +121,21 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                         EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.EXTERNAL_ID, parameters.getExternalId(),
                                                         EQUALS)
+                                                .addValue(WITHDRAWAL_DATA.ERROR_REASON,
+                                                        parameters.getErrorMessage() != null
+                                                                ? "%" + parameters.getErrorMessage() + "%"
+                                                                : null,
+                                                        LIKE)
+                                                .addValue(WITHDRAWAL_DATA.ERROR_CODE,
+                                                        parameters.getErrorMessage() != null
+                                                                ? "%" + parameters.getErrorMessage() + "%"
+                                                                : null,
+                                                        LIKE)
+                                                .addValue(WITHDRAWAL_DATA.ERROR_SUB_FAILURE,
+                                                        parameters.getErrorMessage() != null
+                                                                ? "%" + parameters.getErrorMessage() + "%"
+                                                                : null,
+                                                        LIKE)
                                                 .addValue(WITHDRAWAL_DATA.ID, fromId, LESS)),
                                 WITHDRAWAL_DATA.CREATED_AT,
                                 fromTime,
@@ -173,6 +188,8 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                         LESS_OR_EQUAL)
                                                 .addValue(DEPOSIT_DATA.CURRENCY_CODE,
                                                         parameters.getCurrencyCode().orElse(null), EQUALS)
+                                                .addValue(DEPOSIT_DATA.DEPOSIT_STATUS,
+                                                        parameters.getStatus().orElse(null), EQUALS)
                                                 .addValue(DEPOSIT_DATA.DEPOSIT_STATUS,
                                                         parameters.getStatus().orElse(null), EQUALS)
                                                 .addValue(DEPOSIT_DATA.ID, fromId, LESS)
