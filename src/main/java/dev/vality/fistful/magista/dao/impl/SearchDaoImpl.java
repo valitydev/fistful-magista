@@ -192,8 +192,6 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                         parameters.getCurrencyCode().orElse(null), EQUALS)
                                                 .addValue(DEPOSIT_DATA.DEPOSIT_STATUS,
                                                         parameters.getStatus().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_DATA.DEPOSIT_STATUS,
-                                                        parameters.getStatus().orElse(null), EQUALS)
                                                 .addValue(DEPOSIT_DATA.ID, fromId, LESS)
                                 ),
                                 DEPOSIT_DATA.CREATED_AT,
