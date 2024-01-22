@@ -121,7 +121,24 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                         EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.EXTERNAL_ID, parameters.getExternalId(),
                                                         EQUALS)
-                                                .addValue(WITHDRAWAL_DATA.ID, fromId, LESS)),
+                                                .addValue(WITHDRAWAL_DATA.ID, fromId, LESS))
+                                        .and(appendConditions(DSL.trueCondition(), Operator.OR,
+                                                new ConditionParameterSource()
+                                                        .addValue(WITHDRAWAL_DATA.ERROR_REASON,
+                                                                parameters.getErrorMessage() != null
+                                                                        ? "%" + parameters.getErrorMessage() + "%"
+                                                                        : null,
+                                                                LIKE)
+                                                        .addValue(WITHDRAWAL_DATA.ERROR_CODE,
+                                                                parameters.getErrorMessage() != null
+                                                                        ? "%" + parameters.getErrorMessage() + "%"
+                                                                        : null,
+                                                                LIKE)
+                                                        .addValue(WITHDRAWAL_DATA.ERROR_SUB_FAILURE,
+                                                                parameters.getErrorMessage() != null
+                                                                        ? "%" + parameters.getErrorMessage() + "%"
+                                                                        : null,
+                                                                LIKE))),
                                 WITHDRAWAL_DATA.CREATED_AT,
                                 fromTime,
                                 toTime

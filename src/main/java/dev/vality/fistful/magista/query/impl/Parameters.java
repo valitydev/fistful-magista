@@ -29,5 +29,6 @@ public class Parameters {
     public static final String REVERT_ID_PARAM = "revert_id";
     public static final String ADJUSTMENT_ID_PARAM = "adjustment_id";
     public static final String DEPOSIT_STATUS_PARAM = "deposit_status";
+    public static final String ERROR_MESSAGE = "error_message";
 
 }

@@ -1,13 +1,16 @@
 package dev.vality.fistful.magista.dao.impl;
 
 import dev.vality.fistful.base.Failure;
-import dev.vality.fistful.fistful_stat.*;
+import dev.vality.fistful.fistful_stat.RevertStatus;
+import dev.vality.fistful.fistful_stat.StatDeposit;
+import dev.vality.fistful.fistful_stat.StatWallet;
+import dev.vality.fistful.fistful_stat.StatWithdrawal;
 import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.*;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
-import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
+import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.domain.tables.pojos.WithdrawalData;
 import dev.vality.fistful.magista.exception.DaoException;
@@ -114,6 +117,32 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
                 100
         );
         assertEquals(withdrawals.size(), 0);
+    }
+
+    @Test
+    public void testGetWithdrawalsWithErrors() throws DaoException {
+        WithdrawalData withdrawalData = random(WithdrawalData.class);
+        withdrawalData.setWithdrawalStatus(WithdrawalStatus.failed);
+        withdrawalData.setErrorCode("authorization_failed");
+        withdrawalData.setErrorReason(null);
+        withdrawalData.setErrorSubFailure("unknown");
+        withdrawalDao.save(withdrawalData);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(ERROR_MESSAGE, "unknown");
+        WithdrawalFunction.WithdrawalParameters withdrawalParameters =
+                new WithdrawalFunction.WithdrawalParameters(map, null);
+        Collection<Map.Entry<Long, StatWithdrawal>> withdrawals = searchDao.getWithdrawals(
+                withdrawalParameters,
+                withdrawalData.getCreatedAt().minusMinutes(1),
+                withdrawalData.getCreatedAt().plusMinutes(1),
+                withdrawalData.getId() + 1,
+                100
+        );
+        assertEquals(1, withdrawals.size());
+        StatWithdrawal statWithdrawal = withdrawals.iterator().next().getValue();
+        assertEquals(statWithdrawal.getFee(), withdrawalData.getFee().longValue());
+        assertTrue(statWithdrawal.getStatus().isSetFailed());
     }
 
     @Test
