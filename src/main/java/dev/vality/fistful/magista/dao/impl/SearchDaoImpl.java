@@ -122,7 +122,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                 .addValue(WITHDRAWAL_DATA.EXTERNAL_ID, parameters.getExternalId(),
                                                         EQUALS)
                                                 .addValue(WITHDRAWAL_DATA.ID, fromId, LESS))
-                                        .and(appendConditions(DSL.trueCondition(), Operator.OR,
+                                        .and(appendConditions(DSL.noCondition(), Operator.OR,
                                                 new ConditionParameterSource()
                                                         .addValue(WITHDRAWAL_DATA.ERROR_REASON,
                                                                 parameters.getErrorMessage() != null
