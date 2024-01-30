@@ -143,6 +143,20 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
         StatWithdrawal statWithdrawal = withdrawals.iterator().next().getValue();
         assertEquals(statWithdrawal.getFee(), withdrawalData.getFee().longValue());
         assertTrue(statWithdrawal.getStatus().isSetFailed());
+
+
+        map = new HashMap<>();
+        map.put(ERROR_MESSAGE, "test_for_empty");
+        withdrawalParameters = new WithdrawalFunction.WithdrawalParameters(map, null);
+        withdrawals = searchDao.getWithdrawals(
+                withdrawalParameters,
+                withdrawalData.getCreatedAt().minusMinutes(1),
+                withdrawalData.getCreatedAt().plusMinutes(1),
+                withdrawalData.getId() + 1,
+                100
+        );
+
+        assertTrue(withdrawals.isEmpty());
     }
 
     @Test
