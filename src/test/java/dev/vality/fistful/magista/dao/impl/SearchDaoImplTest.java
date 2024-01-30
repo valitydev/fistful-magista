@@ -58,14 +58,14 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
                 walletParameters,
                 Optional.of(walletData.getId() + 1),
                 100);
-        assertEquals(wallets.size(), 1);
+        assertEquals(1, wallets.size());
         assertEquals(wallets.iterator().next().getValue().getName(), walletData.getWalletName());
 
         map.clear();
         map.put(PARTY_ID_PARAM, UUID.randomUUID());
         walletParameters = new WalletFunction.WalletParameters(map, null);
         wallets = searchDao.getWallets(walletParameters, Optional.of(walletData.getId() + 1), 100);
-        assertEquals(wallets.size(), 0);
+        assertEquals(0, wallets.size());
     }
 
     @Test
@@ -87,6 +87,8 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
         map.put(AMOUNT_FROM_PARAM, withdrawalData.getAmount() - 1);
         map.put(AMOUNT_TO_PARAM, withdrawalData.getAmount() + 1);
         map.put(CURRENCY_CODE_PARAM, withdrawalData.getCurrencyCode());
+        map.put(WITHDRAWAL_PROVIDER_ID_PARAM, withdrawalData.getProviderId());
+        map.put(WITHDRAWAL_TERMINAL_ID_PARAM, withdrawalData.getTerminalId());
         WithdrawalFunction.WithdrawalParameters withdrawalParameters =
                 new WithdrawalFunction.WithdrawalParameters(map, null);
         Collection<Map.Entry<Long, StatWithdrawal>> withdrawals = searchDao.getWithdrawals(
@@ -96,7 +98,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
                 withdrawalData.getId() + 1,
                 100
         );
-        assertEquals(withdrawals.size(), 1);
+        assertEquals(1, withdrawals.size());
         StatWithdrawal statWithdrawal = withdrawals.iterator().next().getValue();
         assertEquals(statWithdrawal.getFee(), withdrawalData.getFee().longValue());
 
@@ -116,7 +118,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
                 withdrawalData.getId() + 1,
                 100
         );
-        assertEquals(withdrawals.size(), 0);
+        assertEquals(0, withdrawals.size());
     }
 
     @Test

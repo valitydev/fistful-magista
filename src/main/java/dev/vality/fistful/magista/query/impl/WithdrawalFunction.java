@@ -168,6 +168,14 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
         public String getErrorMessage() {
             return getStringParameter(Parameters.ERROR_MESSAGE, false);
         }
+
+        public Integer getWithdrawalProviderId() {
+            return getIntParameter(Parameters.WITHDRAWAL_PROVIDER_ID_PARAM, false);
+        }
+
+        public Integer getWithdrawalTerminalId() {
+            return getIntParameter(Parameters.WITHDRAWAL_TERMINAL_ID_PARAM, false);
+        }
     }
 
     public static class WithdrawalValidator extends PagedBaseValidator {
