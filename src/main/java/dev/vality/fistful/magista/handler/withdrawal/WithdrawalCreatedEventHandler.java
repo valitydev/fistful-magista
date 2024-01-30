@@ -9,6 +9,7 @@ import dev.vality.fistful.magista.domain.tables.pojos.WithdrawalData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.fistful.magista.exception.StorageException;
+import dev.vality.fistful.withdrawal.Route;
 import dev.vality.fistful.withdrawal.TimestampedChange;
 import dev.vality.fistful.withdrawal.Withdrawal;
 import dev.vality.geck.common.util.TypeUtil;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -58,6 +60,11 @@ public class WithdrawalCreatedEventHandler implements WithdrawalEventHandler {
             withdrawalData.setExternalId(withdrawal.getExternalId());
             withdrawalData.setEventType(WithdrawalEventType.WITHDRAWAL_CREATED);
             withdrawalData.setWithdrawalStatus(WithdrawalStatus.pending);
+            Route route = withdrawal.getRoute();
+            if (Objects.nonNull(route)) {
+                withdrawalData.setProviderId(route.getProviderId());
+                withdrawalData.setTerminalId(route.getTerminalId());
+            }
 
             Long id = withdrawalDao.save(withdrawalData);
             log.info("WithdrawalCreated has {} been saved: eventId={}, withdrawalId={}",

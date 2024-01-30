@@ -1,5 +1,8 @@
 package dev.vality.fistful.magista.query.impl;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class Parameters {
 
     public static final String PARTY_ID_PARAM = "party_id";
@@ -30,5 +33,7 @@ public class Parameters {
     public static final String ADJUSTMENT_ID_PARAM = "adjustment_id";
     public static final String DEPOSIT_STATUS_PARAM = "deposit_status";
     public static final String ERROR_MESSAGE = "error_message";
+    public static final String WITHDRAWAL_PROVIDER_ID_PARAM = "withdrawal_provider_id";
+    public static final String WITHDRAWAL_TERMINAL_ID_PARAM = "withdrawal_terminal_id";
 
 }
