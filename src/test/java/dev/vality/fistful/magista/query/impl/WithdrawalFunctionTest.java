@@ -58,7 +58,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testOneWithdrawal() throws DaoException {
+    public void testOneWithdrawal() {
         String json = String.format("{'query': {'withdrawals': {" +
                         "'party_id': '%s', " +
                         "'wallet_id':'%s', " +
@@ -87,6 +87,20 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         List<StatWithdrawal> withdrawals = statResponse.getData().getWithdrawals();
         assertEquals(1, withdrawals.size());
+    }
+
+    @Test
+    public void testOneWithdrawalByProviderId() {
+        String json = String.format("{'query': {'withdrawals': {" +
+                        "'withdrawal_provider_id': %s " +
+                        "}}}",
+                withdrawalData.getProviderId()
+        );
+        StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
+        List<StatWithdrawal> withdrawals = statResponse.getData().getWithdrawals();
+        assertEquals(1, withdrawals.size());
+        assertEquals(withdrawalData.getProviderId().intValue(), withdrawals.get(0).getProviderId());
+        assertEquals(withdrawalData.getTerminalId().intValue(), withdrawals.get(0).getTerminalId());
     }
 
     @Test
