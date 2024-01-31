@@ -162,6 +162,32 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void testGetWithdrawalsByProviderId() throws DaoException {
+        WithdrawalData withdrawalData = random(WithdrawalData.class);
+        withdrawalData.setWithdrawalStatus(WithdrawalStatus.succeeded);
+        withdrawalDao.save(withdrawalData);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(WITHDRAWAL_PROVIDER_ID_PARAM, withdrawalData.getProviderId());
+        map.put(WITHDRAWAL_TERMINAL_ID_PARAM, withdrawalData.getTerminalId());
+        WithdrawalFunction.WithdrawalParameters withdrawalParameters =
+                new WithdrawalFunction.WithdrawalParameters(map, null);
+        Collection<Map.Entry<Long, StatWithdrawal>> withdrawals = searchDao.getWithdrawals(
+                withdrawalParameters,
+                withdrawalData.getCreatedAt().minusMinutes(1),
+                withdrawalData.getCreatedAt().plusMinutes(1),
+                withdrawalData.getId() + 1,
+                25
+        );
+        assertEquals(1, withdrawals.size());
+        StatWithdrawal statWithdrawal = withdrawals.iterator().next().getValue();
+        assertEquals(withdrawalData.getFee().longValue(), statWithdrawal.getFee());
+        assertTrue(statWithdrawal.getStatus().isSetSucceeded());
+        assertEquals(withdrawalData.getProviderId().intValue(), statWithdrawal.getProviderId());
+        assertEquals(withdrawalData.getTerminalId().intValue(), statWithdrawal.getTerminalId());
+    }
+
+    @Test
     public void testGetDeposits() throws DaoException {
         DepositData deposit = random(DepositData.class);
         depositDao.save(deposit);
