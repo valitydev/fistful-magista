@@ -1,1 +1,2 @@
-ALTER TABLE mst.deposit_data ADD COLUMN IF NOT EXISTS description character varying;
+alter table mst.deposit_data
+    add column description character varying;
