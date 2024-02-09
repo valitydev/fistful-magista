@@ -33,6 +33,7 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
         deposit.setStatus(getDepositStatus(depositStatus));
         deposit.setRevertStatus(getRevertStatus(rs.getLong(DEPOSIT_DATA.AMOUNT.getName()),
                 rs.getLong("REVERT_AMOUNT")));
+        deposit.setDescription(rs.getString(DEPOSIT_DATA.DESCRIPTION.getName()));
         return new SimpleEntry<>(rs.getLong(DEPOSIT_DATA.ID.getName()), deposit);
     }
 
