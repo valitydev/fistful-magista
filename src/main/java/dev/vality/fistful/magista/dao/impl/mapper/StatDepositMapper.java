@@ -13,6 +13,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 
 import static dev.vality.fistful.magista.domain.tables.DepositData.DEPOSIT_DATA;
+import static dev.vality.fistful.magista.domain.tables.DepositRevertData.DEPOSIT_REVERT_DATA;
 
 public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>> {
 
@@ -33,6 +34,7 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
         deposit.setStatus(getDepositStatus(depositStatus));
         deposit.setRevertStatus(getRevertStatus(rs.getLong(DEPOSIT_DATA.AMOUNT.getName()),
                 rs.getLong("REVERT_AMOUNT")));
+        deposit.setDescription(rs.getString(DEPOSIT_DATA.DESCRIPTION.getName()));
         return new SimpleEntry<>(rs.getLong(DEPOSIT_DATA.ID.getName()), deposit);
     }
 

@@ -59,6 +59,7 @@ public class DepositCreatedHandler implements DepositEventHandler {
             depositData.setIdentityId(walletData.getIdentityId());
             depositData.setPartyId(walletData.getPartyId());
             depositData.setCreatedAt(eventOccuredAt);
+            depositData.setDescription(deposit.getDescription());
 
             Long id = depositDao.save(depositData);
 
