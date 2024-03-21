@@ -7,6 +7,7 @@ import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
 import org.apache.thrift.TException;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,10 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
     @Before
     public void before() throws DaoException {
         super.before();
+        jdbcTemplate.execute("truncate mst.wallet_data");
+    }
+    @After
+    public void after() {
         jdbcTemplate.execute("truncate mst.wallet_data");
     }
 
