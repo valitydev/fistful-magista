@@ -34,6 +34,7 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
         super.before();
         jdbcTemplate.execute("truncate mst.wallet_data");
     }
+
     @After
     public void after() {
         jdbcTemplate.execute("truncate mst.wallet_data");
