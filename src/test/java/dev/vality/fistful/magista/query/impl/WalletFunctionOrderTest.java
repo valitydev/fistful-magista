@@ -12,6 +12,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.List;
+
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.Assert.*;
 
@@ -34,32 +36,26 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
 
     @Test
     public void orderTest() throws DaoException, TException {
-        WalletData walletData1 = random(WalletData.class);
-        walletData1.setId(1L);
-        walletData1.setWalletId("100");
 
-        WalletData walletData2 = random(WalletData.class);
-        walletData2.setId(2L);
-        walletData2.setWalletId("1");
+        var ids = List.of("test", "test02", "test01", "01", "2", "10", "100");
 
-        WalletData walletData3 = random(WalletData.class);
-        walletData3.setId(3L);
-        walletData3.setWalletId("10");
-
-        walletDao.save(walletData1);
-        walletDao.save(walletData2);
-        walletDao.save(walletData3);
+        for (String id : ids) {
+            var walletData = random(WalletData.class);
+            walletData.setWalletId(id);
+            walletDao.save(walletData);
+        }
 
         var result = fistfulStatisticsHandler.getWallets(
                 new StatRequest("{\"query\":{\"wallets\":{\"size\":25}}}")
         );
 
         var iterator = result.getData().getWallets().iterator();
-
-        assertEquals("100", iterator.next().getId());
+        assertEquals("01", iterator.next().getId());
+        assertEquals("2", iterator.next().getId());
         assertEquals("10", iterator.next().getId());
-        assertEquals("1", iterator.next().getId());
+        assertEquals("100", iterator.next().getId());
+        assertEquals("test", iterator.next().getId());
+        assertEquals("test01", iterator.next().getId());
+        assertEquals("test02", iterator.next().getId());
     }
-
-
 }

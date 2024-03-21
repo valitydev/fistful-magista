@@ -79,7 +79,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                 )
                 .and(WALLET_DATA.PARTY_ID.isNotNull())
                 .and(WALLET_DATA.IDENTITY_ID.isNotNull())
-                .orderBy(WALLET_DATA.WALLET_ID.desc())
+                .orderBy(WALLET_DATA.WALLET_ID.asc())
                 .limit(limit);
 
         return fetch(query, statWalletMapper);
