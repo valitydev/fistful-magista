@@ -40,10 +40,12 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         super.before();
         walletData = random(WalletData.class);
         walletData.setId(1L);
+        walletData.setWalletId("2");
         walletData.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
         walletDao.save(walletData);
         secondWalletData = random(WalletData.class);
         secondWalletData.setId(2L);
+        secondWalletData.setWalletId("1");
         secondWalletData.setPartyId(walletData.getPartyId());
         secondWalletData.setIdentityId(walletData.getIdentityId());
         secondWalletData.setId(2L);
