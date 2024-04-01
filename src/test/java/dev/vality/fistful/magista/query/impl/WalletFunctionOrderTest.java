@@ -52,7 +52,7 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
         }
 
         var result = fistfulStatisticsHandler.getWallets(
-                new StatRequest("{\"query\":{\"wallets\":{\"size\":25}}}")
+                new StatRequest("{'query':{'wallets':{'size':5}}}")
         );
 
         var iterator = result.getData().getWallets().iterator();
@@ -61,7 +61,15 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
         assertEquals("10", iterator.next().getId());
         assertEquals("100", iterator.next().getId());
         assertEquals("test", iterator.next().getId());
-        assertEquals("test01", iterator.next().getId());
-        assertEquals("test02", iterator.next().getId());
+
+        var secondResult = fistfulStatisticsHandler.getWallets(
+                new StatRequest("{'query':{'wallets':{'size':5}}}")
+                        .setContinuationToken(result.getContinuationToken())
+        );
+
+        var secondIterator = secondResult.getData().getWallets().iterator();
+
+        assertEquals("test01", secondIterator.next().getId());
+        assertEquals("test02", secondIterator.next().getId());
     }
 }

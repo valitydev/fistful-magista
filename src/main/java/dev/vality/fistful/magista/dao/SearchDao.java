@@ -19,7 +19,7 @@ public interface SearchDao {
 
     Collection<Map.Entry<Long, StatWallet>> getWallets(
             WalletFunction.WalletParameters parameters,
-            Optional<Long> fromId,
+            Optional<String> fromId,
             int limit
     ) throws DaoException;
 

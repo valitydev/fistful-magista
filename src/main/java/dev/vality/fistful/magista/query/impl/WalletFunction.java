@@ -4,6 +4,7 @@ import dev.vality.fistful.fistful_stat.StatResponse;
 import dev.vality.fistful.fistful_stat.StatResponseData;
 import dev.vality.fistful.fistful_stat.StatWallet;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TokenStringUtil;
 import dev.vality.magista.dsl.*;
 import dev.vality.magista.dsl.builder.AbstractQueryBuilder;
 import dev.vality.magista.dsl.builder.QueryBuilder;
@@ -12,10 +13,7 @@ import dev.vality.magista.dsl.parser.AbstractQueryParser;
 import dev.vality.magista.dsl.parser.QueryParserException;
 import dev.vality.magista.dsl.parser.QueryPart;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,9 +60,9 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
                     if (!walletsResult.getCollectedStream().isEmpty()
                             && getQueryParameters().getSize() == walletStats.size()) {
                         statResponse.setContinuationToken(
-                                TokenUtil.buildToken(
+                                TokenStringUtil.buildToken(
                                         getQueryParameters(),
-                                        walletStats.get(walletStats.size() - 1).getKey()
+                                        walletStats.get(walletStats.size() - 1).getValue().getId()
                                 )
                         );
                     }
@@ -120,12 +118,33 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
         }
     }
 
-    public static class WalletValidator extends PagedBaseValidator {
+    public static class WalletValidator extends BaseQueryValidator {
+        private final PagedBaseValidator pagedBaseValidator = new PagedBaseValidator();
+
+        @Override
+        public void validateQuery(Query query) throws IllegalArgumentException {
+            super.validateQuery(query);
+            if (query instanceof PagedBaseFunction) {
+                validateContinuationToken(
+                        query.getQueryParameters(),
+                        ((PagedBaseFunction<?, ?>) query).getContinuationToken()
+                );
+            }
+        }
 
         @Override
         public void validateParameters(QueryParameters parameters) throws IllegalArgumentException {
-            super.validateParameters(parameters);
+            pagedBaseValidator.validateParameters(parameters);
             super.checkParamsType(parameters, WalletParameters.class);
+        }
+
+        private void validateContinuationToken(QueryParameters queryParameters, String continuationToken)
+                throws BadTokenException {
+            try {
+                TokenStringUtil.validateToken(queryParameters, continuationToken);
+            } catch (IllegalArgumentException e) {
+                throw new BadTokenException("Token validation failure", e);
+            }
         }
     }
 
@@ -137,9 +156,7 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
             Map<String, Object> funcSource = (Map) source.get(FUNC_NAME);
             WalletParameters parameters = getValidatedParameters(funcSource, parent, WalletParameters::new, validator);
 
-            return Stream.of(
-                    new QueryPart(FUNC_NAME, parameters, parent)
-            )
+            return Stream.of(new QueryPart(FUNC_NAME, parameters, parent))
                     .collect(Collectors.toList());
         }
 
@@ -220,7 +237,7 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
             try {
                 Collection<Map.Entry<Long, StatWallet>> result = functionContext.getSearchDao().getWallets(
                         parameters,
-                        getFromId(),
+                        TokenStringUtil.extractIdValue(getContinuationToken()),
                         parameters.getSize()
                 );
                 return new BaseQueryResult<>(result::stream, () -> result);
