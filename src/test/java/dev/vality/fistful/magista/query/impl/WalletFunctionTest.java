@@ -7,9 +7,9 @@ import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TokenStringUtil;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
-import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
 import org.junit.After;
 import org.junit.Before;
@@ -40,12 +40,12 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         super.before();
         walletData = random(WalletData.class);
         walletData.setId(1L);
-        walletData.setWalletId("2");
+        walletData.setWalletId("10");
         walletData.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
         walletDao.save(walletData);
         secondWalletData = random(WalletData.class);
         secondWalletData.setId(2L);
-        secondWalletData.setWalletId("1");
+        secondWalletData.setWalletId("test1");
         secondWalletData.setPartyId(walletData.getPartyId());
         secondWalletData.setIdentityId(walletData.getIdentityId());
         secondWalletData.setId(2L);
@@ -113,13 +113,13 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         StatResponse statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getWallets().size());
         assertNotNull(statResponse.getContinuationToken());
-        assertEquals((Long) 2L, TokenUtil.extractIdValue(statResponse.getContinuationToken()).get());
+        assertEquals("10", TokenStringUtil.extractIdValue(statResponse.getContinuationToken()).get());
 
         statRequest.setContinuationToken(statResponse.getContinuationToken());
         statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getWallets().size());
         assertNotNull(statResponse.getContinuationToken());
-        assertEquals((Long) 1L, TokenUtil.extractIdValue(statResponse.getContinuationToken()).get());
+        assertEquals("test1", TokenStringUtil.extractIdValue(statResponse.getContinuationToken()).get());
 
         statRequest.setContinuationToken(statResponse.getContinuationToken());
         statResponse = queryProcessor.processQuery(statRequest);

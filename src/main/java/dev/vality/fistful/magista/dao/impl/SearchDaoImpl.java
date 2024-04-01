@@ -61,7 +61,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
     @Override
     public Collection<Map.Entry<Long, StatWallet>> getWallets(
             WalletFunction.WalletParameters parameters,
-            Optional<Long> fromId,
+            Optional<String> fromId,
             int limit
     ) throws DaoException {
         Query query = getDslContext()
@@ -75,7 +75,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                         .orElse(null), EQUALS)
                                 .addValue(WALLET_DATA.IDENTITY_ID, parameters.getIdentityId(), EQUALS)
                                 .addValue(WALLET_DATA.CURRENCY_CODE, parameters.getCurrencyCode(), EQUALS)
-                                .addValue(WALLET_DATA.ID, fromId.orElse(null), LESS))
+                                .addValue(WALLET_DATA.WALLET_ID, fromId.orElse(null), GREATER))
                 )
                 .and(WALLET_DATA.PARTY_ID.isNotNull())
                 .and(WALLET_DATA.IDENTITY_ID.isNotNull())
