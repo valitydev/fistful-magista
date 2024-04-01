@@ -56,7 +56,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
         WalletFunction.WalletParameters walletParameters = new WalletFunction.WalletParameters(map, null);
         Collection<Map.Entry<Long, StatWallet>> wallets = searchDao.getWallets(
                 walletParameters,
-                Optional.of(walletData.getWalletId()),
+                Optional.empty(),
                 100);
         assertEquals(1, wallets.size());
         assertEquals(wallets.iterator().next().getValue().getName(), walletData.getWalletName());
