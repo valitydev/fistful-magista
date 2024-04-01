@@ -31,21 +31,27 @@ public class TokenStringUtilTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void invalidTokenTest1() {
-        var otherQueryParam = new QueryParameters(Map.of(), null);
-        TokenStringUtil.validateToken(otherQueryParam, "1;1;1");
+    public void invalidQueryHashTest() {
+        var queryParameters = new QueryParameters(Map.of(), null);
+        TokenStringUtil.validateToken(queryParameters, "1;" + "1".hashCode() + ";1");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void invalidTokenTest2() {
-        var otherQueryParam = new QueryParameters(Map.of(), null);
-        TokenStringUtil.validateToken(otherQueryParam, "1;1");
+    public void invalidIdHashTest() {
+        var queryParameters = new QueryParameters(Map.of(), null);
+        TokenStringUtil.validateToken(queryParameters, queryParameters.hashCode() + ";1;1");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidTokenTest() {
+        var queryParameters = new QueryParameters(Map.of(), null);
+        TokenStringUtil.validateToken(queryParameters, "1;1");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void invalidTokenMaxValueTest() {
-        var otherQueryParam = new QueryParameters(Map.of(), null);
-        TokenStringUtil.validateToken(otherQueryParam, "3147483647;3147483647;1");
+        var queryParameters = new QueryParameters(Map.of(), null);
+        TokenStringUtil.validateToken(queryParameters, "3147483647;3147483647;1");
     }
 
 
