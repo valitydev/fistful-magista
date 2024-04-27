@@ -64,7 +64,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
         map.clear();
         map.put(PARTY_ID_PARAM, UUID.randomUUID());
         walletParameters = new WalletFunction.WalletParameters(map, null);
-        wallets = searchDao.getWallets(walletParameters, Optional.of(walletData.getWalletId()), 100);
+        wallets = searchDao.getWallets(walletParameters, Optional.of(walletData.getCreatedAt()), 100);
         assertEquals(0, wallets.size());
     }
 

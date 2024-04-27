@@ -6,6 +6,7 @@ import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.geck.common.util.TypeUtil;
 import org.apache.thrift.TException;
 import org.junit.After;
 import org.junit.Before;
@@ -43,11 +44,19 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
     @Test
     public void orderTest() throws DaoException, TException {
 
-        var ids = List.of("test", "test02", "test01", "01", "2", "10", "100");
+        var createdAtList = List.of(
+                "2010-10-27T01:10:59Z",
+                "2011-11-27T02:10:59Z",
+                "2023-10-27T03:10:59Z",
+                "2023-02-27T04:10:59Z",
+                "2024-12-27T05:10:59Z",
+                "2024-10-27T06:10:59Z",
+                "2024-07-27T07:10:59Z"
+        );
 
-        for (String id : ids) {
+        for (String createdAt : createdAtList) {
             var walletData = random(WalletData.class);
-            walletData.setWalletId(id);
+            walletData.setCreatedAt(TypeUtil.stringToLocalDateTime(createdAt));
             walletDao.save(walletData);
         }
 
@@ -56,11 +65,11 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
         );
 
         var iterator = result.getData().getWallets().iterator();
-        assertEquals("01", iterator.next().getId());
-        assertEquals("2", iterator.next().getId());
-        assertEquals("10", iterator.next().getId());
-        assertEquals("100", iterator.next().getId());
-        assertEquals("test", iterator.next().getId());
+        assertEquals("2024-12-27T05:10:59Z", iterator.next().getCreatedAt());
+        assertEquals("2024-10-27T06:10:59Z", iterator.next().getCreatedAt());
+        assertEquals("2024-07-27T07:10:59Z", iterator.next().getCreatedAt());
+        assertEquals("2023-10-27T03:10:59Z", iterator.next().getCreatedAt());
+        assertEquals("2023-02-27T04:10:59Z", iterator.next().getCreatedAt());
 
         var secondResult = fistfulStatisticsHandler.getWallets(
                 new StatRequest("{'query':{'wallets':{'size':5}}}")
@@ -69,7 +78,7 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
 
         var secondIterator = secondResult.getData().getWallets().iterator();
 
-        assertEquals("test01", secondIterator.next().getId());
-        assertEquals("test02", secondIterator.next().getId());
+        assertEquals("2011-11-27T02:10:59Z", secondIterator.next().getCreatedAt());
+        assertEquals("2010-10-27T01:10:59Z", secondIterator.next().getCreatedAt());
     }
 }

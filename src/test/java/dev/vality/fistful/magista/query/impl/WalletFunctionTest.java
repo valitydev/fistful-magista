@@ -41,11 +41,13 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         walletData = random(WalletData.class);
         walletData.setId(1L);
         walletData.setWalletId("10");
+        walletData.setCreatedAt(TypeUtil.stringToLocalDateTime("2022-11-24T15:28:26Z"));
         walletData.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
         walletDao.save(walletData);
         secondWalletData = random(WalletData.class);
         secondWalletData.setId(2L);
         secondWalletData.setWalletId("test1");
+        secondWalletData.setCreatedAt(TypeUtil.stringToLocalDateTime("2023-11-24T15:28:26Z"));
         secondWalletData.setPartyId(walletData.getPartyId());
         secondWalletData.setIdentityId(walletData.getIdentityId());
         secondWalletData.setId(2L);
@@ -113,13 +115,19 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         StatResponse statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getWallets().size());
         assertNotNull(statResponse.getContinuationToken());
-        assertEquals("10", TokenStringUtil.extractIdValue(statResponse.getContinuationToken()).get());
+        assertEquals(
+                "2023-11-24T15:28:26Z",
+                TokenStringUtil.extractIdValue(statResponse.getContinuationToken()).get()
+        );
 
         statRequest.setContinuationToken(statResponse.getContinuationToken());
         statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getWallets().size());
         assertNotNull(statResponse.getContinuationToken());
-        assertEquals("test1", TokenStringUtil.extractIdValue(statResponse.getContinuationToken()).get());
+        assertEquals(
+                "2022-11-24T15:28:26Z",
+                TokenStringUtil.extractIdValue(statResponse.getContinuationToken()).get()
+        );
 
         statRequest.setContinuationToken(statResponse.getContinuationToken());
         statResponse = queryProcessor.processQuery(statRequest);
