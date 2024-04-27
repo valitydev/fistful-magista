@@ -5,6 +5,7 @@ import dev.vality.fistful.fistful_stat.StatResponseData;
 import dev.vality.fistful.fistful_stat.StatWallet;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.util.TokenStringUtil;
+import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.*;
 import dev.vality.magista.dsl.builder.AbstractQueryBuilder;
 import dev.vality.magista.dsl.builder.QueryBuilder;
@@ -13,7 +14,10 @@ import dev.vality.magista.dsl.parser.AbstractQueryParser;
 import dev.vality.magista.dsl.parser.QueryParserException;
 import dev.vality.magista.dsl.parser.QueryPart;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,7 +66,7 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
                         statResponse.setContinuationToken(
                                 TokenStringUtil.buildToken(
                                         getQueryParameters(),
-                                        walletStats.get(walletStats.size() - 1).getValue().getId()
+                                        walletStats.get(walletStats.size() - 1).getValue().getCreatedAt()
                                 )
                         );
                     }
@@ -234,10 +238,13 @@ public class WalletFunction extends PagedBaseFunction<Map.Entry<Long, StatWallet
                     getQueryParameters(),
                     getQueryParameters().getDerivedParameters());
 
+            var token = TokenStringUtil.extractIdValue(getContinuationToken())
+                    .map(TypeUtil::stringToLocalDateTime);
+
             try {
                 Collection<Map.Entry<Long, StatWallet>> result = functionContext.getSearchDao().getWallets(
                         parameters,
-                        TokenStringUtil.extractIdValue(getContinuationToken()),
+                        token,
                         parameters.getSize()
                 );
                 return new BaseQueryResult<>(result::stream, () -> result);

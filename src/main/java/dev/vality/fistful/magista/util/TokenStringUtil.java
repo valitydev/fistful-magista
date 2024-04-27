@@ -28,9 +28,9 @@ public class TokenStringUtil {
             if (params.length != 3) {
                 throw new IllegalArgumentException("Invalid token");
             }
-            long queryHashCode = Integer.parseInt(params[0]);
-            long idHashCode = Integer.parseInt(params[1]);
-            if ((long) queryParameters.hashCode() != queryHashCode || params[2].hashCode() != idHashCode) {
+            int queryHashCode = Integer.parseInt(params[0]);
+            int idHashCode = Integer.parseInt(params[1]);
+            if (queryParameters.hashCode() != queryHashCode || params[2].hashCode() != idHashCode) {
                 throw new IllegalArgumentException("Invalid token");
             }
         }
