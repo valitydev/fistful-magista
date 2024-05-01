@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>fistful-magista</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>fistful-magista</name>
@@ -197,7 +197,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.6.4</version>
+                <version>2.7.18</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
