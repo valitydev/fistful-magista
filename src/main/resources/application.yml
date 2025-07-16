@@ -32,22 +32,22 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
-    url: '@db.url@'
-    username: '@db.user@'
-    password: '@db.password@'
+    url: ${db.url}
+    username: ${db.user}
+    password: ${db.password}
     hikari:
       idle-timeout: 30000
       maximum-pool-size: 3
   flyway:
     table: schema_version
-    schemas: '@db.schema@'
+    schemas: ${db.schema}
   output:
     ansi:
       enabled: always
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: aromanov-fistful-magista-3
+      group-id: fistful-magista-3
       enable-auto-commit: false
       max-poll-records: 100
       properties:

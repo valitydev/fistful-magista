@@ -1,6 +1,7 @@
 package dev.vality.fistful.magista.dao.impl;
 
 import dev.vality.fistful.magista.AbstractIntegrationTest;
+import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.SourceDao;
 import dev.vality.fistful.magista.domain.tables.pojos.SourceData;
 import dev.vality.fistful.magista.exception.DaoException;
@@ -14,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
+@PostgresqlSpringBootITest
 public class SourceDaoImplTest extends AbstractIntegrationTest {
 
     @Autowired

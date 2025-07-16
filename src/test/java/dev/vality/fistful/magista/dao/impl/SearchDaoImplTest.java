@@ -6,6 +6,7 @@ import dev.vality.fistful.fistful_stat.StatDeposit;
 import dev.vality.fistful.fistful_stat.StatWallet;
 import dev.vality.fistful.fistful_stat.StatWithdrawal;
 import dev.vality.fistful.magista.AbstractIntegrationTest;
+import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.*;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
@@ -28,6 +29,7 @@ import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@PostgresqlSpringBootITest
 public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Autowired

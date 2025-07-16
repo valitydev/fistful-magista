@@ -10,7 +10,7 @@ import dev.vality.fistful.deposit.revert.Revert;
 import dev.vality.fistful.deposit.revert.status.Pending;
 import dev.vality.fistful.deposit.status.Status;
 import dev.vality.fistful.deposit.status.Succeeded;
-import dev.vality.fistful.magista.FistfulMagistaApplication;
+import dev.vality.fistful.magista.config.KafkaPostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.DepositAdjustmentDao;
 import dev.vality.fistful.magista.dao.DepositDao;
 import dev.vality.fistful.magista.dao.DepositRevertDao;
@@ -23,24 +23,21 @@ import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.kafka.common.serialization.ThriftSerializer;
 import dev.vality.machinegun.eventsink.SinkEvent;
-import lombok.extern.slf4j.Slf4j;
+import dev.vality.testcontainers.annotations.kafka.config.KafkaProducer;
+import org.apache.thrift.TBase;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static dev.vality.fistful.magista.data.TestData.machineEvent;
+import static dev.vality.fistful.magista.data.TestData.sinkEvent;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@Slf4j
-@DirtiesContext
-@SpringBootTest(
-        classes = FistfulMagistaApplication.class,
-        properties = {"kafka.state.cache.size=0"})
-public class DepositEventListenerTest extends AbstractListenerTest {
+@KafkaPostgresqlSpringBootITest
+public class DepositEventListenerTest {
 
     private static final long MESSAGE_TIMEOUT = 4_000L;
 
@@ -62,6 +59,9 @@ public class DepositEventListenerTest extends AbstractListenerTest {
     @Captor
     private ArgumentCaptor<DepositAdjustmentData> depositAdjustmentDataArgumentCaptor;
 
+    @Autowired
+    private KafkaProducer<TBase<?, ?>> testThriftKafkaProducer;
+
     @Test
     public void shouldDepositListenAndSave() throws InterruptedException, DaoException {
         // Given
@@ -80,14 +80,13 @@ public class DepositEventListenerTest extends AbstractListenerTest {
                 .thenReturn(new DepositData());
 
         // When
-        produce(sinkEvent, "mg-events-ff-deposit");
+        testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
         Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
         verify(depositDao, times(1))
                 .save(depositDataArgumentCaptor.capture());
-        assertThat(depositDataArgumentCaptor.getValue().getDepositStatus())
-                .isEqualTo(DepositStatus.succeeded);
+        assertEquals(DepositStatus.succeeded, depositDataArgumentCaptor.getValue().getDepositStatus());
     }
 
     @Test
@@ -112,14 +111,17 @@ public class DepositEventListenerTest extends AbstractListenerTest {
                 .thenReturn(new DepositData());
 
         // When
-        produce(sinkEvent, "mg-events-ff-deposit");
+        testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
         Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
         verify(depositRevertDao, times(1))
                 .save(depositRevertDataArgumentCaptor.capture());
-        assertThat(depositRevertDataArgumentCaptor.getValue().getStatus())
-                .isEqualTo(DepositRevertDataStatus.pending);
+        assertEquals(DepositRevertDataStatus.pending, depositRevertDataArgumentCaptor.getValue().getStatus());
+    }
+
+    private dev.vality.fistful.deposit.revert.status.Status getRevertPending() {
+        return dev.vality.fistful.deposit.revert.status.Status.pending(new Pending());
     }
 
     @Test
@@ -140,14 +142,18 @@ public class DepositEventListenerTest extends AbstractListenerTest {
                 .thenReturn(new DepositRevertData());
 
         // When
-        produce(sinkEvent, "mg-events-ff-deposit");
+        testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
         Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
         verify(depositRevertDao, times(1))
                 .save(depositRevertDataArgumentCaptor.capture());
-        assertThat(depositRevertDataArgumentCaptor.getValue().getStatus())
-                .isEqualTo(DepositRevertDataStatus.succeeded);
+        assertEquals(DepositRevertDataStatus.succeeded, depositRevertDataArgumentCaptor.getValue().getStatus());
+    }
+
+    private dev.vality.fistful.deposit.revert.status.Status getRevertSucceeded() {
+        return dev.vality.fistful.deposit.revert.status.Status.succeeded(
+                new dev.vality.fistful.deposit.revert.status.Succeeded());
     }
 
     @Test
@@ -172,14 +178,13 @@ public class DepositEventListenerTest extends AbstractListenerTest {
                 .thenReturn(new DepositData());
 
         // When
-        produce(sinkEvent, "mg-events-ff-deposit");
+        testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
         Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
         verify(depositAdjustmentDao, times(1))
                 .save(depositAdjustmentDataArgumentCaptor.capture());
-        assertThat(depositAdjustmentDataArgumentCaptor.getValue().getStatus())
-                .isEqualTo(DepositAdjustmentDataStatus.pending);
+        assertEquals(DepositAdjustmentDataStatus.pending, depositAdjustmentDataArgumentCaptor.getValue().getStatus());
     }
 
     @Test
@@ -198,14 +203,13 @@ public class DepositEventListenerTest extends AbstractListenerTest {
                 .thenReturn(new DepositAdjustmentData());
 
         // When
-        produce(sinkEvent, "mg-events-ff-deposit");
+        testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
         Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
         verify(depositAdjustmentDao, times(1))
                 .save(depositAdjustmentDataArgumentCaptor.capture());
-        assertThat(depositAdjustmentDataArgumentCaptor.getValue().getStatus())
-                .isEqualTo(DepositAdjustmentDataStatus.succeeded);
+        assertEquals(DepositAdjustmentDataStatus.succeeded, depositAdjustmentDataArgumentCaptor.getValue().getStatus());
     }
 
     private Change getAdjustment() {
@@ -219,14 +223,5 @@ public class DepositEventListenerTest extends AbstractListenerTest {
     private dev.vality.fistful.deposit.adjustment.Status getAdjustmentSucceeded() {
         return dev.vality.fistful.deposit.adjustment.Status
                 .succeeded(new dev.vality.fistful.deposit.adjustment.Succeeded());
-    }
-
-    private dev.vality.fistful.deposit.revert.status.Status getRevertPending() {
-        return dev.vality.fistful.deposit.revert.status.Status.pending(new Pending());
-    }
-
-    private dev.vality.fistful.deposit.revert.status.Status getRevertSucceeded() {
-        return dev.vality.fistful.deposit.revert.status.Status.succeeded(
-                new dev.vality.fistful.deposit.revert.status.Succeeded());
     }
 }

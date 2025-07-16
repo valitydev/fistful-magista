@@ -26,7 +26,6 @@
         <fistful-proto.version>1.166-be67e59</fistful-proto.version>
         <machinegun-proto.version>1.27-dec518d</machinegun-proto.version>
         <sink-common-lib.version>0.0.1</sink-common-lib.version>
-        <shared-resources.version>1.0.1</shared-resources.version>
         <!---->
         <db.name>fistfulmst</db.name>
         <db.port>5432</db.port>
@@ -38,11 +37,6 @@
 
     <dependencies>
         <!--vality libs-->
-        <dependency>
-            <groupId>dev.vality</groupId>
-            <artifactId>shared-resources</artifactId>
-            <version>${shared-resources.version}</version>
-        </dependency>
         <dependency>
             <groupId>dev.vality</groupId>
             <artifactId>fistful-proto</artifactId>
@@ -160,18 +154,9 @@
 
         <!--Test libs-->
         <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>kafka</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <groupId>dev.vality</groupId>
+            <artifactId>testcontainers-annotations</artifactId>
+            <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>

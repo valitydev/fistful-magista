@@ -4,6 +4,7 @@ import dev.vality.fistful.fistful_stat.StatRequest;
 import dev.vality.fistful.fistful_stat.StatResponse;
 import dev.vality.fistful.fistful_stat.StatSource;
 import dev.vality.fistful.magista.AbstractIntegrationTest;
+import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.SourceDao;
 import dev.vality.fistful.magista.domain.tables.pojos.SourceData;
 import dev.vality.fistful.magista.exception.DaoException;
@@ -25,6 +26,7 @@ import java.util.UUID;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
+@PostgresqlSpringBootITest
 public class SourceFunctionTest extends AbstractIntegrationTest {
 
     @Autowired
