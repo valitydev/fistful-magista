@@ -17,7 +17,7 @@ import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.query.impl.WalletFunction;
 import dev.vality.fistful.magista.query.impl.WithdrawalFunction;
 import dev.vality.fistful.magista.query.impl.parameters.DepositParameters;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -25,8 +25,8 @@ import java.util.*;
 
 import static dev.vality.fistful.magista.query.impl.Parameters.*;
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchDaoImplTest extends AbstractIntegrationTest {
 

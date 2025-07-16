@@ -8,16 +8,16 @@ import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.geck.common.util.TypeUtil;
 import org.apache.thrift.TException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WalletFunctionOrderTest extends AbstractIntegrationTest {
 
@@ -30,13 +30,13 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
     @Autowired
     private FistfulStatisticsSrv.Iface fistfulStatisticsHandler;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         super.before();
         jdbcTemplate.execute("truncate mst.wallet_data");
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.wallet_data");
     }

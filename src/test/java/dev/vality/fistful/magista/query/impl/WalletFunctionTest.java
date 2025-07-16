@@ -11,9 +11,9 @@ import dev.vality.fistful.magista.util.TokenStringUtil;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WalletFunctionTest extends AbstractIntegrationTest {
 
@@ -35,7 +35,7 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
     private WalletData walletData;
     private WalletData secondWalletData;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         super.before();
         walletData = random(WalletData.class);
@@ -56,7 +56,7 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         walletDao.save(secondWalletData);
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.wallet_data");
     }
@@ -100,10 +100,12 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         assertEquals(2, wallets.size());
     }
 
-    @Test(expected = QueryParserException.class)
+    @Test
     public void testWhenSizeOverflow() {
         String json = "{'query': {'wallets': {'size': 1001}}}";
-        queryProcessor.processQuery(new StatRequest(json));
+        assertThrows(QueryParserException.class, () -> {
+            queryProcessor.processQuery(new StatRequest(json));
+        });
     }
 
     @Test
@@ -141,14 +143,16 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
         assertEquals(0, statResponse.getData().getWallets().size());
     }
 
-    @Test(expected = BadTokenException.class)
+    @Test
     public void testBadToken() {
         String json = String.format("{'query': {'wallets': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
                 walletData.getPartyId(),
                 walletData.getIdentityId());
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());
-        queryProcessor.processQuery(statRequest);
+        assertThrows(BadTokenException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 
 

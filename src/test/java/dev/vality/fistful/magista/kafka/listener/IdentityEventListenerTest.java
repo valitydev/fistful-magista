@@ -9,8 +9,7 @@ import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.kafka.common.serialization.ThriftSerializer;
 import dev.vality.machinegun.eventsink.SinkEvent;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +24,6 @@ import static org.mockito.Mockito.*;
 
 @Slf4j
 @DirtiesContext
-@RunWith(SpringRunner.class)
 @SpringBootTest(
         classes = FistfulMagistaApplication.class,
         properties = {"kafka.state.cache.size=0"})

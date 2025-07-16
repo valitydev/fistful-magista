@@ -20,15 +20,18 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.thrift.TBase;
-import org.junit.Before;
-import org.junit.ClassRule;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.containers.KafkaContainer;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.kafka.KafkaContainer;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -37,25 +40,23 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.*;
 
+@Testcontainers
 @Slf4j
 @ContextConfiguration(initializers = {
-        AbstractListenerTest.KafkaInitializer.class,
-        AbstractListenerTest.PostgresInitializer.class})
+        AbstractListenerTest.KafkaInitializer.class})
 public abstract class AbstractListenerTest {
 
-    @ClassRule
-    public static KafkaContainer kafka = new KafkaContainer("5.0.1")
-            .withEmbeddedZookeeper();
+    @Container
+    public static KafkaContainer kafka = new KafkaContainer("apache/kafka");
 
-    @ClassRule
+    @Container
     @SuppressWarnings("rawtypes")
-    public static PostgreSQLContainer postgres = (PostgreSQLContainer) new PostgreSQLContainer("postgres:10")
-            .withStartupTimeout(Duration.ofMinutes(5));
+    public static PostgreSQLContainer postgres = new PostgreSQLContainer<>("postgres:17");
 
     @MockBean
     private ManagementSrv.Iface identityManagementClient;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         IdentityState identityState = new IdentityState("name", UUID.randomUUID().toString(), "provider");
         identityState.setBlocking(Blocking.unblocked);
@@ -91,24 +92,20 @@ public abstract class AbstractListenerTest {
         }
     }
 
-    public static class PostgresInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        @Override
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues.of(
-                    "spring.datasource.url=" + postgres.getJdbcUrl(),
-                    "spring.datasource.username=" + postgres.getUsername(),
-                    "spring.datasource.password=" + postgres.getPassword(),
-                    "spring.flyway.url=" + postgres.getJdbcUrl(),
-                    "spring.flyway.user=" + postgres.getUsername(),
-                    "spring.flyway.password=" + postgres.getPassword(),
-                    "kafka.topic.deposit.listener.enabled=true",
-                    "kafka.topic.withdrawal.listener.enabled=true",
-                    "kafka.topic.wallet.listener.enabled=true",
-                    "kafka.topic.source.listener.enabled=true",
-                    "kafka.topic.identity.listener.enabled=true")
-                    .and(configurableApplicationContext.getEnvironment().getActiveProfiles())
-                    .applyTo(configurableApplicationContext);
-        }
+    @DynamicPropertySource
+    static void dataSourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("flyway.url", postgres::getJdbcUrl);
+        registry.add("flyway.user", postgres::getUsername);
+        registry.add("flyway.password", postgres::getPassword);
+
+        registry.add("kafka.topic.deposit.listener.enabled", Boolean.TRUE::toString);
+        registry.add("kafka.topic.withdrawal.listener.enabled", Boolean.TRUE::toString);
+        registry.add("kafka.topic.wallet.listener.enabled", Boolean.TRUE::toString);
+        registry.add("kafka.topic.source.listener.enabled", Boolean.TRUE::toString);
+        registry.add("kafka.topic.identity.listener.enabled", Boolean.TRUE::toString);
     }
 
     public static <T> Producer<String, T> producer() {

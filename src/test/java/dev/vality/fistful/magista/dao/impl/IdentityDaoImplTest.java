@@ -4,14 +4,14 @@ import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.IdentityDao;
 import dev.vality.fistful.magista.domain.tables.pojos.IdentityData;
 import dev.vality.fistful.magista.exception.DaoException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IdentityDaoImplTest extends AbstractIntegrationTest {
 
@@ -23,13 +23,13 @@ public class IdentityDaoImplTest extends AbstractIntegrationTest {
 
     private IdentityData identityData;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         identityData = random(IdentityData.class);
         identityDao.save(identityData);
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.identity_data");
     }

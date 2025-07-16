@@ -4,12 +4,12 @@ import dev.vality.fistful.magista.AbstractIntegrationTest;
 import dev.vality.fistful.magista.dao.IdentityDao;
 import dev.vality.fistful.magista.domain.tables.pojos.ChallengeData;
 import dev.vality.fistful.magista.exception.DaoException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ChallengeDaoImplTest extends AbstractIntegrationTest {
 
@@ -18,7 +18,7 @@ public class ChallengeDaoImplTest extends AbstractIntegrationTest {
 
     private ChallengeData challengeData;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         challengeData = random(ChallengeData.class);
         identityDao.save(challengeData);

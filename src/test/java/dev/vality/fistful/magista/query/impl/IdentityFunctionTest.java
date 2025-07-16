@@ -13,9 +13,9 @@ import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class IdentityFunctionTest extends AbstractIntegrationTest {
 
@@ -40,7 +40,7 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
     private ChallengeData challengeDataSecond;
     private ChallengeData challengeDataThird;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         super.before();
         identityData = random(IdentityData.class);
@@ -91,7 +91,7 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         identityDao.save(challengeDataThird);
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.identity_data; truncate mst.challenge_data");
     }
@@ -264,10 +264,12 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         assertEquals(1, identities.size());
     }
 
-    @Test(expected = QueryParserException.class)
+    @Test
     public void testWhenSizeOverflow() {
         String json = "{'query': {'identities': {'size': 1001}}}";
-        queryProcessor.processQuery(new StatRequest(json));
+        assertThrows(QueryParserException.class, () -> {
+            queryProcessor.processQuery(new StatRequest(json));
+        });
     }
 
     @Test
@@ -311,7 +313,7 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         assertEquals(0, statResponse.getData().getIdentities().size());
     }
 
-    @Test(expected = BadTokenException.class)
+    @Test
     public void testBadToken() {
         String json = String.format(
                 "{'query': {'identities': {" +
@@ -329,7 +331,9 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         );
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());
-        queryProcessor.processQuery(statRequest);
+        assertThrows(BadTokenException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 
     @Test
@@ -341,10 +345,12 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         assertEquals(expectedSize, String.valueOf(statResponse.getData().getIdentities().size()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWhenPartyIdIncorrect() {
         String dsl = "{'query': {'identities': {'party_id': 'qwe'}}}";
         StatRequest statRequest = new StatRequest(dsl);
-        queryProcessor.processQuery(statRequest);
+        assertThrows(IllegalArgumentException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 }

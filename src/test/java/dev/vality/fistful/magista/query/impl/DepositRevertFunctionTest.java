@@ -11,9 +11,9 @@ import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DepositRevertFunctionTest extends AbstractIntegrationTest {
 
@@ -36,7 +36,7 @@ public class DepositRevertFunctionTest extends AbstractIntegrationTest {
     private DepositRevertData depositRevertData;
     private DepositRevertData secondDepositRevertData;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         super.before();
         depositRevertData = random(DepositRevertData.class);
@@ -52,7 +52,7 @@ public class DepositRevertFunctionTest extends AbstractIntegrationTest {
         depositRevertDao.save(secondDepositRevertData);
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.deposit_revert_data");
     }
@@ -104,10 +104,12 @@ public class DepositRevertFunctionTest extends AbstractIntegrationTest {
         assertEquals(2, depositReverts.size());
     }
 
-    @Test(expected = QueryParserException.class)
+    @Test
     public void testWhenSizeOverflow() {
         String json = "{'query': {'deposit_reverts': {'size': 1001}}}";
-        queryProcessor.processQuery(new StatRequest(json));
+        assertThrows(QueryParserException.class, () -> {
+            queryProcessor.processQuery(new StatRequest(json));
+        });
     }
 
     @Test
@@ -142,7 +144,7 @@ public class DepositRevertFunctionTest extends AbstractIntegrationTest {
         assertEquals(0, statResponse.getData().getDepositReverts().size());
     }
 
-    @Test(expected = BadTokenException.class)
+    @Test
     public void testBadToken() {
         String json = String.format(
                 "{'query': {'deposit_reverts': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
@@ -151,7 +153,9 @@ public class DepositRevertFunctionTest extends AbstractIntegrationTest {
         );
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());
-        queryProcessor.processQuery(statRequest);
+        assertThrows(BadTokenException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 
     @Test
@@ -162,10 +166,12 @@ public class DepositRevertFunctionTest extends AbstractIntegrationTest {
         assertEquals(1, statResponse.getData().getDepositReverts().size());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWhenPartyIdIncorrect() {
         String dsl = "{'query': {'deposit_reverts': {'party_id': 'qwe'}}}";
         StatRequest statRequest = new StatRequest(dsl);
-        queryProcessor.processQuery(statRequest);
+        assertThrows(IllegalArgumentException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 }

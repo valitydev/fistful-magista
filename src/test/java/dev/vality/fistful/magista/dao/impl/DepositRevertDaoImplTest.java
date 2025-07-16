@@ -7,13 +7,13 @@ import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.exception.DaoException;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
 
@@ -61,7 +61,7 @@ public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
         assertTrue(depositRevertDao.save(deposit).isPresent());
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.deposit_revert_data");
     }
