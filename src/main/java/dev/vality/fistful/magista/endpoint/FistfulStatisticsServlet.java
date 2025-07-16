@@ -2,10 +2,10 @@ package dev.vality.fistful.magista.endpoint;
 
 import dev.vality.fistful.fistful_stat.FistfulStatisticsSrv;
 import dev.vality.woody.thrift.impl.http.THServiceBuilder;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/stat", "/fistful/stat"})

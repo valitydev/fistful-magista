@@ -28,7 +28,7 @@ public class SourceEventListener {
             containerFactory = "sourceEventListenerContainerFactory")
     public void listen(
             List<SinkEvent> batch,
-            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
             @Header(KafkaHeaders.OFFSET) int offset,
             Acknowledgment ack) throws InterruptedException {
         log.info("Listening Source: partition={}, offset={}, batch.size()={}", partition, offset, batch.size());
