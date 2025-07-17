@@ -5,16 +5,16 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.DepositRevertDao;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataEventType;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
-import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositRevertData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @PostgresqlSpringBootITest
 public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
@@ -27,7 +27,7 @@ public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void depositRevertDaoTest() throws DaoException {
-        DepositRevertData deposit = random(DepositRevertData.class);
+        DepositRevertData deposit = TestDataGenerator.create(DepositRevertData.class);
         deposit.setId(null);
         deposit.setStatus(DepositRevertDataStatus.pending);
         deposit.setEventType(DepositRevertDataEventType.DEPOSIT_REVERT_CREATED);
@@ -53,7 +53,7 @@ public class DepositRevertDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testDuplication() throws DaoException {
-        DepositRevertData deposit = random(DepositRevertData.class);
+        DepositRevertData deposit = TestDataGenerator.create(DepositRevertData.class);
         deposit.setId(null);
         depositRevertDao.save(deposit);
         Long eventId = deposit.getEventId();

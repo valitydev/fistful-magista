@@ -7,13 +7,14 @@ import dev.vality.fistful.magista.domain.enums.DepositAdjustmentDataEventType;
 import dev.vality.fistful.magista.domain.enums.DepositAdjustmentDataStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositAdjustmentData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @PostgresqlSpringBootITest
 public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
@@ -26,7 +27,7 @@ public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void depositAdjustmentDaoTest() throws DaoException {
-        DepositAdjustmentData deposit = random(DepositAdjustmentData.class);
+        DepositAdjustmentData deposit = TestDataGenerator.create(DepositAdjustmentData.class);
         deposit.setId(null);
         deposit.setStatus(DepositAdjustmentDataStatus.pending);
         deposit.setEventType(DepositAdjustmentDataEventType.DEPOSIT_ADJUSTMENT_CREATED);
@@ -53,7 +54,7 @@ public class DepositAdjusmentDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testDuplication() throws DaoException {
-        DepositAdjustmentData deposit = random(DepositAdjustmentData.class);
+        DepositAdjustmentData deposit = TestDataGenerator.create(DepositAdjustmentData.class);
         deposit.setId(null);
         depositAdjustmentDao.save(deposit);
 

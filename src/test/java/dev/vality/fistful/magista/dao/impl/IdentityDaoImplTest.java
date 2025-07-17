@@ -5,13 +5,13 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.IdentityDao;
 import dev.vality.fistful.magista.domain.tables.pojos.IdentityData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -27,7 +27,7 @@ public class IdentityDaoImplTest extends AbstractIntegrationTest {
 
     @BeforeEach
     public void before() throws DaoException {
-        identityData = random(IdentityData.class);
+        identityData = TestDataGenerator.create(IdentityData.class);
         identityDao.save(identityData);
     }
 

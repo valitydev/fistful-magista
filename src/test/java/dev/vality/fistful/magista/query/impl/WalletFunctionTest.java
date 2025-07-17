@@ -8,6 +8,7 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.fistful.magista.util.TokenStringUtil;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
@@ -22,7 +23,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -40,13 +40,13 @@ public class WalletFunctionTest extends AbstractIntegrationTest {
     @BeforeEach
     public void before() throws DaoException {
         super.before();
-        walletData = random(WalletData.class);
+        walletData = TestDataGenerator.create(WalletData.class);
         walletData.setId(1L);
         walletData.setWalletId("10");
         walletData.setCreatedAt(TypeUtil.stringToLocalDateTime("2022-11-24T15:28:26Z"));
         walletData.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
         walletDao.save(walletData);
-        secondWalletData = random(WalletData.class);
+        secondWalletData = TestDataGenerator.create(WalletData.class);
         secondWalletData.setId(2L);
         secondWalletData.setWalletId("test1");
         secondWalletData.setCreatedAt(TypeUtil.stringToLocalDateTime("2023-11-24T15:28:26Z"));

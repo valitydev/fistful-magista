@@ -3,7 +3,6 @@ package dev.vality.fistful.magista.kafka.listener;
 import dev.vality.fistful.Blocking;
 import dev.vality.fistful.base.EventRange;
 import dev.vality.fistful.identity.*;
-import dev.vality.fistful.magista.FistfulMagistaApplication;
 import dev.vality.fistful.magista.config.KafkaPostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.IdentityDao;
 import dev.vality.fistful.magista.domain.tables.pojos.ChallengeData;
@@ -12,17 +11,13 @@ import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.kafka.common.serialization.ThriftSerializer;
 import dev.vality.machinegun.eventsink.SinkEvent;
 import dev.vality.testcontainers.annotations.kafka.config.KafkaProducer;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.thrift.TBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.UUID;
 
@@ -36,10 +31,10 @@ public class IdentityEventListenerTest {
 
     private static final long MESSAGE_TIMEOUT = 4_000L;
 
-    @MockBean
+    @MockitoBean
     private IdentityDao identityDao;
 
-    @MockBean
+    @MockitoBean
     private ManagementSrv.Iface identityManagementClient;
 
     @Captor
@@ -71,10 +66,9 @@ public class IdentityEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-identity", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(identityDao, times(1))
+        verify(identityDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(identityCaptor.capture());
         assertThat(identityCaptor.getValue().getPartyId().toString())
                 .isEqualTo(expected);
@@ -95,10 +89,9 @@ public class IdentityEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-identity", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(identityDao, times(1))
+        verify(identityDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(identityCaptor.capture());
         assertThat(identityCaptor.getValue().getIdentityLevelId())
                 .isEqualTo(expected);
@@ -119,10 +112,9 @@ public class IdentityEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-identity", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(identityDao, times(1))
+        verify(identityDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(identityCaptor.capture());
         assertThat(identityCaptor.getValue().getIdentityEffectiveChallengeId())
                 .isEqualTo(expected);
@@ -140,10 +132,9 @@ public class IdentityEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-identity", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(identityDao, times(1))
+        verify(identityDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(challengeCaptor.capture());
         assertThat(challengeCaptor.getValue().getChallengeClassId())
                 .isEqualTo(expected);
@@ -163,10 +154,9 @@ public class IdentityEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-identity", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(identityDao, times(1))
+        verify(identityDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(challengeCaptor.capture());
         assertThat(challengeCaptor.getValue().getChallengeStatus())
                 .isEqualTo(dev.vality.fistful.magista.domain.enums.ChallengeStatus.completed);

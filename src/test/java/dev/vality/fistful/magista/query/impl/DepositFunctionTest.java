@@ -8,6 +8,7 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.DepositDao;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
@@ -23,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -41,10 +41,10 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     @BeforeEach
     public void before() throws DaoException {
         super.before();
-        deposit = random(DepositData.class);
+        deposit = TestDataGenerator.create(DepositData.class);
         deposit.setId(1L);
         deposit.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
-        secondDeposit = random(DepositData.class);
+        secondDeposit = TestDataGenerator.create(DepositData.class);
         secondDeposit.setId(2L);
         secondDeposit.setPartyId(deposit.getPartyId());
         secondDeposit.setIdentityId(deposit.getIdentityId());

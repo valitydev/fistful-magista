@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static dev.vality.fistful.magista.data.TestData.machineEvent;
 import static dev.vality.fistful.magista.data.TestData.sinkEvent;
@@ -41,13 +41,13 @@ public class DepositEventListenerTest {
 
     private static final long MESSAGE_TIMEOUT = 4_000L;
 
-    @MockBean
+    @MockitoBean
     private DepositDao depositDao;
 
-    @MockBean
+    @MockitoBean
     private DepositRevertDao depositRevertDao;
 
-    @MockBean
+    @MockitoBean
     private DepositAdjustmentDao depositAdjustmentDao;
 
     @Captor
@@ -81,10 +81,9 @@ public class DepositEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(depositDao, times(1))
+        verify(depositDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(depositDataArgumentCaptor.capture());
         assertEquals(DepositStatus.succeeded, depositDataArgumentCaptor.getValue().getDepositStatus());
     }
@@ -112,10 +111,9 @@ public class DepositEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(depositRevertDao, times(1))
+        verify(depositRevertDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(depositRevertDataArgumentCaptor.capture());
         assertEquals(DepositRevertDataStatus.pending, depositRevertDataArgumentCaptor.getValue().getStatus());
     }
@@ -143,10 +141,9 @@ public class DepositEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(depositRevertDao, times(1))
+        verify(depositRevertDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(depositRevertDataArgumentCaptor.capture());
         assertEquals(DepositRevertDataStatus.succeeded, depositRevertDataArgumentCaptor.getValue().getStatus());
     }
@@ -179,10 +176,9 @@ public class DepositEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(depositAdjustmentDao, times(1))
+        verify(depositAdjustmentDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(depositAdjustmentDataArgumentCaptor.capture());
         assertEquals(DepositAdjustmentDataStatus.pending, depositAdjustmentDataArgumentCaptor.getValue().getStatus());
     }
@@ -204,10 +200,9 @@ public class DepositEventListenerTest {
 
         // When
         testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
-        Thread.sleep(MESSAGE_TIMEOUT);
 
         // Then
-        verify(depositAdjustmentDao, times(1))
+        verify(depositAdjustmentDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(depositAdjustmentDataArgumentCaptor.capture());
         assertEquals(DepositAdjustmentDataStatus.succeeded, depositAdjustmentDataArgumentCaptor.getValue().getStatus());
     }

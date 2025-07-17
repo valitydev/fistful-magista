@@ -10,6 +10,7 @@ import dev.vality.fistful.magista.domain.enums.ChallengeStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.ChallengeData;
 import dev.vality.fistful.magista.domain.tables.pojos.IdentityData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
@@ -24,7 +25,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -45,13 +45,13 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
     @BeforeEach
     public void before() throws DaoException {
         super.before();
-        identityData = random(IdentityData.class);
+        identityData = TestDataGenerator.create(IdentityData.class);
         identityData.setId(1L);
         identityData.setIdentityId("1");
         identityData.setIdentityProviderId("test");
         identityData.setCreatedAt(LocalDateTime.now().minusMinutes(1));
 
-        identityDataSecond = random(IdentityData.class);
+        identityDataSecond = TestDataGenerator.create(IdentityData.class);
         identityDataSecond.setId(2L);
         identityDataSecond.setIdentityId("2");
         identityDataSecond.setIdentityProviderId(identityData.getIdentityProviderId());
@@ -62,7 +62,7 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         identityDao.save(identityData);
         identityDao.save(identityDataSecond);
 
-        challengeData = random(ChallengeData.class);
+        challengeData = TestDataGenerator.create(ChallengeData.class);
         challengeData.setId(1L);
         challengeData.setChallengeId("1");
         challengeData.setIdentityId(identityData.getIdentityId());
@@ -70,7 +70,7 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         challengeData.setChallengeStatus(ChallengeStatus.pending);
         challengeData.setChallengeValidUntil(LocalDateTime.now().minusMinutes(1));
 
-        challengeDataSecond = random(ChallengeData.class);
+        challengeDataSecond = TestDataGenerator.create(ChallengeData.class);
         challengeDataSecond.setId(2L);
         challengeDataSecond.setChallengeId("2");
         challengeDataSecond.setIdentityId(challengeData.getIdentityId());
@@ -79,7 +79,7 @@ public class IdentityFunctionTest extends AbstractIntegrationTest {
         challengeDataSecond.setCreatedAt(LocalDateTime.now().minusMinutes(1));
         challengeDataSecond.setChallengeValidUntil(LocalDateTime.now().minusMinutes(1));
 
-        challengeDataThird = random(ChallengeData.class);
+        challengeDataThird = TestDataGenerator.create(ChallengeData.class);
         challengeDataThird.setId(3L);
         challengeDataThird.setChallengeId("3");
         challengeDataThird.setIdentityId(identityDataSecond.getIdentityId());

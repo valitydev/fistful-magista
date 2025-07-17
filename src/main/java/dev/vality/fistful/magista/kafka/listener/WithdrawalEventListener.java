@@ -4,7 +4,6 @@ import dev.vality.fistful.magista.service.WithdrawalEventService;
 import dev.vality.machinegun.eventsink.SinkEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;

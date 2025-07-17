@@ -1,7 +1,7 @@
 package dev.vality.fistful.magista.service;
 
-import dev.vality.fistful.source.TimestampedChange;
 import dev.vality.fistful.magista.handler.source.SourceEventHandler;
+import dev.vality.fistful.source.TimestampedChange;
 import dev.vality.machinegun.eventsink.MachineEvent;
 import dev.vality.sink.common.parser.impl.MachineEventParser;
 import lombok.RequiredArgsConstructor;

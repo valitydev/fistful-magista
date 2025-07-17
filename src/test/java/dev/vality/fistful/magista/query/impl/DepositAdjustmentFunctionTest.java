@@ -8,6 +8,7 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.DepositAdjustmentDao;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositAdjustmentData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
@@ -23,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -41,10 +41,10 @@ public class DepositAdjustmentFunctionTest extends AbstractIntegrationTest {
     @BeforeEach
     public void before() throws DaoException {
         super.before();
-        depositAdjustmentData = random(DepositAdjustmentData.class);
+        depositAdjustmentData = TestDataGenerator.create(DepositAdjustmentData.class);
         depositAdjustmentData.setId(1L);
         depositAdjustmentData.setCreatedAt(LocalDateTime.now().minusMinutes(1));
-        secondDepositAdjustmentData = random(DepositAdjustmentData.class);
+        secondDepositAdjustmentData = TestDataGenerator.create(DepositAdjustmentData.class);
         secondDepositAdjustmentData.setId(2L);
         secondDepositAdjustmentData.setPartyId(depositAdjustmentData.getPartyId());
         secondDepositAdjustmentData.setIdentityId(depositAdjustmentData.getIdentityId());

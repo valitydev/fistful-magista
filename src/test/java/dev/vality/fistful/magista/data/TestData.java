@@ -6,18 +6,7 @@ import dev.vality.machinegun.eventsink.SinkEvent;
 import dev.vality.machinegun.msgpack.Value;
 import org.apache.thrift.TBase;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import static dev.vality.testcontainers.annotations.util.RandomBeans.random;
-import static dev.vality.testcontainers.annotations.util.RandomBeans.randomListOf;
-import static dev.vality.testcontainers.annotations.util.ValuesGenerator.*;
-
 public class TestData {
-
-    public static final String partyId = generateString();
-    public static final String walletId = generateString();
 
     public static SinkEvent sinkEvent(MachineEvent machineEvent) {
         SinkEvent sinkEvent = new SinkEvent();

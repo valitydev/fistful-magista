@@ -8,6 +8,7 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.WithdrawalDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WithdrawalData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
@@ -23,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -41,12 +41,12 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     @BeforeEach
     public void before() throws DaoException {
         super.before();
-        withdrawalData = random(WithdrawalData.class);
+        withdrawalData = TestDataGenerator.create(WithdrawalData.class);
         withdrawalData.setId(1L);
         withdrawalData.setCreatedAt(LocalDateTime.now().minusMinutes(1));
         withdrawalData.setWithdrawalId(withdrawalData.getWithdrawalId());
         withdrawalDao.save(withdrawalData);
-        secondWithdrawalData = random(WithdrawalData.class);
+        secondWithdrawalData = TestDataGenerator.create(WithdrawalData.class);
         secondWithdrawalData.setId(2L);
         secondWithdrawalData.setPartyId(withdrawalData.getPartyId());
         secondWithdrawalData.setIdentityId(withdrawalData.getIdentityId());

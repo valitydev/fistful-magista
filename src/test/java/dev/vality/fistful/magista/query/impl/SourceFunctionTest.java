@@ -8,6 +8,7 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.SourceDao;
 import dev.vality.fistful.magista.domain.tables.pojos.SourceData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
@@ -23,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
@@ -41,12 +41,12 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
     @BeforeEach
     public void before() throws DaoException {
         super.before();
-        sourceData = random(SourceData.class);
+        sourceData = TestDataGenerator.create(SourceData.class);
         sourceData.setId(1L);
         sourceData.setCreatedAt(LocalDateTime.now().minusMinutes(1));
         sourceData.setSourceId(sourceData.getSourceId());
         sourceDao.save(sourceData);
-        secondSourceData = random(SourceData.class);
+        secondSourceData = TestDataGenerator.create(SourceData.class);
         secondSourceData.setId(2L);
         secondSourceData.setAccountIdentityId(sourceData.getAccountIdentityId());
         secondSourceData.setCreatedAt(LocalDateTime.now());

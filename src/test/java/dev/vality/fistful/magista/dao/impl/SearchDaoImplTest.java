@@ -18,6 +18,7 @@ import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.query.impl.WalletFunction;
 import dev.vality.fistful.magista.query.impl.WithdrawalFunction;
 import dev.vality.fistful.magista.query.impl.parameters.DepositParameters;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -25,7 +26,6 @@ import org.springframework.util.StringUtils;
 import java.util.*;
 
 import static dev.vality.fistful.magista.query.impl.Parameters.*;
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -49,7 +49,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetWallets() throws DaoException {
-        WalletData walletData = random(WalletData.class);
+        WalletData walletData = TestDataGenerator.create(WalletData.class);
         walletDao.save(walletData);
         HashMap<String, Object> map = new HashMap<>();
         map.put(PARTY_ID_PARAM, walletData.getPartyId());
@@ -72,7 +72,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetWithdrawals() throws DaoException {
-        WithdrawalData withdrawalData = random(WithdrawalData.class);
+        WithdrawalData withdrawalData = TestDataGenerator.create(WithdrawalData.class);
         withdrawalData.setWithdrawalStatus(WithdrawalStatus.failed);
         withdrawalData.setErrorCode("authorization_failed");
         withdrawalData.setErrorReason(null);
@@ -125,7 +125,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetWithdrawalsWithErrors() throws DaoException {
-        WithdrawalData withdrawalData = random(WithdrawalData.class);
+        WithdrawalData withdrawalData = TestDataGenerator.create(WithdrawalData.class);
         withdrawalData.setWithdrawalStatus(WithdrawalStatus.failed);
         withdrawalData.setErrorCode("authorization_failed");
         withdrawalData.setErrorReason(null);
@@ -165,7 +165,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetWithdrawalsByProviderId() throws DaoException {
-        WithdrawalData withdrawalData = random(WithdrawalData.class);
+        WithdrawalData withdrawalData = TestDataGenerator.create(WithdrawalData.class);
         withdrawalData.setWithdrawalStatus(WithdrawalStatus.succeeded);
         withdrawalDao.save(withdrawalData);
 
@@ -191,7 +191,7 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testGetDeposits() throws DaoException {
-        DepositData deposit = random(DepositData.class);
+        DepositData deposit = TestDataGenerator.create(DepositData.class);
         depositDao.save(deposit);
 
         HashMap<String, Object> map = buildDepositSearchMap(deposit);
@@ -211,10 +211,10 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testRevertStatusFullDeposits() throws DaoException {
-        DepositData depositOne = random(DepositData.class);
+        DepositData depositOne = TestDataGenerator.create(DepositData.class);
         depositDao.save(depositOne);
 
-        DepositRevertData depositRevertDataOne = random(DepositRevertData.class);
+        DepositRevertData depositRevertDataOne = TestDataGenerator.create(DepositRevertData.class);
         depositRevertDataOne.setStatus(DepositRevertDataStatus.succeeded);
         depositRevertDataOne.setPartyId(depositOne.getPartyId());
         depositRevertDataOne.setWalletId(depositOne.getWalletId());
@@ -230,10 +230,10 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testRevertStatusNoneDeposits() throws DaoException {
-        DepositData depositOne = random(DepositData.class);
+        DepositData depositOne = TestDataGenerator.create(DepositData.class);
         depositDao.save(depositOne);
 
-        DepositRevertData depositRevertDataOne = random(DepositRevertData.class);
+        DepositRevertData depositRevertDataOne = TestDataGenerator.create(DepositRevertData.class);
         depositRevertDataOne.setStatus(DepositRevertDataStatus.pending);
         depositRevertDataOne.setPartyId(depositOne.getPartyId());
         depositRevertDataOne.setWalletId(depositOne.getWalletId());
@@ -249,18 +249,18 @@ public class SearchDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testRevertStatusPartialDeposits() throws DaoException {
-        DepositData depositOne = random(DepositData.class);
+        DepositData depositOne = TestDataGenerator.create(DepositData.class);
         depositOne.setAmount(100L);
         depositDao.save(depositOne);
 
-        DepositRevertData depositRevertDataOne = random(DepositRevertData.class);
+        DepositRevertData depositRevertDataOne = TestDataGenerator.create(DepositRevertData.class);
         depositRevertDataOne.setStatus(DepositRevertDataStatus.succeeded);
         depositRevertDataOne.setPartyId(depositOne.getPartyId());
         depositRevertDataOne.setWalletId(depositOne.getWalletId());
         depositRevertDataOne.setDepositId(depositOne.getDepositId());
         depositRevertDataOne.setAmount(50L);
 
-        DepositRevertData depositRevertDataTwo = random(DepositRevertData.class);
+        DepositRevertData depositRevertDataTwo = TestDataGenerator.create(DepositRevertData.class);
         depositRevertDataTwo.setStatus(DepositRevertDataStatus.succeeded);
         depositRevertDataTwo.setPartyId(depositOne.getPartyId());
         depositRevertDataTwo.setWalletId(depositOne.getWalletId());

@@ -1,11 +1,11 @@
 package dev.vality.fistful.magista.dao.impl;
 
+import com.zaxxer.hikari.HikariDataSource;
 import dev.vality.fistful.magista.dao.DepositAdjustmentDao;
 import dev.vality.fistful.magista.dao.impl.mapper.RecordRowMapper;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositAdjustmentData;
 import dev.vality.fistful.magista.domain.tables.records.DepositAdjustmentDataRecord;
 import dev.vality.fistful.magista.exception.DaoException;
-import com.zaxxer.hikari.HikariDataSource;
 import org.jooq.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;

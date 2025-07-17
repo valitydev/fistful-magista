@@ -7,6 +7,7 @@ import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import org.apache.thrift.TException;
 import org.junit.jupiter.api.AfterEach;
@@ -17,8 +18,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @PostgresqlSpringBootITest
 public class WalletFunctionOrderTest extends AbstractIntegrationTest {
@@ -57,7 +57,7 @@ public class WalletFunctionOrderTest extends AbstractIntegrationTest {
         );
 
         for (String createdAt : createdAtList) {
-            var walletData = random(WalletData.class);
+            var walletData = TestDataGenerator.create(WalletData.class);
             walletData.setCreatedAt(TypeUtil.stringToLocalDateTime(createdAt));
             walletDao.save(walletData);
         }
