@@ -65,11 +65,11 @@ kafka:
     identity:
       name: mg-events-ff-identity
       listener:
-        enabled: false
+
     wallet:
       name: mg-events-ff-wallet
       listener:
-        enabled: false
+
     withdrawal:
       name: mg-events-ff-withdrawal
       listener:
@@ -78,6 +78,3 @@ kafka:
       name: mg-events-ff-source
       listener:
         enabled: false
-identity-management:
-  url: http://hellgate:8022/v1/processing/identity-management
-  timeout: 5000

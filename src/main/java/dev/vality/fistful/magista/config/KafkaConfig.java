@@ -32,16 +32,6 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, MachineEvent> identityEventListenerContainerFactory() {
-        return listenerContainerFactory();
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, MachineEvent> walletEventListenerContainerFactory() {
-        return listenerContainerFactory();
-    }
-
-    @Bean
     public ConcurrentKafkaListenerContainerFactory<String, MachineEvent> withdrawalEventListenerContainerFactory() {
         return listenerContainerFactory();
     }

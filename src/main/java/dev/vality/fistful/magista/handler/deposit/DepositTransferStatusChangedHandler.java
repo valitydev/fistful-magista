@@ -41,7 +41,7 @@ public class DepositTransferStatusChangedHandler implements DepositEventHandler 
             long eventId = event.getEventId();
             String depositId = event.getSourceId();
             LocalDateTime eventCreatedAt = TypeUtil.stringToLocalDateTime(event.getCreatedAt());
-            LocalDateTime eventOccuredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
+            LocalDateTime eventOccurredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
 
             log.info("Start deposit transfer status changed handling: eventId={}, depositId={}, transferChange={}",
                     eventId, depositId, change.getChange().getTransfer());
@@ -51,7 +51,7 @@ public class DepositTransferStatusChangedHandler implements DepositEventHandler 
                     depositData,
                     eventId,
                     eventCreatedAt,
-                    eventOccuredAt,
+                    eventOccurredAt,
                     DepositEventType.DEPOSIT_TRANSFER_STATUS_CHANGED);
             depositData.setDepositTransferStatus(TBaseUtil.unionFieldToEnum(status, DepositTransferStatus.class));
 

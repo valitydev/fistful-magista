@@ -1,7 +1,11 @@
 package dev.vality.fistful.magista.dao.impl.mapper;
 
+import dev.vality.fistful.base.Failure;
 import dev.vality.fistful.base.SubFailure;
-import dev.vality.fistful.fistful_stat.*;
+import dev.vality.fistful.fistful_stat.StatWithdrawal;
+import dev.vality.fistful.fistful_stat.WithdrawalFailed;
+import dev.vality.fistful.fistful_stat.WithdrawalPending;
+import dev.vality.fistful.fistful_stat.WithdrawalSucceeded;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
 import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.geck.common.util.TypeUtil;
@@ -24,7 +28,6 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
         statWithdrawal.setId(rs.getString(WITHDRAWAL_DATA.WITHDRAWAL_ID.getName()));
         statWithdrawal.setCreatedAt(
                 TypeUtil.temporalToString(rs.getObject(WITHDRAWAL_DATA.CREATED_AT.getName(), LocalDateTime.class)));
-        statWithdrawal.setIdentityId(rs.getString(WITHDRAWAL_DATA.IDENTITY_ID.getName()));
         statWithdrawal.setSourceId(rs.getString(WITHDRAWAL_DATA.WALLET_ID.getName()));
         statWithdrawal.setDestinationId(rs.getString(WITHDRAWAL_DATA.DESTINATION_ID.getName()));
         statWithdrawal.setAmount(rs.getLong(WITHDRAWAL_DATA.AMOUNT.getName()));
@@ -57,7 +60,7 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
                     if (Strings.isNotEmpty(errorSubFailure)) {
                         baseFailure.setSub(new SubFailure(errorSubFailure));
                     }
-                    withdrawalFailed.setBaseFailure(baseFailure);
+                    withdrawalFailed.setFailure(baseFailure);
                 }
 
                 statWithdrawal.setStatus(dev.vality.fistful.fistful_stat.WithdrawalStatus.failed(withdrawalFailed));

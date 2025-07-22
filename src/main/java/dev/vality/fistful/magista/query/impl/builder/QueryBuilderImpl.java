@@ -1,7 +1,6 @@
 package dev.vality.fistful.magista.query.impl.builder;
 
 import dev.vality.fistful.magista.query.impl.SourceFunction;
-import dev.vality.fistful.magista.query.impl.WalletFunction;
 import dev.vality.fistful.magista.query.impl.WithdrawalFunction;
 import dev.vality.magista.dsl.RootQuery;
 import dev.vality.magista.dsl.builder.BaseQueryBuilder;
@@ -17,12 +16,8 @@ public class QueryBuilderImpl extends BaseQueryBuilder {
         this(
                 Arrays.asList(
                         new RootQuery.RootBuilder(),
-                        new WalletFunction.WalletBuilder(),
                         new WithdrawalFunction.WithdrawalBuilder(),
                         new DepositBuilder(),
-                        new IdentityBuilder(),
-                        new DepositRevertBuilder(),
-                        new DepositAdjustmentBuilder(),
                         new SourceFunction.SourceBuilder()
                 )
         );

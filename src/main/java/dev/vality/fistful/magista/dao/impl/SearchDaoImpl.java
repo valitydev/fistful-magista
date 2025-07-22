@@ -1,20 +1,19 @@
 package dev.vality.fistful.magista.dao.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
-import dev.vality.fistful.fistful_stat.*;
+import dev.vality.fistful.fistful_stat.StatDeposit;
+import dev.vality.fistful.fistful_stat.StatSource;
+import dev.vality.fistful.fistful_stat.StatWithdrawal;
 import dev.vality.fistful.magista.dao.SearchDao;
 import dev.vality.fistful.magista.dao.impl.field.ConditionParameterSource;
-import dev.vality.fistful.magista.dao.impl.mapper.*;
+import dev.vality.fistful.magista.dao.impl.mapper.StatDepositMapper;
+import dev.vality.fistful.magista.dao.impl.mapper.StatSourceMapper;
+import dev.vality.fistful.magista.dao.impl.mapper.StatWithdrawalMapper;
 import dev.vality.fistful.magista.domain.enums.DepositRevertDataStatus;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.query.impl.SourceFunction;
-import dev.vality.fistful.magista.query.impl.WalletFunction;
 import dev.vality.fistful.magista.query.impl.WithdrawalFunction;
-import dev.vality.fistful.magista.query.impl.parameters.DepositAdjustmentParameters;
 import dev.vality.fistful.magista.query.impl.parameters.DepositParameters;
-import dev.vality.fistful.magista.query.impl.parameters.DepositRevertParameters;
-import dev.vality.fistful.magista.query.impl.parameters.IdentityParameters;
-import dev.vality.geck.common.util.TypeUtil;
 import org.jooq.Operator;
 import org.jooq.Query;
 import org.jooq.impl.DSL;
@@ -26,63 +25,24 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static dev.vality.fistful.magista.domain.tables.ChallengeData.CHALLENGE_DATA;
-import static dev.vality.fistful.magista.domain.tables.DepositAdjustmentData.DEPOSIT_ADJUSTMENT_DATA;
 import static dev.vality.fistful.magista.domain.tables.DepositData.DEPOSIT_DATA;
 import static dev.vality.fistful.magista.domain.tables.DepositRevertData.DEPOSIT_REVERT_DATA;
-import static dev.vality.fistful.magista.domain.tables.IdentityData.IDENTITY_DATA;
 import static dev.vality.fistful.magista.domain.tables.SourceData.SOURCE_DATA;
-import static dev.vality.fistful.magista.domain.tables.WalletData.WALLET_DATA;
 import static dev.vality.fistful.magista.domain.tables.WithdrawalData.WITHDRAWAL_DATA;
 import static org.jooq.Comparator.*;
 
 @Component
 public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
 
-    private final StatWalletMapper statWalletMapper;
     private final StatWithdrawalMapper statWithdrawalMapper;
     private final StatSourceMapper statSourceMapper;
     private final StatDepositMapper statDepositMapper;
-    private final StatIdentityMapper statIdentityMapper;
-    private final StatDepositRevertMapper statDepositRevertMapper;
-    private final StatDepositAdjustmentMapper statDepositAdjustmentMapper;
 
     public SearchDaoImpl(HikariDataSource dataSource) {
         super(dataSource);
-        statWalletMapper = new StatWalletMapper();
         statWithdrawalMapper = new StatWithdrawalMapper();
         statSourceMapper = new StatSourceMapper();
         statDepositMapper = new StatDepositMapper();
-        statIdentityMapper = new StatIdentityMapper();
-        statDepositRevertMapper = new StatDepositRevertMapper();
-        statDepositAdjustmentMapper = new StatDepositAdjustmentMapper();
-    }
-
-    @Override
-    public Collection<Map.Entry<Long, StatWallet>> getWallets(
-            WalletFunction.WalletParameters parameters,
-            Optional<LocalDateTime> fromDate,
-            int limit
-    ) throws DaoException {
-        Query query = getDslContext()
-                .select()
-                .from(WALLET_DATA)
-                .where(
-                        appendConditions(DSL.trueCondition(), Operator.AND, new ConditionParameterSource()
-                                .addInConditionValue(WALLET_DATA.WALLET_ID, parameters.getWalletIds())
-                                .addValue(WALLET_DATA.PARTY_ID, Optional.ofNullable(parameters.getPartyId())
-                                        .map(UUID::fromString)
-                                        .orElse(null), EQUALS)
-                                .addValue(WALLET_DATA.IDENTITY_ID, parameters.getIdentityId(), EQUALS)
-                                .addValue(WALLET_DATA.CURRENCY_CODE, parameters.getCurrencyCode(), EQUALS)
-                                .addValue(WALLET_DATA.CREATED_AT, fromDate.orElse(null), LESS))
-                )
-                .and(WALLET_DATA.PARTY_ID.isNotNull())
-                .and(WALLET_DATA.IDENTITY_ID.isNotNull())
-                .orderBy(WALLET_DATA.CREATED_AT.desc())
-                .limit(limit);
-
-        return fetch(query, statWalletMapper);
     }
 
     @Override
@@ -216,145 +176,6 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                 .limit(limit);
 
         return fetch(query, statDepositMapper);
-    }
-
-    @Override
-    public Collection<Map.Entry<Long, StatIdentity>> getIdentities(IdentityParameters parameters,
-                                                                   LocalDateTime fromTime, LocalDateTime toTime,
-                                                                   Long fromId, int limit) throws DaoException {
-        Query query = getDslContext()
-                .select()
-                .from(IDENTITY_DATA.leftJoin(CHALLENGE_DATA)
-                        .on(IDENTITY_DATA.IDENTITY_ID.eq(CHALLENGE_DATA.IDENTITY_ID)))
-                .where(
-                        appendDateTimeRangeConditions(
-                                appendConditions(DSL.trueCondition(), Operator.AND,
-                                        new ConditionParameterSource()
-                                                .addValue(IDENTITY_DATA.PARTY_ID, parameters.getPartyId(), EQUALS)
-                                                .addValue(IDENTITY_DATA.PARTY_CONTRACT_ID,
-                                                        parameters.getPartyContractId().orElse(null), EQUALS)
-                                                .addValue(IDENTITY_DATA.IDENTITY_ID,
-                                                        parameters.getIdentityId().orElse(null), EQUALS)
-                                                .addValue(IDENTITY_DATA.IDENTITY_PROVIDER_ID,
-                                                        parameters.getIdentityProviderId().orElse(null), EQUALS)
-                                                .addValue(IDENTITY_DATA.IDENTITY_EFFECTIVE_CHALLENGE_ID,
-                                                        parameters.getIdentityEffectiveChallengeId().orElse(null),
-                                                        EQUALS)
-                                                .addValue(IDENTITY_DATA.IDENTITY_LEVEL_ID,
-                                                        parameters.getIdentityLevelId().orElse(null), EQUALS)
-                                                .addValue(IDENTITY_DATA.ID, fromId, LESS)
-                                                .addValue(CHALLENGE_DATA.CHALLENGE_ID,
-                                                        parameters.getChallengeId().orElse(null), EQUALS)
-                                                .addValue(CHALLENGE_DATA.CHALLENGE_CLASS_ID,
-                                                        parameters.getChallengeClassId().orElse(null), EQUALS)
-                                                .addValue(CHALLENGE_DATA.CHALLENGE_STATUS,
-                                                        parameters.getChallengeStatus().orElse(null), EQUALS)
-                                                .addValue(CHALLENGE_DATA.CHALLENGE_RESOLUTION,
-                                                        parameters.getChallengeResolution().orElse(null), EQUALS)
-                                                .addValue(CHALLENGE_DATA.CHALLENGE_VALID_UNTIL,
-                                                        TypeUtil.toLocalDateTime(parameters.getChallengeValidUntil()),
-                                                        GREATER_OR_EQUAL)
-
-                                ),
-                                IDENTITY_DATA.CREATED_AT,
-                                fromTime,
-                                toTime
-                        )
-                )
-                .orderBy(IDENTITY_DATA.ID.desc())
-                .limit(limit);
-
-        return fetch(query, statIdentityMapper);
-    }
-
-    @Override
-    public Collection<Map.Entry<Long, StatDepositRevert>> getDepositReverts(DepositRevertParameters parameters,
-                                                                            LocalDateTime fromTime,
-                                                                            LocalDateTime toTime, Long fromId,
-                                                                            int limit) throws DaoException {
-        Query query = getDslContext()
-                .select()
-                .from(DEPOSIT_REVERT_DATA)
-                .where(
-                        appendDateTimeRangeConditions(
-                                appendConditions(DSL.trueCondition(), Operator.AND,
-                                        new ConditionParameterSource()
-                                                .addValue(DEPOSIT_REVERT_DATA.PARTY_ID, parameters.getPartyId(), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.IDENTITY_ID,
-                                                        parameters.getIdentityId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.SOURCE_ID,
-                                                        parameters.getSourceId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.WALLET_ID,
-                                                        parameters.getWalletId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.DEPOSIT_ID,
-                                                        parameters.getDepositId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.REVERT_ID,
-                                                        parameters.getRevertId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.AMOUNT,
-                                                        parameters.getAmountFrom().orElse(null), GREATER_OR_EQUAL)
-                                                .addValue(DEPOSIT_REVERT_DATA.AMOUNT,
-                                                        parameters.getAmountTo().orElse(null), LESS_OR_EQUAL)
-                                                .addValue(DEPOSIT_REVERT_DATA.CURRENCY_CODE,
-                                                        parameters.getCurrencyCode().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.STATUS,
-                                                        parameters.getStatus().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_REVERT_DATA.ID, fromId, LESS)
-                                ),
-                                DEPOSIT_REVERT_DATA.CREATED_AT,
-                                fromTime,
-                                toTime
-                        )
-                )
-                .orderBy(DEPOSIT_REVERT_DATA.ID.desc())
-                .limit(limit);
-
-        return fetch(query, statDepositRevertMapper);
-    }
-
-    @Override
-    public Collection<Map.Entry<Long, StatDepositAdjustment>> getDepositAdjustments(
-            DepositAdjustmentParameters parameters, LocalDateTime fromTime, LocalDateTime toTime, Long fromId,
-            int limit) throws DaoException {
-        Query query = getDslContext()
-                .select()
-                .from(DEPOSIT_ADJUSTMENT_DATA)
-                .where(
-                        appendDateTimeRangeConditions(
-                                appendConditions(DSL.trueCondition(), Operator.AND,
-                                        new ConditionParameterSource()
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.PARTY_ID, parameters.getPartyId(),
-                                                        EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.IDENTITY_ID,
-                                                        parameters.getIdentityId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.SOURCE_ID,
-                                                        parameters.getSourceId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.WALLET_ID,
-                                                        parameters.getWalletId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.DEPOSIT_ID,
-                                                        parameters.getDepositId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.ADJUSTMENT_ID,
-                                                        parameters.getAdjustmentId().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.AMOUNT,
-                                                        parameters.getAmountFrom().orElse(null), GREATER_OR_EQUAL)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.AMOUNT,
-                                                        parameters.getAmountTo().orElse(null), LESS_OR_EQUAL)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.CURRENCY_CODE,
-                                                        parameters.getCurrencyCode().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.STATUS,
-                                                        parameters.getDepositAdjustmentStatus().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.DEPOSIT_STATUS,
-                                                        parameters.getDepositStatus().orElse(null), EQUALS)
-                                                .addValue(DEPOSIT_ADJUSTMENT_DATA.ID, fromId, LESS)
-                                ),
-                                DEPOSIT_ADJUSTMENT_DATA.CREATED_AT,
-                                fromTime,
-                                toTime
-                        )
-                )
-                .orderBy(DEPOSIT_ADJUSTMENT_DATA.ID.desc())
-                .limit(limit);
-
-        return fetch(query, statDepositAdjustmentMapper);
     }
 
     @Override

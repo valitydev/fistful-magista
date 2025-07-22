@@ -37,10 +37,9 @@ public class SourceAccountCreatedEventHandler implements SourceEventHandler {
             sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
             sourceData.setEventOccuredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
             Account account = change.getChange().getAccount().getCreated();
-            sourceData.setAccountId(account.getId());
-            sourceData.setAccountAccounterId(account.getAccounterAccountId());
+            sourceData.setAccountId(account.getPartyId());
+            sourceData.setAccountAccounterId(account.getAccountId());
             sourceData.setAccountCurrency(account.getCurrency().getSymbolicCode());
-            sourceData.setAccountIdentityId(account.getIdentity());
             Long id = sourceDao.save(sourceData);
 
             log.info("SourceAccountCreated has {} been saved: eventId={}, sourceId={}",

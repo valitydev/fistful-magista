@@ -1,13 +1,10 @@
 package dev.vality.fistful.magista.handler.withdrawal;
 
-import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.dao.WithdrawalDao;
 import dev.vality.fistful.magista.domain.enums.WithdrawalEventType;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
-import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.domain.tables.pojos.WithdrawalData;
 import dev.vality.fistful.magista.exception.DaoException;
-import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.fistful.magista.exception.StorageException;
 import dev.vality.fistful.withdrawal.Route;
 import dev.vality.fistful.withdrawal.TimestampedChange;
@@ -20,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -27,7 +25,6 @@ import java.util.Objects;
 public class WithdrawalCreatedEventHandler implements WithdrawalEventHandler {
 
     private final WithdrawalDao withdrawalDao;
-    private final WalletDao walletDao;
 
     @Override
     public boolean accept(TimestampedChange change) {
@@ -42,13 +39,11 @@ public class WithdrawalCreatedEventHandler implements WithdrawalEventHandler {
             log.info("Trying to handle WithdrawalCreated: eventId={}, withdrawalId={}", event.getEventId(),
                     event.getSourceId());
 
-            WalletData walletData = getWalletData(withdrawal);
 
             WithdrawalData withdrawalData = new WithdrawalData();
             withdrawalData.setWithdrawalId(event.getSourceId());
             withdrawalData.setWalletId(withdrawal.getWalletId());
-            withdrawalData.setPartyId(walletData.getPartyId());
-            withdrawalData.setIdentityId(walletData.getIdentityId());
+            withdrawalData.setPartyId(UUID.fromString(withdrawal.getPartyId()));
             withdrawalData.setDestinationId(withdrawal.getDestinationId());
             withdrawalData.setAmount(withdrawal.getBody().getAmount());
             withdrawalData.setCurrencyCode(withdrawal.getBody().getCurrency().getSymbolicCode());
@@ -72,21 +67,5 @@ public class WithdrawalCreatedEventHandler implements WithdrawalEventHandler {
         } catch (DaoException ex) {
             throw new StorageException(ex);
         }
-    }
-
-    private WalletData getWalletData(Withdrawal withdrawal) throws DaoException {
-        WalletData walletData = walletDao.get(withdrawal.getWalletId());
-
-        if (walletData == null) {
-            throw new NotFoundException(
-                    String.format("WalletData with walletId='%s' not found", withdrawal.getWalletId()));
-        }
-
-        if (walletData.getPartyId() == null) {
-            throw new IllegalStateException(String.format("PartyId not found for WalletData with walletId='%s'; " +
-                    "it must be set for correct saving of WithdrawalCreated", withdrawal.getWalletId()));
-        }
-
-        return walletData;
     }
 }

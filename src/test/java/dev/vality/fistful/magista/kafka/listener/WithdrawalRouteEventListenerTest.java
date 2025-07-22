@@ -38,7 +38,7 @@ public class WithdrawalRouteEventListenerTest {
     private KafkaProducer<TBase<?, ?>> testThriftKafkaProducer;
 
     @Test
-    public void shouldListenAndSave() throws InterruptedException, DaoException {
+    public void shouldListenAndSave() throws DaoException {
         // Given
         int providerId = 1;
         TimestampedChange statusChanged = new TimestampedChange()

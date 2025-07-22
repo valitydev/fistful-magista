@@ -2,14 +2,12 @@ package dev.vality.fistful.magista.handler.source;
 
 import dev.vality.fistful.magista.dao.SourceDao;
 import dev.vality.fistful.magista.domain.enums.SourceEventType;
-import dev.vality.fistful.magista.domain.enums.SourceStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.SourceData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.exception.StorageException;
 import dev.vality.fistful.magista.util.JsonUtil;
 import dev.vality.fistful.source.Source;
 import dev.vality.fistful.source.TimestampedChange;
-import dev.vality.geck.common.util.TBaseUtil;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;
@@ -42,16 +40,13 @@ public class SourceCreatedEventHandler implements SourceEventHandler {
             sourceData.setSourceId(event.getSourceId());
             sourceData.setEventId(event.getEventId());
             sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
-            LocalDateTime occuredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
-            sourceData.setEventOccuredAt(occuredAt);
+            LocalDateTime occurredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
+            sourceData.setEventOccuredAt(occurredAt);
             sourceData.setEventType(SourceEventType.SOURCE_CREATED);
             Source source = change.getChange().getCreated();
             sourceData.setName(source.getName());
             sourceData.setResourceInternalDetails(source.getResource().getInternal().getDetails());
             sourceData.setExternalId(source.getExternalId());
-            if (source.getStatus() != null) {
-                sourceData.setStatus(TBaseUtil.unionFieldToEnum(source.getStatus(), SourceStatus.class));
-            }
             sourceData.setCreatedAt(TypeUtil.stringToLocalDateTime(source.getCreatedAt()));
             if (source.isSetMetadata()) {
                 sourceData.setContextJson(JsonUtil.objectToJsonString(source.getMetadata().entrySet()

@@ -18,13 +18,13 @@ public interface DepositEventHandler extends EventHandler<TimestampedChange, Mac
             DepositData depositData,
             long eventId,
             LocalDateTime eventCreatedAt,
-            LocalDateTime eventOccuredAt,
+            LocalDateTime eventOccurredAt,
             DepositEventType eventType) {
         depositData.setId(null);
         depositData.setWtime(null);
         depositData.setEventId(eventId);
         depositData.setEventCreatedAt(eventCreatedAt);
-        depositData.setEventOccuredAt(eventOccuredAt);
+        depositData.setEventOccuredAt(eventOccurredAt);
         depositData.setEventType(eventType);
     }
 
@@ -32,13 +32,13 @@ public interface DepositEventHandler extends EventHandler<TimestampedChange, Mac
             DepositAdjustmentData depositAdjustmentData,
             long eventId,
             LocalDateTime eventCreatedAt,
-            LocalDateTime eventOccuredAt,
+            LocalDateTime eventOccurredAt,
             DepositAdjustmentDataEventType eventType) {
         depositAdjustmentData.setId(null);
         depositAdjustmentData.setWtime(null);
         depositAdjustmentData.setEventId(eventId);
         depositAdjustmentData.setEventCreatedAt(eventCreatedAt);
-        depositAdjustmentData.setEventOccuredAt(eventOccuredAt);
+        depositAdjustmentData.setEventOccuredAt(eventOccurredAt);
         depositAdjustmentData.setEventType(eventType);
     }
 
@@ -46,13 +46,13 @@ public interface DepositEventHandler extends EventHandler<TimestampedChange, Mac
             DepositRevertData depositRevertData,
             long eventId,
             LocalDateTime eventCreatedAt,
-            LocalDateTime eventOccuredAt,
+            LocalDateTime eventOccurredAt,
             DepositRevertDataEventType eventType) {
         depositRevertData.setId(null);
         depositRevertData.setWtime(null);
         depositRevertData.setEventId(eventId);
         depositRevertData.setEventCreatedAt(eventCreatedAt);
-        depositRevertData.setEventOccuredAt(eventOccuredAt);
+        depositRevertData.setEventOccuredAt(eventOccurredAt);
         depositRevertData.setEventType(eventType);
     }
 }

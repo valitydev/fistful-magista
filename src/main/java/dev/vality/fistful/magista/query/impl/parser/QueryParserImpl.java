@@ -1,7 +1,6 @@
 package dev.vality.fistful.magista.query.impl.parser;
 
 import dev.vality.fistful.magista.query.impl.SourceFunction;
-import dev.vality.fistful.magista.query.impl.WalletFunction;
 import dev.vality.fistful.magista.query.impl.WithdrawalFunction;
 import dev.vality.magista.dsl.RootQuery;
 import dev.vality.magista.dsl.parser.BaseQueryParser;
@@ -18,12 +17,8 @@ public class QueryParserImpl extends BaseQueryParser {
         this(
                 Arrays.asList(
                         new RootQuery.RootParser(),
-                        new WalletFunction.WalletParser(),
                         new WithdrawalFunction.WithdrawalParser(),
                         new DepositParser(),
-                        new IdentityParser(),
-                        new DepositRevertParser(),
-                        new DepositAdjustmentParser(),
                         new SourceFunction.SourceParser()
                 )
         );

@@ -4,13 +4,10 @@ import dev.vality.fistful.base.Cash;
 import dev.vality.fistful.deposit.Deposit;
 import dev.vality.fistful.deposit.TimestampedChange;
 import dev.vality.fistful.magista.dao.DepositDao;
-import dev.vality.fistful.magista.dao.WalletDao;
 import dev.vality.fistful.magista.domain.enums.DepositEventType;
 import dev.vality.fistful.magista.domain.enums.DepositStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
-import dev.vality.fistful.magista.domain.tables.pojos.WalletData;
 import dev.vality.fistful.magista.exception.DaoException;
-import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.fistful.magista.exception.StorageException;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.machinegun.eventsink.MachineEvent;
@@ -19,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -26,7 +24,6 @@ import java.time.LocalDateTime;
 public class DepositCreatedHandler implements DepositEventHandler {
 
     private final DepositDao depositDao;
-    private final WalletDao walletDao;
 
     @Override
     public boolean accept(TimestampedChange change) {
@@ -41,24 +38,22 @@ public class DepositCreatedHandler implements DepositEventHandler {
             long eventId = event.getEventId();
             String depositId = event.getSourceId();
             LocalDateTime eventCreatedAt = TypeUtil.stringToLocalDateTime(event.getCreatedAt());
-            LocalDateTime eventOccuredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
+            LocalDateTime eventOccurredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
 
             log.info("Start deposit created handling: eventId={}, depositId={}", eventId, depositId);
 
 
             DepositData depositData = new DepositData();
-            initEventFields(depositData, eventId, eventCreatedAt, eventOccuredAt, DepositEventType.DEPOSIT_CREATED);
+            initEventFields(depositData, eventId, eventCreatedAt, eventOccurredAt, DepositEventType.DEPOSIT_CREATED);
             depositData.setSourceId(deposit.getSourceId());
             depositData.setWalletId(deposit.getWalletId());
             depositData.setDepositId(depositId);
             depositData.setDepositStatus(DepositStatus.pending);
-            WalletData walletData = getWallet(deposit);
             Cash cash = deposit.getBody();
             depositData.setAmount(cash.getAmount());
             depositData.setCurrencyCode(cash.getCurrency().getSymbolicCode());
-            depositData.setIdentityId(walletData.getIdentityId());
-            depositData.setPartyId(walletData.getPartyId());
-            depositData.setCreatedAt(eventOccuredAt);
+            depositData.setPartyId(UUID.fromString(deposit.getPartyId()));
+            depositData.setCreatedAt(eventOccurredAt);
             depositData.setDescription(deposit.getDescription());
 
             Long id = depositDao.save(depositData);
@@ -68,20 +63,6 @@ public class DepositCreatedHandler implements DepositEventHandler {
         } catch (DaoException e) {
             throw new StorageException(e);
         }
-    }
-
-    private WalletData getWallet(Deposit deposit) throws DaoException {
-        WalletData walletData = walletDao.get(deposit.getWalletId());
-        if (walletData == null) {
-            throw new NotFoundException(String.format("Wallet with walletId='%s' not found", deposit.getWalletId()));
-        }
-
-        if (walletData.getPartyId() == null) {
-            throw new IllegalStateException(String.format("PartyId not found for wallet with walletId='%s'; " +
-                    "it must be set for correct saving of DepositCreated", deposit.getWalletId()));
-        }
-
-        return walletData;
     }
 }
 

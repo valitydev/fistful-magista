@@ -41,7 +41,7 @@ public class DepositTransferCreatedHandler implements DepositEventHandler {
             long eventId = event.getEventId();
             String depositId = event.getSourceId();
             LocalDateTime eventCreatedAt = TypeUtil.stringToLocalDateTime(event.getCreatedAt());
-            LocalDateTime eventOccuredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
+            LocalDateTime eventOccurredAt = TypeUtil.stringToLocalDateTime(change.getOccuredAt());
 
             log.info("Start deposit transfer created handling: eventId={}, depositId={}, transferChange={}",
                     eventId, depositId, change.getChange().getTransfer());
@@ -53,7 +53,7 @@ public class DepositTransferCreatedHandler implements DepositEventHandler {
                     depositData,
                     eventId,
                     eventCreatedAt,
-                    eventOccuredAt,
+                    eventOccurredAt,
                     DepositEventType.DEPOSIT_TRANSFER_CREATED);
             depositData.setDepositTransferStatus(DepositTransferStatus.created);
             depositData.setFee(CashFlowUtil.getFistfulFee(postings));
