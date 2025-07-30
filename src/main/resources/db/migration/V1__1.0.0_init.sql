@@ -82,7 +82,7 @@ CREATE TABLE mst.deposit_data (
     party_id                UUID,
     created_at              TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     description             CHARACTER VARYING,
-    wtime                   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() at time zone 'utc'),
+    wtime                   TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
     CONSTRAINT deposit_pkey PRIMARY KEY (id),
     CONSTRAINT deposit_ukey UNIQUE (deposit_id)
 );
@@ -109,7 +109,7 @@ CREATE TABLE mst.source_data (
     party_id                  UUID,
     account_currency          CHARACTER VARYING,
     account_id                BIGINT,
-    wtime                     TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (now() at time zone 'utc'),
+    wtime                     TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
     CONSTRAINT source_pkey PRIMARY KEY (id)
 );
 

@@ -53,7 +53,7 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
                 String errorCode = rs.getString(WITHDRAWAL_DATA.ERROR_CODE.getName());
 
                 if (Strings.isNotEmpty(errorCode)) {
-                    var baseFailure = new dev.vality.fistful.base.Failure();
+                    var baseFailure = new Failure();
                     baseFailure.setCode(errorCode);
                     baseFailure.setReason(rs.getString(WITHDRAWAL_DATA.ERROR_REASON.getName()));
                     String errorSubFailure = rs.getString(WITHDRAWAL_DATA.ERROR_SUB_FAILURE.getName());
