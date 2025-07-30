@@ -26,10 +26,6 @@ management:
       exposure:
         include: health,info,prometheus
 
-logging:
-  level:
-    org.jooq.Constants: OFF
-
 spring:
   application:
     name: ${project.name}
@@ -65,13 +61,6 @@ kafka:
       name: mg-events-ff-deposit
       listener:
         enabled: false
-    identity:
-      name: mg-events-ff-identity
-      listener:
-
-    wallet:
-      name: mg-events-ff-wallet
-      listener:
 
     withdrawal:
       name: mg-events-ff-withdrawal

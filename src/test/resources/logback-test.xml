@@ -6,7 +6,6 @@
     <root level="warn">
         <appender-ref ref="CONSOLE"/>
     </root>
-    <logger name="org.jooq.Constants" level="OFF"/>
     <logger name="dev.vality.woody" level="ALL"/>
     <logger name="dev.vality.fistful.magista" level="DEBUG"/>
     <logger name="org.apache.kafka.clients.NetworkClient" level="ERROR"/>

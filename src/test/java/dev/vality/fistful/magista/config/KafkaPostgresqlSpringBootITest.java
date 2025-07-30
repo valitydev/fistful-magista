@@ -18,15 +18,11 @@ import java.lang.annotation.Target;
         properties = {
                 "kafka.topic.deposit.listener.enabled=true",
                 "kafka.topic.withdrawal.listener.enabled=true",
-                "kafka.topic.wallet.listener.enabled=true",
-                "kafka.topic.source.listener.enabled=true",
-                "kafka.topic.identity.listener.enabled=true"},
+                "kafka.topic.source.listener.enabled=true"},
         topicsKeys = {
                 "kafka.topic.deposit.name",
                 "kafka.topic.withdrawal.name",
-                "kafka.topic.wallet.name",
-                "kafka.topic.source.name",
-                "kafka.topic.identity.name"})
+                "kafka.topic.source.name"})
 @PostgresqlTestcontainerSingleton(excludeTruncateTables = "schema_version")
 public @interface KafkaPostgresqlSpringBootITest {
 }
