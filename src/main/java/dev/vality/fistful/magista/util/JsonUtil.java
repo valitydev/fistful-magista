@@ -12,14 +12,6 @@ import java.io.IOException;
 public class JsonUtil {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static String thriftBaseToJsonString(TBase thriftBase) {
-        try {
-            return new TBaseProcessor().process(thriftBase, new JsonHandler()).toString();
-        } catch (IOException e) {
-            throw new RuntimeException("Couldn't convert to json string: " + thriftBase, e);
-        }
-    }
-
     public static JsonNode thriftBaseToJsonNode(TBase thriftBase) {
         try {
             return new TBaseProcessor().process(thriftBase, new JsonHandler());

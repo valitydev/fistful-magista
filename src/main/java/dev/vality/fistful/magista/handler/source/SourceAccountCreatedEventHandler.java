@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,8 +39,8 @@ public class SourceAccountCreatedEventHandler implements SourceEventHandler {
             sourceData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));
             sourceData.setEventOccuredAt(TypeUtil.stringToLocalDateTime(change.getOccuredAt()));
             Account account = change.getChange().getAccount().getCreated();
-            sourceData.setAccountId(account.getPartyId());
-            sourceData.setAccountAccounterId(account.getAccountId());
+            sourceData.setPartyId(UUID.fromString(account.getPartyId()));
+            sourceData.setAccountId(account.getAccountId());
             sourceData.setAccountCurrency(account.getCurrency().getSymbolicCode());
             Long id = sourceDao.save(sourceData);
 

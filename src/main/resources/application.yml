@@ -26,6 +26,10 @@ management:
       exposure:
         include: health,info,prometheus
 
+logging:
+  level:
+    org.jooq.Constants: OFF
+
 spring:
   application:
     name: ${project.name}
@@ -36,7 +40,6 @@ spring:
     username: ${db.user}
     password: ${db.password}
     hikari:
-      idle-timeout: 30000
       maximum-pool-size: 3
   flyway:
     table: schema_version

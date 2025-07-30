@@ -18,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,8 +47,8 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
         sourceDao.save(sourceData);
         secondSourceData = TestDataGenerator.create(SourceData.class);
         secondSourceData.setId(2L);
-        secondSourceData.setAccountIdentityId(sourceData.getAccountIdentityId());
         secondSourceData.setCreatedAt(LocalDateTime.now());
+        secondSourceData.setPartyId(sourceData.getPartyId());
         sourceDao.save(secondSourceData);
     }
 
@@ -62,15 +61,13 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
     public void testOneSource() throws DaoException {
         String json = String.format("{'query': {'sources': {" +
                         "'source_id':'%s', " +
-                        "'identity_id': '%s', " +
-                        "'status':'%s', " +
+                        "'party_id': '%s', " +
                         "'currency_code':'%s', " +
                         "'from_time': '%s'," +
                         "'to_time': '%s'" +
                         "}}}",
                 sourceData.getSourceId(),
-                sourceData.getAccountIdentityId(),
-                StringUtils.capitalize(sourceData.getStatus().getLiteral()),
+                sourceData.getPartyId(),
                 sourceData.getAccountCurrency(),
                 TypeUtil.temporalToString(sourceData.getCreatedAt().minusHours(10)),
                 TypeUtil.temporalToString(sourceData.getCreatedAt().plusHours(10))
@@ -82,8 +79,7 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
 
     @Test
     public void testAllSources() throws DaoException {
-        String json = String.format("{'query': {'sources': {'identity_id': '%s'}}}",
-                sourceData.getAccountIdentityId());
+        String json = String.format("{'query': {'sources': {'party_id': '%s'}}}", sourceData.getPartyId());
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         List<StatSource> sources = statResponse.getData().getSources();
         assertEquals(2, sources.size());
@@ -99,14 +95,12 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
 
     @Test
     public void testContinuationToken() {
-        String json = String.format("{'query': {'sources': {'identity_id': '%s'}, 'size':'1'}}",
-                sourceData.getAccountIdentityId());
+        String json = String.format("{'query': {'sources': {'party_id': '%s'}, 'size':'1'}}", sourceData.getPartyId());
         StatRequest statRequest = new StatRequest(json);
         StatResponse statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getSources().size());
         assertNotNull(statResponse.getContinuationToken());
         assertEquals((Long) 2L, TokenUtil.extractIdValue(statResponse.getContinuationToken()).get());
-
         statRequest.setContinuationToken(statResponse.getContinuationToken());
         statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getSources().size());
@@ -120,15 +114,14 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
 
     @Test
     public void testIfNotPresentSources() {
-        String json = "{'query': {'sources': {'identity_id': '6954b4d1-f39f-4cc1-8843-eae834e6f849'}}}";
+        String json = "{'query': {'sources': {'party_id': '6954b4d1-f39f-4cc1-8843-eae834e6f849'}}}";
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         assertEquals(0, statResponse.getData().getSources().size());
     }
 
     @Test
     public void testBadToken() {
-        String json = String.format("{'query': {'sources': {'identity_id': '%s'}, 'size':'1'}}",
-                sourceData.getAccountIdentityId());
+        String json = String.format("{'query': {'sources': {'account_id': '%s'}}}", sourceData.getAccountId());
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());
         assertThrows(BadTokenException.class, () -> {

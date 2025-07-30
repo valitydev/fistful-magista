@@ -47,7 +47,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
         secondDeposit = TestDataGenerator.create(DepositData.class);
         secondDeposit.setId(2L);
         secondDeposit.setPartyId(deposit.getPartyId());
-        secondDeposit.setIdentityId(deposit.getIdentityId());
         secondDeposit.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
 
         depositDao.save(deposit);
@@ -64,7 +63,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
         String json = String.format(
                 "{'query': {'deposits': {" +
                         "'deposit_id':'%s', " +
-                        "'identity_id': '%s', " +
                         "'wallet_id':'%s', " +
                         "'source_id':'%s', " +
                         "'party_id': '%s', " +
@@ -76,7 +74,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
                         "'to_time': '%s'" +
                         "}}}",
                 deposit.getDepositId(),
-                deposit.getIdentityId(),
                 deposit.getWalletId(),
                 deposit.getSourceId(),
                 deposit.getPartyId(),
@@ -95,9 +92,8 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     @Test
     public void testAllDeposits() throws DaoException {
         String json = String.format(
-                "{'query': {'deposits': {'party_id': '%s','identity_id': '%s'}}}",
-                deposit.getPartyId(),
-                deposit.getIdentityId()
+                "{'query': {'deposits': {'party_id': '%s'}}}",
+                deposit.getPartyId()
         );
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         List<StatDeposit> deposits = statResponse.getData().getDeposits();
@@ -115,9 +111,8 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     @Test
     public void testContinuationToken() {
         String json = String.format(
-                "{'query': {'deposits': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
-                deposit.getPartyId(),
-                deposit.getIdentityId()
+                "{'query': {'deposits': {'party_id': '%s'}, 'size':'1'}}",
+                deposit.getPartyId()
         );
         StatRequest statRequest = new StatRequest(json);
         StatResponse statResponse = queryProcessor.processQuery(statRequest);
@@ -147,9 +142,8 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     @Test
     public void testBadToken() {
         String json = String.format(
-                "{'query': {'deposits': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
-                deposit.getPartyId(),
-                deposit.getIdentityId()
+                "{'query': {'deposits': {'party_id': '%s'}, 'size':'1'}}",
+                deposit.getPartyId()
         );
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());

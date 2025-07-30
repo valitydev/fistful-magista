@@ -128,10 +128,6 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
             return getStringParameter(Parameters.WITHDRAWAL_ID_PARAM, false);
         }
 
-        public String getIdentityId() {
-            return getStringParameter(Parameters.IDENTITY_ID_PARAM, false);
-        }
-
         public String getDestinationId() {
             return getStringParameter(Parameters.DESTINATION_ID_PARAM, false);
         }

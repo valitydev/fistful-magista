@@ -49,7 +49,6 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
         secondWithdrawalData = TestDataGenerator.create(WithdrawalData.class);
         secondWithdrawalData.setId(2L);
         secondWithdrawalData.setPartyId(withdrawalData.getPartyId());
-        secondWithdrawalData.setIdentityId(withdrawalData.getIdentityId());
         secondWithdrawalData.setCreatedAt(LocalDateTime.now());
         withdrawalDao.save(secondWithdrawalData);
     }
@@ -65,7 +64,6 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
                         "'party_id': '%s', " +
                         "'wallet_id':'%s', " +
                         "'withdrawal_id':'%s', " +
-                        "'identity_id': '%s', " +
                         "'destination_id':'%s', " +
                         "'status':'%s', " +
                         "'currency_code':'%s', " +
@@ -77,7 +75,6 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
                 withdrawalData.getPartyId(),
                 withdrawalData.getWalletId(),
                 withdrawalData.getWithdrawalId(),
-                withdrawalData.getIdentityId(),
                 withdrawalData.getDestinationId(),
                 StringUtils.capitalize(withdrawalData.getWithdrawalStatus().getLiteral()),
                 withdrawalData.getCurrencyCode(),
@@ -119,9 +116,8 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
 
     @Test
     public void testAllWallets() throws DaoException {
-        String json = String.format("{'query': {'withdrawals': {'party_id': '%s','identity_id': '%s'}}}",
-                withdrawalData.getPartyId(),
-                withdrawalData.getIdentityId());
+        String json = String.format("{'query': {'withdrawals': {'party_id': '%s'}}}",
+                withdrawalData.getPartyId());
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         List<StatWithdrawal> withdrawals = statResponse.getData().getWithdrawals();
         assertEquals(2, withdrawals.size());
@@ -137,9 +133,8 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
 
     @Test
     public void testContinuationToken() {
-        String json = String.format("{'query': {'withdrawals': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
-                withdrawalData.getPartyId(),
-                withdrawalData.getIdentityId());
+        String json = String.format("{'query': {'withdrawals': {'party_id': '%s'}, 'size':'1'}}",
+                withdrawalData.getPartyId());
         StatRequest statRequest = new StatRequest(json);
         StatResponse statResponse = queryProcessor.processQuery(statRequest);
         assertEquals(1, statResponse.getData().getWithdrawals().size());
@@ -166,9 +161,8 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
 
     @Test
     public void testBadToken() {
-        String json = String.format("{'query': {'withdrawals': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
-                withdrawalData.getPartyId(),
-                withdrawalData.getIdentityId());
+        String json = String.format("{'query': {'withdrawals': {'party_id': '%s'}, 'size':'1'}}",
+                withdrawalData.getPartyId());
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());
         assertThrows(BadTokenException.class, () -> {

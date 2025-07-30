@@ -20,7 +20,7 @@ public class DepositValidator extends PagedBaseFunction.PagedBaseValidator {
 
         //status
         String stringStatus = parameters.getStringParameter(STATUS_PARAM, false);
-        if (stringStatus != null && !depositParameters.getStatus().isPresent()) {
+        if (stringStatus != null && depositParameters.getStatus().isEmpty()) {
             throw new IllegalArgumentException("Unknown deposit status: " + stringStatus);
         }
     }

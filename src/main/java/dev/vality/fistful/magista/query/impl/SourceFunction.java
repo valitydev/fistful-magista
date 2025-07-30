@@ -3,7 +3,6 @@ package dev.vality.fistful.magista.query.impl;
 import dev.vality.fistful.fistful_stat.StatResponse;
 import dev.vality.fistful.fistful_stat.StatResponseData;
 import dev.vality.fistful.fistful_stat.StatSource;
-import dev.vality.fistful.magista.domain.enums.SourceStatus;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.*;
@@ -96,10 +95,6 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
         return subquery.isParallel();
     }
 
-    private static final Map<String, SourceStatus> statusesMap = Map.of(
-            "Unauthorized", SourceStatus.unauthorized,
-            "Authorized", SourceStatus.authorized);
-
     public static class SourceParameters extends PagedBaseParameters {
 
         public SourceParameters(Map<String, Object> parameters, QueryParameters derivedParameters) {
@@ -110,18 +105,12 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
             super(parameters, derivedParameters);
         }
 
-        public String getIdentityId() {
-            return getStringParameter(Parameters.IDENTITY_ID_PARAM, false);
-        }
-
         public String getSourceId() {
             return getStringParameter(Parameters.SOURCE_ID_PARAM, false);
         }
 
-        public SourceStatus getStatus() {
-            return Optional.ofNullable(getStringParameter(Parameters.STATUS_PARAM, false))
-                    .map(statusesMap::get)
-                    .orElse(null);
+        public UUID getPartyId() {
+            return UUID.fromString(getStringParameter(Parameters.PARTY_ID_PARAM, false));
         }
 
         public String getExternalId() {
@@ -148,10 +137,6 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
             super.validateParameters(parameters);
             SourceParameters sourceParameters = super.checkParamsType(parameters, SourceParameters.class);
             validateTimePeriod(sourceParameters.getFromTime(), sourceParameters.getToTime());
-            String stringStatus = parameters.getStringParameter(Parameters.STATUS_PARAM, false);
-            if (stringStatus != null && sourceParameters.getStatus() == null) {
-                throw new IllegalArgumentException("Unknown source status: " + stringStatus);
-            }
         }
     }
 
