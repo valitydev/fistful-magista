@@ -4,16 +4,18 @@ import dev.vality.fistful.fistful_stat.StatDeposit;
 import dev.vality.fistful.fistful_stat.StatRequest;
 import dev.vality.fistful.fistful_stat.StatResponse;
 import dev.vality.fistful.magista.AbstractIntegrationTest;
+import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.DepositDao;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.exception.DaoException;
+import dev.vality.fistful.magista.util.TestDataGenerator;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
@@ -22,9 +24,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+@PostgresqlSpringBootITest
 public class DepositFunctionTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -36,23 +38,22 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     private DepositData deposit;
     private DepositData secondDeposit;
 
-    @Before
+    @BeforeEach
     public void before() throws DaoException {
         super.before();
-        deposit = random(DepositData.class);
+        deposit = TestDataGenerator.create(DepositData.class);
         deposit.setId(1L);
         deposit.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
-        secondDeposit = random(DepositData.class);
+        secondDeposit = TestDataGenerator.create(DepositData.class);
         secondDeposit.setId(2L);
         secondDeposit.setPartyId(deposit.getPartyId());
-        secondDeposit.setIdentityId(deposit.getIdentityId());
         secondDeposit.setEventCreatedAt(LocalDateTime.now().minusMinutes(1));
 
         depositDao.save(deposit);
         depositDao.save(secondDeposit);
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.deposit_data");
     }
@@ -62,7 +63,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
         String json = String.format(
                 "{'query': {'deposits': {" +
                         "'deposit_id':'%s', " +
-                        "'identity_id': '%s', " +
                         "'wallet_id':'%s', " +
                         "'source_id':'%s', " +
                         "'party_id': '%s', " +
@@ -74,7 +74,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
                         "'to_time': '%s'" +
                         "}}}",
                 deposit.getDepositId(),
-                deposit.getIdentityId(),
                 deposit.getWalletId(),
                 deposit.getSourceId(),
                 deposit.getPartyId(),
@@ -93,27 +92,27 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     @Test
     public void testAllDeposits() throws DaoException {
         String json = String.format(
-                "{'query': {'deposits': {'party_id': '%s','identity_id': '%s'}}}",
-                deposit.getPartyId(),
-                deposit.getIdentityId()
+                "{'query': {'deposits': {'party_id': '%s'}}}",
+                deposit.getPartyId()
         );
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         List<StatDeposit> deposits = statResponse.getData().getDeposits();
         assertEquals(2, deposits.size());
     }
 
-    @Test(expected = QueryParserException.class)
+    @Test
     public void testWhenSizeOverflow() {
         String json = "{'query': {'deposits': {'size': 1001}}}";
-        queryProcessor.processQuery(new StatRequest(json));
+        assertThrows(QueryParserException.class, () -> {
+            queryProcessor.processQuery(new StatRequest(json));
+        });
     }
 
     @Test
     public void testContinuationToken() {
         String json = String.format(
-                "{'query': {'deposits': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
-                deposit.getPartyId(),
-                deposit.getIdentityId()
+                "{'query': {'deposits': {'party_id': '%s'}, 'size':'1'}}",
+                deposit.getPartyId()
         );
         StatRequest statRequest = new StatRequest(json);
         StatResponse statResponse = queryProcessor.processQuery(statRequest);
@@ -135,21 +134,22 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
     @Test
     public void testIfNotPresentDeposits() {
         String json = "{'query': {'deposits': {'party_id': " +
-                "'6954b4d1-f39f-4cc1-8843-eae834e6f849','identity_id': 'csgo-better-than-1.6'}}}";
+                "'6954b4d1-f39f-4cc1-8843-eae834e6f849'}}}";
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         assertEquals(0, statResponse.getData().getDeposits().size());
     }
 
-    @Test(expected = BadTokenException.class)
+    @Test
     public void testBadToken() {
         String json = String.format(
-                "{'query': {'deposits': {'party_id': '%s','identity_id': '%s'}, 'size':'1'}}",
-                deposit.getPartyId(),
-                deposit.getIdentityId()
+                "{'query': {'deposits': {'party_id': '%s'}, 'size':'1'}}",
+                deposit.getPartyId()
         );
         StatRequest statRequest = new StatRequest(json);
         statRequest.setContinuationToken(UUID.randomUUID().toString());
-        queryProcessor.processQuery(statRequest);
+        assertThrows(BadTokenException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 
     @Test
@@ -160,10 +160,12 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
         assertEquals(1, statResponse.getData().getDeposits().size());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testWhenPartyIdIncorrect() {
         String dsl = "{'query': {'deposits': {'party_id': 'qwe'}}}";
         StatRequest statRequest = new StatRequest(dsl);
-        queryProcessor.processQuery(statRequest);
+        assertThrows(IllegalArgumentException.class, () -> {
+            queryProcessor.processQuery(statRequest);
+        });
     }
 }

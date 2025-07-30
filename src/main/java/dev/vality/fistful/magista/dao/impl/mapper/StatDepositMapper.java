@@ -1,8 +1,11 @@
 package dev.vality.fistful.magista.dao.impl.mapper;
 
-import dev.vality.fistful.fistful_stat.*;
+import dev.vality.fistful.base.Failure;
+import dev.vality.fistful.fistful_stat.DepositFailed;
+import dev.vality.fistful.fistful_stat.DepositPending;
+import dev.vality.fistful.fistful_stat.DepositSucceeded;
+import dev.vality.fistful.fistful_stat.StatDeposit;
 import dev.vality.fistful.magista.domain.enums.DepositStatus;
-import dev.vality.fistful.magista.exception.NotFoundException;
 import dev.vality.geck.common.util.TypeUtil;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -22,7 +25,6 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
         deposit.setId(rs.getString(DEPOSIT_DATA.DEPOSIT_ID.getName()));
         deposit.setCreatedAt(
                 TypeUtil.temporalToString(rs.getObject(DEPOSIT_DATA.CREATED_AT.getName(), LocalDateTime.class)));
-        deposit.setIdentityId(rs.getString(DEPOSIT_DATA.IDENTITY_ID.getName()));
         deposit.setDestinationId(rs.getString(DEPOSIT_DATA.WALLET_ID.getName()));
         deposit.setSourceId(rs.getString(DEPOSIT_DATA.SOURCE_ID.getName()));
         deposit.setAmount(rs.getLong(DEPOSIT_DATA.AMOUNT.getName()));
@@ -31,8 +33,6 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
         DepositStatus depositStatus =
                 TypeUtil.toEnumField(rs.getString(DEPOSIT_DATA.DEPOSIT_STATUS.getName()), DepositStatus.class);
         deposit.setStatus(getDepositStatus(depositStatus));
-        deposit.setRevertStatus(getRevertStatus(rs.getLong(DEPOSIT_DATA.AMOUNT.getName()),
-                rs.getLong("REVERT_AMOUNT")));
         deposit.setDescription(rs.getString(DEPOSIT_DATA.DESCRIPTION.getName()));
         return new SimpleEntry<>(rs.getLong(DEPOSIT_DATA.ID.getName()), deposit);
     }
@@ -42,21 +42,6 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
             case succeeded -> dev.vality.fistful.fistful_stat.DepositStatus.succeeded(new DepositSucceeded());
             case pending -> dev.vality.fistful.fistful_stat.DepositStatus.pending(new DepositPending());
             case failed -> dev.vality.fistful.fistful_stat.DepositStatus.failed(new DepositFailed(new Failure()));
-            default -> throw new NotFoundException(
-                    String.format("Deposit status '%s' not found", depositStatus.getLiteral()));
         };
-    }
-
-    private RevertStatus getRevertStatus(Long amount, Long revertAmount) {
-        if (revertAmount == null || revertAmount == 0) {
-            return RevertStatus.none;
-        }
-        if (revertAmount < amount) {
-            return RevertStatus.partial;
-        }
-        if (revertAmount.equals(amount)) {
-            return RevertStatus.full;
-        }
-        throw new RuntimeException("Wrong revert amount " + revertAmount);
     }
 }

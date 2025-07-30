@@ -17,43 +17,23 @@ public class FistfulStatisticsHandler implements FistfulStatisticsSrv.Iface {
     private final QueryProcessor<StatRequest, StatResponse> queryProcessor;
 
     @Override
-    public StatResponse getWallets(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
+    public StatResponse getWithdrawals(StatRequest statRequest) throws TException {
         return getStatResponse(statRequest);
     }
 
     @Override
-    public StatResponse getWithdrawals(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
+    public StatResponse getDeposits(StatRequest statRequest) throws TException {
         return getStatResponse(statRequest);
     }
 
     @Override
-    public StatResponse getDeposits(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
+    public StatResponse getSources(StatRequest statRequest) throws TException {
         return getStatResponse(statRequest);
     }
 
     @Override
-    public StatResponse getSources(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
-        return getStatResponse(statRequest);
-    }
-
-    @Override
-    public StatResponse getDestinations(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
+    public StatResponse getDestinations(StatRequest statRequest) {
         throw new NotImplementedException("Method 'getDestinations' is not supposed to be called for this handler!");
-    }
-
-    @Override
-    public StatResponse getIdentities(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
-        return getStatResponse(statRequest);
-    }
-
-    @Override
-    public StatResponse getDepositReverts(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
-        return getStatResponse(statRequest);
-    }
-
-    @Override
-    public StatResponse getDepositAdjustments(StatRequest statRequest) throws InvalidRequest, BadToken, TException {
-        return getStatResponse(statRequest);
     }
 
     private StatResponse getStatResponse(StatRequest statRequest) throws InvalidRequest, BadToken {

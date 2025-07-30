@@ -4,7 +4,6 @@ import dev.vality.fistful.magista.service.DepositEventService;
 import dev.vality.machinegun.eventsink.SinkEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -29,7 +28,7 @@ public class DepositEventListener {
             containerFactory = "depositEventListenerContainerFactory")
     public void listen(
             List<SinkEvent> batch,
-            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
+            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition,
             @Header(KafkaHeaders.OFFSET) int offset,
             Acknowledgment ack) throws InterruptedException {
         log.info("Listening Deposit: partition={}, offset={}, batch.size()={}", partition, offset, batch.size());

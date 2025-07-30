@@ -7,7 +7,7 @@
     <parent>
         <groupId>dev.vality</groupId>
         <artifactId>service-parent-pom</artifactId>
-        <version>1.0.19</version>
+        <version>3.1.4</version>
     </parent>
 
     <artifactId>fistful-magista</artifactId>
@@ -18,17 +18,14 @@
     <description>Fistful-magista</description>
 
     <properties>
-        <java.version>15</java.version>
+        <java.version>21</java.version>
         <server.port>8022</server.port>
         <management.port>8023</management.port>
         <exposed.ports>${server.port} ${management.port}</exposed.ports>
         <dockerfile.registry>${env.REGISTRY}</dockerfile.registry>
-        <fistful-proto.version>1.166-be67e59</fistful-proto.version>
-        <machinegun-proto.version>1.27-dec518d</machinegun-proto.version>
+        <fistful-proto.version>1.181-f478436</fistful-proto.version>
+        <machinegun-proto.version>1.43-3decc8f</machinegun-proto.version>
         <sink-common-lib.version>0.0.1</sink-common-lib.version>
-        <testcontainers.version>1.16.3</testcontainers.version>
-        <shared-resources.version>1.0.1</shared-resources.version>
-        <!---->
         <db.name>fistfulmst</db.name>
         <db.port>5432</db.port>
         <db.url>jdbc:postgresql://localhost:${db.port}/${db.name}</db.url>
@@ -39,11 +36,6 @@
 
     <dependencies>
         <!--vality libs-->
-        <dependency>
-            <groupId>dev.vality</groupId>
-            <artifactId>shared-resources</artifactId>
-            <version>${shared-resources.version}</version>
-        </dependency>
         <dependency>
             <groupId>dev.vality</groupId>
             <artifactId>fistful-proto</artifactId>
@@ -109,6 +101,11 @@
 
         <!--third party-->
         <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-core</artifactId>
         </dependency>
@@ -129,6 +126,10 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
         </dependency>
@@ -137,25 +138,15 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-        <dependency>
             <groupId>software.amazon.msk</groupId>
             <artifactId>aws-msk-iam-auth</artifactId>
         </dependency>
 
         <!--Test libs-->
         <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${testcontainers.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.testcontainers</groupId>
-            <artifactId>kafka</artifactId>
-            <version>${testcontainers.version}</version>
+            <groupId>dev.vality</groupId>
+            <artifactId>testcontainers-annotations</artifactId>
+            <version>3.2.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -164,9 +155,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.github.benas</groupId>
-            <artifactId>random-beans</artifactId>
-            <version>3.9.0</version>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
+            <version>5.4.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -197,7 +188,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.6.4</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -206,12 +196,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-remote-resources-plugin</artifactId>
-                <version>1.7.0</version>
+                <version>3.3.0</version>
                 <dependencies>
                     <dependency>
                         <groupId>org.apache.maven.shared</groupId>
                         <artifactId>maven-filtering</artifactId>
-                        <version>1.3</version>
+                        <version>3.4.0</version>
                     </dependency>
                 </dependencies>
                 <configuration>
@@ -295,7 +285,7 @@
             <plugin>
                 <groupId>dev.vality.maven.plugins</groupId>
                 <artifactId>pg-embedded-plugin</artifactId>
-                <version>1.0.1</version>
+                <version>2.0.0</version>
                 <configuration>
                     <port>${db.port}</port>
                     <dbName>${db.name}</dbName>

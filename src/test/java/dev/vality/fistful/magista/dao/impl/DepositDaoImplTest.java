@@ -1,17 +1,19 @@
 package dev.vality.fistful.magista.dao.impl;
 
 import dev.vality.fistful.magista.AbstractIntegrationTest;
+import dev.vality.fistful.magista.config.PostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.DepositDao;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.exception.DaoException;
-import org.junit.After;
-import org.junit.Test;
+import dev.vality.fistful.magista.util.TestDataGenerator;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import static io.github.benas.randombeans.api.EnhancedRandom.random;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+@PostgresqlSpringBootITest
 public class DepositDaoImplTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -22,7 +24,7 @@ public class DepositDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void depositDaoTest() throws DaoException {
-        DepositData deposit = random(DepositData.class);
+        DepositData deposit = TestDataGenerator.create(DepositData.class);
         deposit.setId(null);
         depositDao.save(deposit);
         deposit.setEventId(deposit.getEventId() + 1);
@@ -33,7 +35,7 @@ public class DepositDaoImplTest extends AbstractIntegrationTest {
 
     @Test
     public void testDuplication() throws DaoException {
-        DepositData deposit = random(DepositData.class);
+        DepositData deposit = TestDataGenerator.create(DepositData.class);
         deposit.setId(null);
         depositDao.save(deposit);
         Long eventId = deposit.getEventId();
@@ -43,7 +45,7 @@ public class DepositDaoImplTest extends AbstractIntegrationTest {
         assertNotNull(depositDao.save(deposit));
     }
 
-    @After
+    @AfterEach
     public void after() {
         jdbcTemplate.execute("truncate mst.deposit_data");
     }
