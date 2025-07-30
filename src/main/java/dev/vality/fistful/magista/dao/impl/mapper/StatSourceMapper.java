@@ -21,6 +21,7 @@ public class StatSourceMapper implements RowMapper<Map.Entry<Long, StatSource>> 
         StatSource statSource = new StatSource();
         statSource.setId(rs.getString(SOURCE_DATA.SOURCE_ID.getName()));
         statSource.setName(rs.getString(SOURCE_DATA.NAME.getName()));
+        statSource.setPartyId(rs.getString(SOURCE_DATA.PARTY_ID.getName()));
         statSource.setCreatedAt(
                 TypeUtil.temporalToString(rs.getObject(SOURCE_DATA.CREATED_AT.getName(), LocalDateTime.class)));
         statSource.setResource(SourceResource.internal(new SourceResourceInternal()

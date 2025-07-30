@@ -125,6 +125,7 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                         DEPOSIT_DATA.EVENT_OCCURRED_AT, DEPOSIT_DATA.EVENT_TYPE, DEPOSIT_DATA.WALLET_ID,
                         DEPOSIT_DATA.SOURCE_ID, DEPOSIT_DATA.AMOUNT, DEPOSIT_DATA.CURRENCY_CODE,
                         DEPOSIT_DATA.DEPOSIT_STATUS, DEPOSIT_DATA.DEPOSIT_TRANSFER_STATUS, DEPOSIT_DATA.FEE,
+                        DEPOSIT_DATA.PROVIDER_FEE, DEPOSIT_DATA.PARTY_ID, DEPOSIT_DATA.WTIME,
                         DEPOSIT_DATA.CREATED_AT, DEPOSIT_DATA.DESCRIPTION)
                 .from(DEPOSIT_DATA)
                 .where(
