@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>fistful-magista</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>fistful-magista</name>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>dev.vality.geck</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>dev.vality.geck</groupId>
