@@ -62,7 +62,7 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
                     StatResponse statResponse = new StatResponse(statResponseData);
                     List<Map.Entry<Long, StatSource>> sourceStats = sourcesResult.getCollectedStream();
                     if (!sourcesResult.getCollectedStream().isEmpty()
-                            && getQueryParameters().getSize() == sourceStats.size()) {
+                        && getQueryParameters().getSize() == sourceStats.size()) {
                         statResponse.setContinuationToken(
                                 TokenUtil.buildToken(
                                         getQueryParameters(),
@@ -110,7 +110,8 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
         }
 
         public UUID getPartyId() {
-            return UUID.fromString(getStringParameter(Parameters.PARTY_ID_PARAM, false));
+            String partyId = getStringParameter(Parameters.PARTY_ID_PARAM, false);
+            return partyId != null ? UUID.fromString(partyId) : null;
         }
 
         public String getExternalId() {
@@ -152,15 +153,15 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
                     SourceParameters::new, validator);
 
             return Stream.of(
-                    new QueryPart(FUNC_NAME, parameters, parent))
+                            new QueryPart(FUNC_NAME, parameters, parent))
                     .collect(Collectors.toList());
         }
 
         @Override
         public boolean apply(Map source, QueryPart parent) {
             return parent != null
-                    && RootQuery.RootParser.getMainDescriptor().equals(parent.getDescriptor())
-                    && (source.get(FUNC_NAME) instanceof Map);
+                   && RootQuery.RootParser.getMainDescriptor().equals(parent.getDescriptor())
+                   && (source.get(FUNC_NAME) instanceof Map);
         }
 
         public static String getMainDescriptor() {
