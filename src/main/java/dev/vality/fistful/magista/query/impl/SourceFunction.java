@@ -62,7 +62,7 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
                     StatResponse statResponse = new StatResponse(statResponseData);
                     List<Map.Entry<Long, StatSource>> sourceStats = sourcesResult.getCollectedStream();
                     if (!sourcesResult.getCollectedStream().isEmpty()
-                        && getQueryParameters().getSize() == sourceStats.size()) {
+                            && getQueryParameters().getSize() == sourceStats.size()) {
                         statResponse.setContinuationToken(
                                 TokenUtil.buildToken(
                                         getQueryParameters(),
