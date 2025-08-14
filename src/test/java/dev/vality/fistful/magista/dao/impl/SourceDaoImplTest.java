@@ -6,11 +6,9 @@ import dev.vality.fistful.magista.dao.SourceDao;
 import dev.vality.fistful.magista.domain.tables.pojos.SourceData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.util.TestDataGenerator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,20 +18,12 @@ public class SourceDaoImplTest extends AbstractIntegrationTest {
     @Autowired
     private SourceDao sourceDao;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     private SourceData sourceData;
 
     @BeforeEach
     public void before() throws DaoException {
         sourceData = TestDataGenerator.create(SourceData.class);
         sourceDao.save(sourceData);
-    }
-
-    @AfterEach
-    public void after() {
-        jdbcTemplate.execute("truncate mst.source_data");
     }
 
     @Test

@@ -13,11 +13,9 @@ import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,9 +28,6 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
 
     @Autowired
     private SourceDao sourceDao;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     private SourceData sourceData;
     private SourceData secondSourceData;
@@ -50,11 +45,6 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
         secondSourceData.setCreatedAt(LocalDateTime.now());
         secondSourceData.setPartyId(sourceData.getPartyId());
         sourceDao.save(secondSourceData);
-    }
-
-    @AfterEach
-    public void after() {
-        jdbcTemplate.execute("truncate mst.source_data");
     }
 
     @Test

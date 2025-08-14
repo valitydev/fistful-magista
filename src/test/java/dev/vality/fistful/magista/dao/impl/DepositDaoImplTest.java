@@ -6,10 +6,8 @@ import dev.vality.fistful.magista.dao.DepositDao;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.util.TestDataGenerator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,9 +16,6 @@ public class DepositDaoImplTest extends AbstractIntegrationTest {
 
     @Autowired
     private DepositDao depositDao;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     @Test
     public void depositDaoTest() throws DaoException {
@@ -43,10 +38,5 @@ public class DepositDaoImplTest extends AbstractIntegrationTest {
         assertNull(depositDao.save(deposit));
         deposit.setEventId(eventId + 1);
         assertNotNull(depositDao.save(deposit));
-    }
-
-    @AfterEach
-    public void after() {
-        jdbcTemplate.execute("truncate mst.deposit_data");
     }
 }

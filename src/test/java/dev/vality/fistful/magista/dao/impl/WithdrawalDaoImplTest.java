@@ -6,11 +6,9 @@ import dev.vality.fistful.magista.dao.WithdrawalDao;
 import dev.vality.fistful.magista.domain.tables.pojos.WithdrawalData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.util.TestDataGenerator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,20 +18,12 @@ public class WithdrawalDaoImplTest extends AbstractIntegrationTest {
     @Autowired
     private WithdrawalDao withdrawalDao;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     private WithdrawalData withdrawalData;
 
     @BeforeEach
     public void before() throws DaoException {
         withdrawalData = TestDataGenerator.create(WithdrawalData.class);
         withdrawalDao.save(withdrawalData);
-    }
-
-    @AfterEach
-    public void after() {
-        jdbcTemplate.execute("truncate mst.withdrawal_data");
     }
 
     @Test

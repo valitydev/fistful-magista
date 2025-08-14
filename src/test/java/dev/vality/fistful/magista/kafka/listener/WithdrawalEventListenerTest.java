@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static dev.vality.fistful.magista.data.TestData.machineEvent;
@@ -29,6 +30,9 @@ import static org.mockito.Mockito.*;
 public class WithdrawalEventListenerTest {
 
     private static final long MESSAGE_TIMEOUT = 4_000L;
+
+    @Value("${kafka.topic.withdrawal.name}")
+    private String topic;
 
     @MockitoBean
     private WithdrawalDao withdrawalDao;
@@ -57,7 +61,7 @@ public class WithdrawalEventListenerTest {
                 .thenReturn(new WithdrawalData());
 
         // When
-        testThriftKafkaProducer.send("mg-events-ff-withdrawal", sinkEvent);
+        testThriftKafkaProducer.send(topic, sinkEvent);
 
         // Then
         verify(withdrawalDao, timeout(MESSAGE_TIMEOUT).times(1))

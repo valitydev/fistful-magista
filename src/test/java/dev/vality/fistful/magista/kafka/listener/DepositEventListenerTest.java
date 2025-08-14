@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static dev.vality.fistful.magista.data.TestData.machineEvent;
@@ -29,6 +30,9 @@ import static org.mockito.Mockito.*;
 public class DepositEventListenerTest {
 
     private static final long MESSAGE_TIMEOUT = 4_000L;
+
+    @Value("${kafka.topic.deposit.name}")
+    private String topic;
 
     @MockitoBean
     private DepositDao depositDao;
@@ -57,7 +61,7 @@ public class DepositEventListenerTest {
                 .thenReturn(new DepositData());
 
         // When
-        testThriftKafkaProducer.send("mg-events-ff-deposit", sinkEvent);
+        testThriftKafkaProducer.send(topic, sinkEvent);
 
         // Then
         verify(depositDao, timeout(MESSAGE_TIMEOUT).times(1))
