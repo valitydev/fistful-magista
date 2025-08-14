@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>fistful-magista</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>fistful-magista</name>
@@ -142,7 +142,7 @@
         <dependency>
             <groupId>org.instancio</groupId>
             <artifactId>instancio-junit</artifactId>
-            <version>5.4.1</version>
+            <version>5.5.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
