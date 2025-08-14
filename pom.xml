@@ -52,12 +52,10 @@
         <dependency>
             <groupId>dev.vality.geck</groupId>
             <artifactId>common</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>dev.vality.geck</groupId>
             <artifactId>serializer</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>dev.vality</groupId>
@@ -105,14 +103,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
@@ -133,10 +123,6 @@
             <artifactId>jooq</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>software.amazon.msk</groupId>
             <artifactId>aws-msk-iam-auth</artifactId>
         </dependency>
@@ -145,7 +131,7 @@
         <dependency>
             <groupId>dev.vality</groupId>
             <artifactId>testcontainers-annotations</artifactId>
-            <version>3.2.0</version>
+            <version>3.3.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>

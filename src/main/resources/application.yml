@@ -61,7 +61,6 @@ kafka:
       name: mg-events-ff-deposit
       listener:
         enabled: false
-
     withdrawal:
       name: mg-events-ff-withdrawal
       listener:

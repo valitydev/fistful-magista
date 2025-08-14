@@ -13,11 +13,9 @@ import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -31,9 +29,6 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
 
     @Autowired
     private WithdrawalDao withdrawalDao;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     private WithdrawalData withdrawalData;
     private WithdrawalData secondWithdrawalData;
@@ -51,11 +46,6 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
         secondWithdrawalData.setPartyId(withdrawalData.getPartyId());
         secondWithdrawalData.setCreatedAt(LocalDateTime.now());
         withdrawalDao.save(secondWithdrawalData);
-    }
-
-    @AfterEach
-    public void after() {
-        jdbcTemplate.execute("truncate mst.withdrawal_data");
     }
 
     @Test

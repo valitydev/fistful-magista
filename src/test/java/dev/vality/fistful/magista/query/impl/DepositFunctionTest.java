@@ -13,11 +13,9 @@ import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.magista.dsl.BadTokenException;
 import dev.vality.magista.dsl.TokenUtil;
 import dev.vality.magista.dsl.parser.QueryParserException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -31,9 +29,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
 
     @Autowired
     private DepositDao depositDao;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     private DepositData deposit;
     private DepositData secondDeposit;
@@ -51,11 +46,6 @@ public class DepositFunctionTest extends AbstractIntegrationTest {
 
         depositDao.save(deposit);
         depositDao.save(secondDeposit);
-    }
-
-    @AfterEach
-    public void after() {
-        jdbcTemplate.execute("truncate mst.deposit_data");
     }
 
     @Test

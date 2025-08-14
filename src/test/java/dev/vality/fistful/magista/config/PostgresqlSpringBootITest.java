@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest
-@PostgresqlTestcontainerSingleton(excludeTruncateTables = "schema_version")
+@PostgresqlTestcontainerSingleton
 public @interface PostgresqlSpringBootITest {
 }
