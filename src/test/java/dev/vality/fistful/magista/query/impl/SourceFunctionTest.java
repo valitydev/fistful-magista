@@ -1,5 +1,6 @@
 package dev.vality.fistful.magista.query.impl;
 
+import dev.vality.fistful.base.Realm;
 import dev.vality.fistful.fistful_stat.StatRequest;
 import dev.vality.fistful.fistful_stat.StatResponse;
 import dev.vality.fistful.fistful_stat.StatSource;
@@ -39,11 +40,13 @@ public class SourceFunctionTest extends AbstractIntegrationTest {
         sourceData.setId(1L);
         sourceData.setCreatedAt(LocalDateTime.now().minusMinutes(1));
         sourceData.setSourceId(sourceData.getSourceId());
+        sourceData.setRealm(Realm.live.name());
         sourceDao.save(sourceData);
         secondSourceData = TestDataGenerator.create(SourceData.class);
         secondSourceData.setId(2L);
         secondSourceData.setCreatedAt(LocalDateTime.now());
         secondSourceData.setPartyId(sourceData.getPartyId());
+        secondSourceData.setRealm(sourceData.getRealm());
         sourceDao.save(secondSourceData);
     }
 
