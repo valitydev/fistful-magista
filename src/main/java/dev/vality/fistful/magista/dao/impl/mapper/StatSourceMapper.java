@@ -1,5 +1,6 @@
 package dev.vality.fistful.magista.dao.impl.mapper;
 
+import dev.vality.fistful.base.Realm;
 import dev.vality.fistful.fistful_stat.SourceResource;
 import dev.vality.fistful.fistful_stat.SourceResourceInternal;
 import dev.vality.fistful.fistful_stat.StatSource;
@@ -28,6 +29,7 @@ public class StatSourceMapper implements RowMapper<Map.Entry<Long, StatSource>> 
                 .setDetails(rs.getString(SOURCE_DATA.RESOURCE_INTERNAL_DETAILS.getName()))));
         statSource.setCurrencySymbolicCode(rs.getString(SOURCE_DATA.ACCOUNT_CURRENCY.getName()));
         statSource.setExternalId(rs.getString(SOURCE_DATA.EXTERNAL_ID.getName()));
+        statSource.setRealm(Realm.valueOf(rs.getString(SOURCE_DATA.REALM.getName())));
 
         return new AbstractMap.SimpleEntry<>(rs.getLong(SOURCE_DATA.ID.getName()), statSource);
     }

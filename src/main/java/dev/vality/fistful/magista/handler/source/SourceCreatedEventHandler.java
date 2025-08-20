@@ -46,6 +46,7 @@ public class SourceCreatedEventHandler implements SourceEventHandler {
             sourceData.setEventType(SourceEventType.SOURCE_CREATED);
             Source source = change.getChange().getCreated();
             sourceData.setName(source.getName());
+            sourceData.setRealm(source.getRealm().name());
             sourceData.setPartyId(UUID.fromString(source.getPartyId()));
             sourceData.setResourceInternalDetails(source.getResource().getInternal().getDetails());
             sourceData.setExternalId(source.getExternalId());

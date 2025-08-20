@@ -1,0 +1,1 @@
+ALTER TABLE source_data ADD realm CHARACTER VARYING;
