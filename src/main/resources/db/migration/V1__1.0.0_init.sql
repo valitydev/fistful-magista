@@ -84,7 +84,7 @@ CREATE TABLE mst.source_data (
     external_id               CHARACTER VARYING,
     created_at                TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     context_json              CHARACTER VARYING,
-    party_id                  UUID,
+    party_id                  UUID                        NOT NULL,
     account_currency          CHARACTER VARYING,
     account_id                BIGINT,
     wtime                     TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT (NOW() AT TIME ZONE 'utc'),
