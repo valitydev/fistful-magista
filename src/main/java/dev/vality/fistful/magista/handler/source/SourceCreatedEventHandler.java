@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,6 +46,7 @@ public class SourceCreatedEventHandler implements SourceEventHandler {
             sourceData.setEventType(SourceEventType.SOURCE_CREATED);
             Source source = change.getChange().getCreated();
             sourceData.setName(source.getName());
+            sourceData.setPartyId(UUID.fromString(source.getPartyId()));
             sourceData.setResourceInternalDetails(source.getResource().getInternal().getDetails());
             sourceData.setExternalId(source.getExternalId());
             sourceData.setCreatedAt(TypeUtil.stringToLocalDateTime(source.getCreatedAt()));
