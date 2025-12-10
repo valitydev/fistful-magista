@@ -23,6 +23,7 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
     public Map.Entry<Long, StatDeposit> mapRow(ResultSet rs, int i) throws SQLException {
         StatDeposit deposit = new StatDeposit();
         deposit.setId(rs.getString(DEPOSIT_DATA.DEPOSIT_ID.getName()));
+        deposit.setPartyId(rs.getString(DEPOSIT_DATA.PARTY_ID.getName()));
         deposit.setCreatedAt(
                 TypeUtil.temporalToString(rs.getObject(DEPOSIT_DATA.CREATED_AT.getName(), LocalDateTime.class)));
         deposit.setDestinationId(rs.getString(DEPOSIT_DATA.WALLET_ID.getName()));
