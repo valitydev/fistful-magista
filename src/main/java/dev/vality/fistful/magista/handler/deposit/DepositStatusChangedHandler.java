@@ -8,7 +8,6 @@ import dev.vality.fistful.magista.domain.enums.DepositStatus;
 import dev.vality.fistful.magista.domain.tables.pojos.DepositData;
 import dev.vality.fistful.magista.exception.DaoException;
 import dev.vality.fistful.magista.exception.StorageException;
-import dev.vality.geck.common.util.TBaseUtil;
 import dev.vality.geck.common.util.TypeUtil;
 import dev.vality.machinegun.eventsink.MachineEvent;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,12 @@ public class DepositStatusChangedHandler implements DepositEventHandler {
             DepositData depositData = depositDao.get(depositId);
             initEventFields(depositData, eventId, eventCreatedAt, eventOccurredAt,
                     DepositEventType.DEPOSIT_STATUS_CHANGED);
-            depositData.setDepositStatus(TBaseUtil.unionFieldToEnum(status, DepositStatus.class));
+            depositData.setDepositStatus(resolveStatus(status));
+            if (status.isSetFailed()
+                    && status.getFailed().isSetFailure()
+                    && status.getFailed().getFailure().isSetCode()) {
+                depositData.setDepositStatusFailCode(status.getFailed().getFailure().getCode());
+            }
 
             Long id = depositDao.save(depositData);
 
@@ -54,5 +58,15 @@ public class DepositStatusChangedHandler implements DepositEventHandler {
         } catch (DaoException e) {
             throw new StorageException(e);
         }
+    }
+
+    private DepositStatus resolveStatus(Status status) {
+        return switch (status.getSetField()) {
+            case PENDING -> DepositStatus.pending;
+            case SUCCEEDED -> DepositStatus.succeeded;
+            case FAILED -> DepositStatus.failed;
+            default -> throw new IllegalArgumentException(
+                    String.format("Unknown deposit status: %s", status.getSetField()));
+        };
     }
 }

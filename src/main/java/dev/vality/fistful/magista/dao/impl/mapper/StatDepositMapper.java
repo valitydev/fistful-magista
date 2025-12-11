@@ -33,16 +33,23 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
         deposit.setCurrencySymbolicCode(rs.getString(DEPOSIT_DATA.CURRENCY_CODE.getName()));
         DepositStatus depositStatus =
                 TypeUtil.toEnumField(rs.getString(DEPOSIT_DATA.DEPOSIT_STATUS.getName()), DepositStatus.class);
-        deposit.setStatus(getDepositStatus(depositStatus));
+        String statusFailCode = rs.getString(DEPOSIT_DATA.DEPOSIT_STATUS_FAIL_CODE.getName());
+        if (statusFailCode == null || statusFailCode.isEmpty()) {
+            statusFailCode = "unknown";
+        }
+        deposit.setStatus(getDepositStatus(depositStatus, statusFailCode));
         deposit.setDescription(rs.getString(DEPOSIT_DATA.DESCRIPTION.getName()));
         return new SimpleEntry<>(rs.getLong(DEPOSIT_DATA.ID.getName()), deposit);
     }
 
-    private dev.vality.fistful.fistful_stat.DepositStatus getDepositStatus(DepositStatus depositStatus) {
+    private dev.vality.fistful.fistful_stat.DepositStatus getDepositStatus(
+            DepositStatus depositStatus,
+            String failCode) {
         return switch (depositStatus) {
             case succeeded -> dev.vality.fistful.fistful_stat.DepositStatus.succeeded(new DepositSucceeded());
             case pending -> dev.vality.fistful.fistful_stat.DepositStatus.pending(new DepositPending());
-            case failed -> dev.vality.fistful.fistful_stat.DepositStatus.failed(new DepositFailed(new Failure()));
+            case failed ->
+                    dev.vality.fistful.fistful_stat.DepositStatus.failed(new DepositFailed(new Failure(failCode)));
         };
     }
 }
