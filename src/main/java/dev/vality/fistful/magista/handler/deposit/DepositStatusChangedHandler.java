@@ -46,6 +46,11 @@ public class DepositStatusChangedHandler implements DepositEventHandler {
             initEventFields(depositData, eventId, eventCreatedAt, eventOccurredAt,
                     DepositEventType.DEPOSIT_STATUS_CHANGED);
             depositData.setDepositStatus(TBaseUtil.unionFieldToEnum(status, DepositStatus.class));
+            if (status.getFailed() != null
+                    && status.getFailed().getFailure() != null
+                    && !status.getFailed().getFailure().getCode().isEmpty()) {
+                depositData.setDepositStatusFailCode(status.getFailed().getFailure().getCode());
+            }
 
             Long id = depositDao.save(depositData);
 
