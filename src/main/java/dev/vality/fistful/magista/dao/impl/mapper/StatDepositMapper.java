@@ -42,7 +42,9 @@ public class StatDepositMapper implements RowMapper<Map.Entry<Long, StatDeposit>
         return new SimpleEntry<>(rs.getLong(DEPOSIT_DATA.ID.getName()), deposit);
     }
 
-    private dev.vality.fistful.fistful_stat.DepositStatus getDepositStatus(DepositStatus depositStatus, String failCode) {
+    private dev.vality.fistful.fistful_stat.DepositStatus getDepositStatus(
+            DepositStatus depositStatus,
+            String failCode) {
         return switch (depositStatus) {
             case succeeded -> dev.vality.fistful.fistful_stat.DepositStatus.succeeded(new DepositSucceeded());
             case pending -> dev.vality.fistful.fistful_stat.DepositStatus.pending(new DepositPending());
