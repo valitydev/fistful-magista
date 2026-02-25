@@ -147,7 +147,7 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
             if (id != null) {
                 externalIds.add(id);
             }
-            return externalIds;
+            return externalIds.isEmpty() ? null : externalIds;
         }
 
 
