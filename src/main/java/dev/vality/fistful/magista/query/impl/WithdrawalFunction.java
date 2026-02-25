@@ -13,6 +13,7 @@ import dev.vality.magista.dsl.builder.QueryBuilderException;
 import dev.vality.magista.dsl.parser.AbstractQueryParser;
 import dev.vality.magista.dsl.parser.QueryParserException;
 import dev.vality.magista.dsl.parser.QueryPart;
+import org.springframework.util.CollectionUtils;
 
 import java.time.temporal.TemporalAccessor;
 import java.util.*;
@@ -136,8 +137,17 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
             return statusesMap.get(getStringParameter(Parameters.STATUS_PARAM, false));
         }
 
-        public String getExternalId() {
-            return getStringParameter(Parameters.EXTERNAL_ID_PARAM, false);
+        public List<String> getExternalIds() {
+            List<String> ids = getArrayParameter(Parameters.EXTERNAL_IDS_PARAM, false);
+            var id = getStringParameter(Parameters.EXTERNAL_ID_PARAM, false);
+            List<String> externalIds = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(ids)) {
+                externalIds.addAll(ids);
+            }
+            if (id != null) {
+                externalIds.add(id);
+            }
+            return externalIds.isEmpty() ? null : externalIds;
         }
 
 

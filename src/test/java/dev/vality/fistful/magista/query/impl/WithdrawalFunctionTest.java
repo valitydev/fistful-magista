@@ -25,7 +25,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @PostgresqlSpringBootITest
-public class WithdrawalFunctionTest extends AbstractIntegrationTest {
+class WithdrawalFunctionTest extends AbstractIntegrationTest {
 
     @Autowired
     private WithdrawalDao withdrawalDao;
@@ -33,6 +33,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     private WithdrawalData withdrawalData;
     private WithdrawalData secondWithdrawalData;
 
+    @Override
     @BeforeEach
     public void before() throws DaoException {
         super.before();
@@ -49,7 +50,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testOneWithdrawal() {
+    void testOneWithdrawal() {
         String json = String.format("{'query': {'withdrawals': {" +
                         "'party_id': '%s', " +
                         "'wallet_id':'%s', " +
@@ -79,7 +80,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testOneWithdrawalByProviderId() {
+    void testOneWithdrawalByProviderId() {
         String json = String.format("{'query': {'withdrawals': {" +
                         "'withdrawal_provider_id': %s " +
                         "}}}",
@@ -93,7 +94,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testWithdrawalList() throws DaoException {
+    void testWithdrawalList() {
         String json = String.format("{'query': {'withdrawals': {" +
                         "'withdrawal_ids':['%s', '%s']" +
                         "}}}",
@@ -105,7 +106,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testAllWallets() throws DaoException {
+    void testAllWallets() {
         String json = String.format("{'query': {'withdrawals': {'party_id': '%s'}}}",
                 withdrawalData.getPartyId());
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
@@ -114,7 +115,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testWhenSizeOverflow() {
+    void testWhenSizeOverflow() {
         String json = "{'query': {'withdrawals': {'size': 1001}}}";
         assertThrows(QueryParserException.class, () -> {
             queryProcessor.processQuery(new StatRequest(json));
@@ -122,7 +123,7 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testContinuationToken() {
+    void testContinuationToken() {
         String json = String.format("{'query': {'withdrawals': {'party_id': '%s'}, 'size':'1'}}",
                 withdrawalData.getPartyId());
         StatRequest statRequest = new StatRequest(json);
@@ -143,14 +144,14 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void testIfNotPresentWithdrawals() {
+    void testIfNotPresentWithdrawals() {
         String json = "{'query': {'withdrawals': {'party_id': '6954b4d1-f39f-4cc1-8843-eae834e6f849'}}}";
         StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
         assertEquals(0, statResponse.getData().getWithdrawals().size());
     }
 
     @Test
-    public void testBadToken() {
+    void testBadToken() {
         String json = String.format("{'query': {'withdrawals': {'party_id': '%s'}, 'size':'1'}}",
                 withdrawalData.getPartyId());
         StatRequest statRequest = new StatRequest(json);
@@ -158,6 +159,34 @@ public class WithdrawalFunctionTest extends AbstractIntegrationTest {
         assertThrows(BadTokenException.class, () -> {
             queryProcessor.processQuery(statRequest);
         });
+    }
+
+    @Test
+    void testOneWithdrawalByExternalIds() {
+        String json = String.format("{'query': {'withdrawals': {" +
+                        "'external_ids': [ '%s' ] " +
+                        "}}}",
+                withdrawalData.getExternalId()
+        );
+        StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
+        List<StatWithdrawal> withdrawals = statResponse.getData().getWithdrawals();
+        assertEquals(1, withdrawals.size());
+        assertEquals(withdrawalData.getExternalId(), withdrawals.get(0).getExternalId());
+        assertEquals(withdrawalData.getTerminalId().intValue(), withdrawals.get(0).getTerminalId());
+    }
+
+    @Test
+    void testOneWithdrawalByExternalId() {
+        String json = String.format("{'query': {'withdrawals': {" +
+                        "'external_id': '%s' " +
+                        "}}}",
+                withdrawalData.getExternalId()
+        );
+        StatResponse statResponse = queryProcessor.processQuery(new StatRequest(json));
+        List<StatWithdrawal> withdrawals = statResponse.getData().getWithdrawals();
+        assertEquals(1, withdrawals.size());
+        assertEquals(withdrawalData.getExternalId(), withdrawals.get(0).getExternalId());
+        assertEquals(withdrawalData.getTerminalId().intValue(), withdrawals.get(0).getTerminalId());
     }
 
 
