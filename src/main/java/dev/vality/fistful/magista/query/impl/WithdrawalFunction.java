@@ -175,8 +175,8 @@ public class WithdrawalFunction extends PagedBaseFunction<Map.Entry<Long, StatWi
             return getStringParameter(Parameters.ERROR_MESSAGE, false);
         }
 
-        public Integer getWithdrawalProviderId() {
-            return getIntParameter(Parameters.WITHDRAWAL_PROVIDER_ID_PARAM, false);
+        public List<Integer> getWithdrawalProviderIds() {
+            return getArrayParameter(Parameters.WITHDRAWAL_PROVIDER_IDS_PARAM, false);
         }
 
         public Integer getWithdrawalTerminalId() {

@@ -21,7 +21,7 @@ public class Parameters {
     public static final String CURRENCY_CODE_PARAM = "currency_code";
     public static final String STATUS_PARAM = "status";
     public static final String ERROR_MESSAGE = "error_message";
-    public static final String WITHDRAWAL_PROVIDER_ID_PARAM = "withdrawal_provider_id";
+    public static final String WITHDRAWAL_PROVIDER_IDS_PARAM = "withdrawal_provider_ids";
     public static final String WITHDRAWAL_TERMINAL_ID_PARAM = "withdrawal_terminal_id";
 
 }
