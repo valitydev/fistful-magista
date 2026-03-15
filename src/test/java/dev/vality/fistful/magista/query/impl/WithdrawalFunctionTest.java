@@ -82,7 +82,7 @@ class WithdrawalFunctionTest extends AbstractIntegrationTest {
     @Test
     void testOneWithdrawalByProviderId() {
         String json = String.format("{'query': {'withdrawals': {" +
-                        "'withdrawal_provider_id': %s " +
+                        "'withdrawal_provider_ids': [%s] " +
                         "}}}",
                 withdrawalData.getProviderId()
         );

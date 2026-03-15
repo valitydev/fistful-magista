@@ -77,9 +77,8 @@ public class SearchDaoImpl extends AbstractGenericDao implements SearchDao {
                                                         EQUALS)
                                                 .addInConditionValue(
                                                         WITHDRAWAL_DATA.EXTERNAL_ID, parameters.getExternalIds())
-                                                .addValue(WITHDRAWAL_DATA.PROVIDER_ID,
-                                                        parameters.getWithdrawalProviderId(),
-                                                        EQUALS)
+                                                .addInConditionValue(WITHDRAWAL_DATA.PROVIDER_ID,
+                                                        parameters.getWithdrawalProviderIds())
                                                 .addValue(WITHDRAWAL_DATA.TERMINAL_ID,
                                                         parameters.getWithdrawalTerminalId(),
                                                         EQUALS)
