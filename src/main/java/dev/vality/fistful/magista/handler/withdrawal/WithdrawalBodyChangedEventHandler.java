@@ -36,9 +36,9 @@ public class WithdrawalBodyChangedEventHandler implements WithdrawalEventHandler
             WithdrawalData withdrawalData = getWithdrawalData(event);
             BodyChange bodyChanged = change.getChange().getBodyChanged();
             Cash newBody = bodyChanged.getNewBody();
-            withdrawalData.setAmount(newBody.getAmount());
+            withdrawalData.setChangedAmount(newBody.getAmount());
             if (newBody.isSetCurrency()) {
-                withdrawalData.setCurrencyCode(newBody.getCurrency().getSymbolicCode());
+                withdrawalData.setChangedCurrencyCode(newBody.getCurrency().getSymbolicCode());
             }
             withdrawalData.setEventId(event.getEventId());
             withdrawalData.setEventCreatedAt(TypeUtil.stringToLocalDateTime(event.getCreatedAt()));

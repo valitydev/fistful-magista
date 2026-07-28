@@ -106,6 +106,12 @@ public class WithdrawalEventListenerTest {
         verify(withdrawalDao, timeout(MESSAGE_TIMEOUT).times(1))
                 .save(captor.capture());
         assertThat(captor.getValue().getAmount())
+                .isEqualTo(1000L);
+        assertThat(captor.getValue().getCurrencyCode())
+                .isEqualTo("RUB");
+        assertThat(captor.getValue().getChangedAmount())
                 .isEqualTo(2000L);
+        assertThat(captor.getValue().getChangedCurrencyCode())
+                .isEqualTo("RUB");
     }
 }
