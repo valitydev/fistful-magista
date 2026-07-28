@@ -1,5 +1,8 @@
 package dev.vality.fistful.magista.kafka.listener;
 
+import dev.vality.fistful.base.Cash;
+import dev.vality.fistful.base.CurrencyRef;
+import dev.vality.fistful.withdrawal.BodyChange;
 import dev.vality.fistful.magista.config.KafkaPostgresqlSpringBootITest;
 import dev.vality.fistful.magista.dao.WithdrawalDao;
 import dev.vality.fistful.magista.domain.enums.WithdrawalStatus;
@@ -52,7 +55,7 @@ public class WithdrawalEventListenerTest {
                         new StatusChange().setStatus(
                                 Status.succeeded(new Succeeded()))));
 
-        SinkEvent sinkEvent = sinkEvent(
+        final SinkEvent sinkEvent = sinkEvent(
                 machineEvent(
                         new ThriftSerializer<>(),
                         statusChanged));
@@ -68,5 +71,41 @@ public class WithdrawalEventListenerTest {
                 .save(captor.capture());
         assertThat(captor.getValue().getWithdrawalStatus())
                 .isEqualTo(WithdrawalStatus.succeeded);
+    }
+
+    @Test
+    public void shouldListenBodyChangedAndSaveNewAmount() throws InterruptedException, DaoException {
+        // Given
+        TimestampedChange bodyChanged = new TimestampedChange()
+                .setOccuredAt("2016-03-22T06:12:27Z")
+                .setChange(Change.body_changed(
+                        new BodyChange()
+                                .setOldBody(new Cash()
+                                        .setAmount(1000L)
+                                        .setCurrency(new CurrencyRef("RUB")))
+                                .setNewBody(new Cash()
+                                        .setAmount(2000L)
+                                        .setCurrency(new CurrencyRef("RUB")))));
+
+        final SinkEvent sinkEvent = sinkEvent(
+                machineEvent(
+                        new ThriftSerializer<>(),
+                        bodyChanged));
+
+        WithdrawalData withdrawalData = new WithdrawalData();
+        withdrawalData.setAmount(1000L);
+        withdrawalData.setCurrencyCode("RUB");
+
+        when(withdrawalDao.get("source_id"))
+                .thenReturn(withdrawalData);
+
+        // When
+        testThriftKafkaProducer.send(topic, sinkEvent);
+
+        // Then
+        verify(withdrawalDao, timeout(MESSAGE_TIMEOUT).times(1))
+                .save(captor.capture());
+        assertThat(captor.getValue().getAmount())
+                .isEqualTo(2000L);
     }
 }
