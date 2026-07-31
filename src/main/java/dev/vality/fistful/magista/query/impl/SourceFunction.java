@@ -160,8 +160,8 @@ public class SourceFunction extends PagedBaseFunction<Map.Entry<Long, StatSource
         @Override
         public boolean apply(Map source, QueryPart parent) {
             return parent != null
-                   && RootQuery.RootParser.getMainDescriptor().equals(parent.getDescriptor())
-                   && (source.get(FUNC_NAME) instanceof Map);
+                    && RootQuery.RootParser.getMainDescriptor().equals(parent.getDescriptor())
+                    && (source.get(FUNC_NAME) instanceof Map);
         }
 
         public static String getMainDescriptor() {
