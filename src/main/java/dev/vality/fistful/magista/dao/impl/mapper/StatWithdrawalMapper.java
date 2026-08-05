@@ -37,6 +37,14 @@ public class StatWithdrawalMapper implements RowMapper<Map.Entry<Long, StatWithd
         statWithdrawal.setProviderId(rs.getInt(WITHDRAWAL_DATA.PROVIDER_ID.getName()));
         statWithdrawal.setTerminalId(rs.getInt(WITHDRAWAL_DATA.TERMINAL_ID.getName()));
         statWithdrawal.setPartyId(rs.getString(WITHDRAWAL_DATA.PARTY_ID.getName()));
+        Long changedAmount = rs.getObject(WITHDRAWAL_DATA.CHANGED_AMOUNT.getName(), Long.class);
+        if (changedAmount != null) {
+            statWithdrawal.setChangedAmount(changedAmount);
+        }
+        String changedCurrencyCode = rs.getString(WITHDRAWAL_DATA.CHANGED_CURRENCY_CODE.getName());
+        if (Strings.isNotEmpty(changedCurrencyCode)) {
+            statWithdrawal.setChangedCurrencySymbolicCode(changedCurrencyCode);
+        }
         WithdrawalStatus withdrawalStatus =
                 TypeUtil.toEnumField(rs.getString(WITHDRAWAL_DATA.WITHDRAWAL_STATUS.getName()), WithdrawalStatus.class);
         switch (withdrawalStatus) {

@@ -41,6 +41,8 @@ class WithdrawalFunctionTest extends AbstractIntegrationTest {
         withdrawalData.setId(1L);
         withdrawalData.setCreatedAt(LocalDateTime.now().minusMinutes(1));
         withdrawalData.setWithdrawalId(withdrawalData.getWithdrawalId());
+        withdrawalData.setChangedAmount(2000L);
+        withdrawalData.setChangedCurrencyCode("USD");
         withdrawalDao.save(withdrawalData);
         secondWithdrawalData = TestDataGenerator.create(WithdrawalData.class);
         secondWithdrawalData.setId(2L);
@@ -91,6 +93,8 @@ class WithdrawalFunctionTest extends AbstractIntegrationTest {
         assertEquals(1, withdrawals.size());
         assertEquals(withdrawalData.getProviderId().intValue(), withdrawals.get(0).getProviderId());
         assertEquals(withdrawalData.getTerminalId().intValue(), withdrawals.get(0).getTerminalId());
+        assertEquals(withdrawalData.getChangedAmount().longValue(), withdrawals.get(0).getChangedAmount());
+        assertEquals(withdrawalData.getChangedCurrencyCode(), withdrawals.get(0).getChangedCurrencySymbolicCode());
     }
 
     @Test
